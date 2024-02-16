@@ -1,0 +1,139 @@
+{{header}}
+<style>
+{{custom_style}}
+</style>
+
+<style>
+    .banner-text2 {
+        color: #423c9e;
+        font-size: 22px;
+    }
+
+    .leaf {
+        width: 160px;
+        position: absolute;
+        z-index: 9999;
+        right: -50px;
+        top: -50px;
+        transform: rotate(20deg);
+    }
+
+    .demo-msg {
+        display: none !important;
+    }
+</style>
+<div class="banner-statistics-area ptb-30">
+    <div class="container ptb-30">
+
+        <div class="row">
+
+            <div class="col-sm-12">
+              
+                <div class="row row-20 mtn-20">
+                <div class="col-sm-6">
+                        <figure class="banner-statistics mt-20">
+                            <a href="index.php?route=common/g1">
+                                <img src="assets/img/banner/imgb1_1.jpg" alt="product banner">
+                            </a>
+                            <div class="banner-content text-right">
+
+                                <h2 class="banner-text2">Birthstone <span>Jewelry</span></h2>
+                                <a href="index.php?route=common/g1" class="btn btn-text">Learn more</a>
+                            </div>
+                        </figure>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <figure class="banner-statistics mt-20">
+                            <a href="index.php?route=common/g3">
+                                <img src="assets/img/banner/imgb2.JPG" alt="product banner">
+                            </a>
+                            <div class="banner-content text-center">
+                                <h2 class="banner-text2">Metal <span>Education</span></h2>
+                                <a href="index.php?route=common/g3" class="btn btn-text">Learn More</a>
+                            </div>
+                          </figure>
+                    </div>
+                    <div class="col-sm-6">
+                        <figure class="banner-statistics mt-20">
+                            <a href="index.php?route=common/g1">
+                                <img src="assets/img/banner/imgb1.jpg" alt="product banner">
+                            </a>
+                            <div class="banner-content text-right">
+
+                                <h2 class="banner-text2">Conflict Free <span>Diamonds</span></h2>
+                                <a href="index.php?route=common/g1" class="btn btn-text">Learn more</a>
+                            </div>
+                        </figure>
+                    </div>
+
+                 
+
+
+                    <div class="col-sm-6">
+                        <figure class="banner-statistics mt-20">
+                            <a href="index.php?route=common/g4">
+                                <img src="assets/img/banner/imgb3.JPG" alt="product banner">
+                            </a>
+                            <div class="banner-content text-right">
+                                <h2 class="banner-text2">Gemstone<span>Education</span></h2>
+                                <a href="index.php?route=common/g4" class="btn btn-text">Learn More</a>
+                            </div>
+                        </figure>
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <figure class="banner-statistics mt-20">
+                            <a href="index.php?route=common/g2">
+                                <img src="assets/img/banner/imgb4.jpg" alt="product banner">
+                            </a>
+                            <div class="banner-content text-center">
+
+                                <h2 class="banner-text2">Diamond <span>Education</span></h2>
+                                <a href="index.php?route=common/g2" class="btn btn-text">Learn more</a>
+                            </div>
+                        </figure>
+
+
+                    </div>
+
+                </div>
+
+
+
+            </div><br />
+
+        </div>
+
+
+    </div>
+
+
+</div>
+</div>
+
+<script src="assets/js/src/html2canvas.min.js"></script>
+<script src="assets/js/src/three.min.js"></script>
+<script src="assets/js/src/pdf.min.js"></script>
+
+<script src="assets/js/src/3dflipbook.min.js"></script>
+
+
+
+
+
+
+
+    {% include template('partial/d_layout_open') %}
+        <div class="bm">
+
+            {% if posts %}
+                {% include template(layout_template) with posts %}
+            {% endif %}
+
+           
+        </div>
+    {% include template('/partial/d_layout_close') %}
+{{footer}}
+

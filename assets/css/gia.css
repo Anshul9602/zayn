@@ -1,0 +1,145 @@
+.fa {
+	font-size: 18px;
+}
+
+.dummy_element {
+	display: none !important;
+}
+
+.icon-heart-empty {
+	font-family: icon-font !important;
+	font-style: normal;
+	font-weight: 400;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+table td {
+	text-transform: uppercase;
+	font-size: 12px;
+}
+
+.ml-5 svg {
+	width: 30px;
+	height: 30px;
+	margin-bottom: 2px;
+	margin-top: 2px;
+}
+
+.diamond-shape-box svg {
+	width: 20px;
+	height: 20px;
+
+}
+
+.diamond-shape-box {
+	text-align: center;
+}
+
+thead tr td {
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: 700;
+}
+
+th {
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+	cursor: pointer;
+}
+
+tr td {
+	text-align: center;
+}
+
+.ase {
+	background-color: aqua;
+	width: 10px;
+	height: 10px;
+}
+
+.filter-header {
+	padding: 5px;
+	background-color: #423C9E;
+	text-align: center;
+	color: #fff;
+	border-right: thin solid #fff;
+}
+
+.p-0 {
+	padding: 0px;
+}
+
+li.ml-5 {
+	TEXT-ALIGN: center;
+	float: left;
+	margin: 3px;
+	width: 40px;
+	font-size: 9.5px;
+	text-transform: uppercase;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+
+.shape-filter {
+	margin-left: -20px;
+}
+
+.color-filter {
+	margin-top: 40px;
+	margin-left: 20px;
+}
+
+.cut-filter,
+.clarity-filter {
+	margin-top: 20px;
+	margin-left: 20px;
+}
+
+.color-filter label,
+label.rect {
+	position: relative;
+	margin: 0 10px 20px 0;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.color-filter label input,
+label.rect input {
+	display: none;
+}
+
+.color-filter label span,
+label.rect span {
+	padding: 7px 10px;
+	border: 1px solid #ccc;
+	cursor: pointer;
+}
+
+li.ml-5{
+	cursor: pointer;
+	border:2px solid transparent;
+	width: 50px;
+}
+
+li.ml-5.active{
+	border:2px solid #423C9E;
+}
+
+li.ml-5 label{
+	margin-bottom: 2px;
+}
+
+.color-filter label span.active,
+.cut-filter label span.active,
+.clarity-filter label span.active
+ {
+	border:2px solid #423C9E;
+}

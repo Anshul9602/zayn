@@ -1,0 +1,39 @@
+{{header}}
+<style>
+{{custom_style}}
+</style>
+
+
+
+<div class="container">
+    <div style="text-align:center; min-height:80vh; width:100%; display:inline-block" class="row ptb-30 align-items-center">
+
+       <h1> Comming Soon </h1>
+    </div>
+    
+</div>
+
+
+<script src="assets/js/src/html2canvas.min.js"></script>
+<script src="assets/js/src/three.min.js"></script>
+<script src="assets/js/src/pdf.min.js"></script>
+
+<script src="assets/js/src/3dflipbook.min.js"></script>
+
+
+
+
+
+
+
+    {% include template('partial/d_layout_open') %}
+        <div class="bm">
+
+            {% if posts %}
+                {% include template(layout_template) with posts %}
+            {% endif %}
+
+           
+        </div>
+    {% include template('/partial/d_layout_close') %}
+{{footer}}
