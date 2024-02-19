@@ -39,7 +39,7 @@ assets/css/home.css
 
 <style>
     .date-element {
-     
+
         cursor: pointer;
     }
 
@@ -49,19 +49,13 @@ assets/css/home.css
         padding-bottom: 10px;
         color: white;
     }
+
     .time-slot.selected {
         background-color: green;
         color: white;
     }
-    .time-slot {
-        border: 1px solid #eae9e9;
-        background-color: #eae9e9;
-        cursor: pointer;
-    }
-
 </style>
 
-<!--Most wanted designs-->
 <section class="section-padding pb-5 pt-5" style="margin-top:60px;min-height:100vh;">
     <div style="padding:0 7%;">
         <div class="row justify-content-center">
@@ -69,10 +63,7 @@ assets/css/home.css
             <div class="col-md-8 mt-md-5 mt-3">
                 <div class="splide splidecol" aria-label="Splide Basic HTML Example">
                     <div class="splide__track">
-                        <ul class="splide__list broder">
-
-                            <!-- Current date slide -->
-                          
+                        <ul class="splide__list broder" id="dateSlider">
 
                             <!-- Dynamically generate slides for the next 10 days -->
                             <script>
@@ -81,52 +72,55 @@ assets/css/home.css
                                     const today = new Date();
                                     const futureDate = new Date(today);
                                     futureDate.setDate(today.getDate() + offset);
-                            
+
                                     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                                     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                            
+
                                     const dayName = dayNames[futureDate.getDay()];
                                     const day = futureDate.getDate();
                                     const monthName = monthNames[futureDate.getMonth()];
-                            
+
                                     return { dayName, day, monthName };
                                 }
-                            
+
                                 function selectDate(selectedDate) {
                                     console.log(selectedDate);
-                            
+
                                     // Reset styles for all date elements
                                     const dateElements = document.querySelectorAll('.date-element');
                                     dateElements.forEach((dateElement) => {
                                         dateElement.classList.remove('selected');
                                     });
-                            
+
                                     // Highlight the selected date
                                     const selectedDateElement = document.getElementById(`date-${selectedDate}`);
                                     if (selectedDateElement) {
                                         selectedDateElement.classList.add('selected');
                                     }
-                            
+
                                     // Update available time slots based on the selected date
                                     updateAvailableTimeSlots(selectedDate);
                                 }
-                            
+
                                 // Populate the current date
                                 const currentDate = new Date();
-                            
+
                                 // Generate and append slides for the next 10 days
+                                const dateSlider = document.getElementById('dateSlider');
                                 for (let i = 0; i <= 10; i++) {
                                     const { dayName, day, monthName } = getDateForOffset(i);
-                            
-                                    document.write(`
-                                        <li class="splide__slide mr-0" >
-                                            <div id="date-${day}-${monthName}" class="date-element text-center" onclick="selectDate('${day}-${monthName}')">
-                                                <p class="tops" style="background-color: #eae9e9;">${dayName}</p>
-                                                <p class="bg1">${day}</p>
-                                                <p class="bg1">${monthName}</p>
-                                            </div>
-                                        </li>
-                                    `);
+
+                                    const li = document.createElement('li');
+                                    li.className = 'splide__slide mr-0';
+                                    li.style.border = '1px solid #eae9e9';
+                                    li.innerHTML = `
+                                        <div id="date-${day}-${monthName}" class="date-element text-center" onclick="selectDate('${day}-${monthName}')">
+                                            <p class="tops" style="background-color: #eae9e9;margin-bottom: 0px;">${dayName}</p>
+                                            <p class="bg1 pt-2">${day}</p>
+                                            <p class="bg1">${monthName}</p>
+                                        </div>
+                                    `;
+                                    dateSlider.appendChild(li);
                                 }
                             </script>
 
@@ -143,11 +137,8 @@ assets/css/home.css
             </div>
         </div>
 
-
         <!-- Include Moment.js and Moment Timezone libraries -->
-
-
-        <div class="row slote" id="timeSlotsContainer" style="    justify-content: center;">
+        <div class="row slote" id="timeSlotsContainer" style="justify-content: center;">
             <!-- Time slots will be dynamically added here -->
         </div>
 
@@ -156,21 +147,64 @@ assets/css/home.css
             function convertToUserTimeZone(americaTime) {
                 const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
                 const userTimeZone = moment.tz.guess();
-
+        
                 // Create a Moment object for the current date and time in America time zone
                 const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
-
+        
                 // Convert to the user's time zone
                 const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
-
-                return userTimeSlot;
+        
+                return { momentObject: americaDateTime, formattedTime: userTimeSlot };
             }
-
+        
+            // Function to get the current time in America time zone
+            function getCurrentTimeInAmericaTimeZone() {
+                const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
+                return moment.tz(americaTimeZone);
+            }
+            function getAvailableTimeSlots(selectedDate) {
+                // For demonstration, return a fixed set of time slots
+                return ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
+            }
             // Time slots in America time zone
             const americaTimeSlots = ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
-
+        
             // Get the container to append time slots
             const timeSlotsContainer = document.getElementById('timeSlotsContainer');
+        
+            // Get the current time in America time zone
+            const currentTimeInAmericaTimeZone = getCurrentTimeInAmericaTimeZone();
+        
+            // Populate time slots in user's time zone
+            if (timeSlotsContainer) {
+                americaTimeSlots.forEach((americaTimeSlot) => {
+                    const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot);
+        
+                    // Check if the slot has passed based on the current time
+                    const slotPassed = momentObject.isBefore(currentTimeInAmericaTimeZone);
+        
+                    const timeSlotElement = document.createElement('div');
+                    timeSlotElement.className = `col-md-3 text-center ${slotPassed ? 'disabled' : 'time-slot'}`;
+                    timeSlotElement.style.margin = '10px 20px';
+                    timeSlotElement.style.padding = '5px 10px';
+                    timeSlotElement.style.width = '100%';
+                    timeSlotElement.style.border = '1px solid #eae9e9';
+        
+                    // Set styles for slot based on whether it's disabled or not
+                    if (!slotPassed) {
+                        timeSlotElement.textContent = formattedTime;
+                        timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot));
+                    } else {
+                        timeSlotElement.textContent = 'Slot Passed';
+                        timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
+                        timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
+                    }
+        
+                    timeSlotsContainer.appendChild(timeSlotElement);
+                });
+            }
+        
+            // Function to handle time slot selection
             function selectSlot(selectedSlot) {
                 console.log(selectedSlot);
         
@@ -181,143 +215,83 @@ assets/css/home.css
                 });
         
                 // Highlight the selected slot
-                const selectedSlotElement = document.getElementById(`slot-${selectedSlot}`);
+                const selectedSlotElement = document.querySelector(`.time-slot:contains("${selectedSlot}")`);
                 if (selectedSlotElement) {
                     selectedSlotElement.classList.add('selected');
                 }
-        
-                // Additional actions when a slot is selected, if needed
-                // updateAvailableTimeSlots(selectedDate, selectedSlot);
             }
-            // Populate time slots in user's time zone
-            if (timeSlotsContainer) {
-                americaTimeSlots.forEach((americaTimeSlot) => {
-                    const userTimeSlot = convertToUserTimeZone(americaTimeSlot);
-
-                    const timeSlotElement = document.createElement('div');
-                    timeSlotElement.className = 'col-md-3 text-center';
-                    timeSlotElement.style.margin = '10px 20px';
-                    timeSlotElement.style.padding = '5px 10px';
-                    timeSlotElement.style.width = '100%';
-                    timeSlotElement.style.border = '1px solid #eae9e9';
-                    timeSlotElement.textContent = userTimeSlot;
-
-                    timeSlotsContainer.appendChild(timeSlotElement);
-                });
-            }function selectSlot(selectedSlot) {
-                console.log(selectedSlot);
         
-                // Reset styles for all time slots
-                const slotElements = document.querySelectorAll('.time-slot');
-                slotElements.forEach((slotElement) => {
-                    slotElement.classList.remove('selected');
+            // Function to update available time slots based on the selected date
+            function updateAvailableTimeSlots(selectedDate) {
+                // Logic to fetch available time slots for the selected date
+                // For demonstration, using a fixed set of time slots
+                const availableTimeSlots = getAvailableTimeSlots(selectedDate);
+        
+                // Update the displayed time slots
+                const timeSlotsContainer = document.getElementById('timeSlotsContainer');
+                if (timeSlotsContainer) {
+                    // Clear existing time slots
+                    timeSlotsContainer.innerHTML = '';
+        
+                    // Populate time slots in user's time zone
+                    availableTimeSlots.forEach((americaTimeSlot) => {
+                        const userTimeSlot = convertToUserTimeZone(americaTimeSlot).formattedTime;
+        
+                        const timeSlotElement = document.createElement('div');
+                        timeSlotElement.className = 'col-md-3 text-center';
+                        timeSlotElement.style.margin = '10px 20px';
+                        timeSlotElement.style.padding = '5px 10px';
+                        timeSlotElement.style.width = '100%';
+                        timeSlotElement.style.border = '1px solid #eae9e9';
+                        timeSlotElement.textContent = userTimeSlot;
+        
+                        // Add click event listener to each time slot
+                        timeSlotElement.addEventListener('click', () => selectTime(selectedDate, americaTimeSlot));
+        
+                        timeSlotsContainer.appendChild(timeSlotElement);
+                    });
+                }
+            }
+        
+            // Function to handle date selection
+            function selectDate(selectedDate) {
+                console.log(selectedDate);
+        
+                // Reset styles for all date elements
+                const dateElements = document.querySelectorAll('.date-element');
+                dateElements.forEach((dateElement) => {
+                    dateElement.classList.remove('selected');
                 });
         
-                // Highlight the selected slot
-                const selectedSlotElement = document.getElementById(`slot-${selectedSlot}`);
-                if (selectedSlotElement) {
-                    selectedSlotElement.classList.add('selected');
+                // Highlight the selected date
+                const selectedDateElement = document.getElementById(`date-${selectedDate}`);
+                if (selectedDateElement) {
+                    selectedDateElement.classList.add('selected');
                 }
         
-                // Additional actions when a slot is selected, if needed
-                // updateAvailableTimeSlots(selectedDate, selectedSlot);
+                // Update available time slots based on the selected date
+                updateAvailableTimeSlots(selectedDate);
             }
+            function selectTime(selectedDate, selectedTime) {
+                // Reset background color for all time slot elements
+                const timeSlotElements = document.querySelectorAll('.col-md-3');
+                timeSlotElements.forEach((timeSlotElement) => {
+                    timeSlotElement.style.backgroundColor = '';
+                });
+        
+                // Highlight the selected time slot
+                const selectedTimeSlotElement = document.getElementById(`time-${selectedDate}-${selectedTime}`);
+                if (selectedTimeSlotElement) {
+                    selectedTimeSlotElement.style.backgroundColor = 'green';
+                }
+        
+                // Log the selected date and time slot
+                console.log(`Selected Date: ${selectedDate}, Selected Time: ${selectedTime}`);
+            }
+            // Rest of your existing code...
         </script>
     </div>
 </section>
-
-
-<script>
-    // Function to handle date selection
-    
-
-    // Function to update available time slots based on the selected date
-    function updateAvailableTimeSlots(selectedDate) {
-        // Logic to fetch available time slots for the selected date
-        // For demonstration, using a fixed set of time slots
-        const availableTimeSlots = getAvailableTimeSlots(selectedDate);
-
-        // Update the displayed time slots
-        const timeSlotsContainer = document.getElementById('timeSlotsContainer');
-        if (timeSlotsContainer) {
-            // Clear existing time slots
-            timeSlotsContainer.innerHTML = '';
-
-            // Populate time slots in user's time zone
-            availableTimeSlots.forEach((americaTimeSlot) => {
-                const userTimeSlot = convertToUserTimeZone(americaTimeSlot);
-
-                const timeSlotElement = document.createElement('div');
-                timeSlotElement.className = 'col-md-3 text-center';
-                timeSlotElement.style.margin = '10px 20px';
-                timeSlotElement.style.padding = '5px 10px';
-                timeSlotElement.style.width = '100%';
-                timeSlotElement.style.border = '1px solid #eae9e9';
-                timeSlotElement.textContent = userTimeSlot;
-
-                // Add click event listener to each time slot
-                timeSlotElement.addEventListener('click', () => selectTime(selectedDate, americaTimeSlot));
-
-                timeSlotsContainer.appendChild(timeSlotElement);
-            });
-        }
-    }
-
-    // Function to handle time slot selection
-    function selectTime(selectedDate, selectedTime) {
-        // Reset background color for all time slot elements
-        const timeSlotElements = document.querySelectorAll('.col-md-3');
-        timeSlotElements.forEach((timeSlotElement) => {
-            timeSlotElement.style.backgroundColor = '';
-        });
-
-        // Highlight the selected time slot
-        const selectedTimeSlotElement = document.getElementById(`time-${selectedDate}-${selectedTime}`);
-        if (selectedTimeSlotElement) {
-            selectedTimeSlotElement.style.backgroundColor = 'green';
-        }
-
-        // Log the selected date and time slot
-        console.log(`Selected Date: ${selectedDate}, Selected Time: ${selectedTime}`);
-    }
-
-    // Function to get available time slots for a given date (replace with your logic)
-    function getAvailableTimeSlots(selectedDate) {
-        // For demonstration, return a fixed set of time slots
-        return ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
-    }
-
-    // Rest of your existing code...
-
-    // Generate and append slides for the next 10 days
-    for (let i = 1; i <= 10; i++) {
-        const { dayName, day, monthName } = getDateForOffset(i);
-
-        document.write(`
-           
-        `);
-    }
-</script>
-<script>
-    // Function to get the current time and time zone
-    function getCurrentTimeAndZone() {
-        const now = new Date();
-        const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
-        const time = now.toLocaleTimeString(undefined, timeOptions);
-        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        return { time, timeZone };
-    }
-
-    // Populate the current time and time zone
-    const currentTimeElement = document.getElementById('current-time');
-    const currentTimeZoneElement = document.getElementById('current-timezone');
-
-    if (currentTimeElement && currentTimeZoneElement) {
-        const { time, timeZone } = getCurrentTimeAndZone();
-        currentTimeElement.innerText = time;
-        currentTimeZoneElement.innerText = timeZone;
-    }
-</script>
 <script>
     var splide = new Splide('.splidecol', {
 
