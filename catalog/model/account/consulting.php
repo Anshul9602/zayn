@@ -5,13 +5,7 @@ class ModelAccountConsulting extends Model {
         $this->db->query("
             INSERT INTO `" . DB_PREFIX . "consulting_data` 
             (`current_time`, `current_timezone`, `selected_time`, `selected_date`, `user_email`) 
-            VALUES (?, ?, ?, ?, ?)", array(
-                $currentTime,
-                $currentTimezone,
-                $selectedTime,
-                $selectedDate,
-                $userEmail
-            )
+            VALUES ('$currentTime', '$currentTimezone', '$selectedTime', '$selectedDate', '$userEmail')"
         );
     }
 }

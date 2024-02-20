@@ -31,7 +31,7 @@ class ControllerCommonConsultingForm extends Controller {
 				 $requestData['selectedTime'],				
 				$requestData['selectedDate'], $requestData['userEmail']);
 			
-				$response['success'] = true;
+				$response = $requestData;
 			} else {
 				$response['error'] = 'Validation failed';
 				// You can customize this message

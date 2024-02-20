@@ -10,6 +10,26 @@ https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
 <link href="
 assets/css/home.css
 " rel="stylesheet">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<div id="id01" class="w3-modal">
+    <div class="w3-modal-content p-4" style="min-height: 300px;justify-content: center;display: flex;
+    align-items: center;padding: 30px;top:30%;">
+        <div class="w3-container">
+            <span onclick="document.getElementById('id01').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+            <div class="mode">
+                <h4 class="text-center bold pb-4">Thank you for your submission!</h4>
+                <p class="date">Your appointment date <span id="apdate"></span> and timing is <span id="aptime"></span>
+                    conformed.</p>
+                    <button type="button" id="okButton" class="btn btn-primary mt-3" >Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <style>
     #New .splide__pagination {
         display: none !important;
@@ -33,10 +53,6 @@ assets/css/home.css
         right: -3em;
     }
 </style>
-
-
-
-
 <style>
     .date-element {
 
@@ -324,7 +340,13 @@ assets/css/home.css
     </div>
 </section>
 
-
+<script>
+    // When the user clicks on div, open the popup
+    function myFunction() {
+        var popup = document.getElementById("myPopup");
+        popup.classList.toggle("show");
+    }
+</script>
 <script>
     // Function to update the current time and timezone
     function updateDateTime() {
@@ -380,6 +402,11 @@ assets/css/home.css
                 .then(data => {
                     // Handle the response from the server if needed
                     console.log('Success:', data);
+                    document.getElementById('apdate').textContent = data.selectedDate;
+                    document.getElementById('aptime').textContent = data.selectedTime;
+            
+                    // Show the modal
+                    document.getElementById('id01').style.display = 'block';
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -389,17 +416,10 @@ assets/css/home.css
             alert('Please select date, time, and enter your email before submitting.');
         }
     });
-
-
-
-
-
-
-
-
-
-
-
+    document.getElementById('okButton').addEventListener('click', function () {
+        // Reload the page
+        location.reload();
+    });
 
     var splide = new Splide('.splidecol', {
 
