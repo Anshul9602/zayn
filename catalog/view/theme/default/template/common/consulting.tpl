@@ -143,12 +143,13 @@ assets/css/home.css
         </div>
 
 
-<div  class="mail text-center">
-    <h4 class="text-center mt-3 pb-2" style="font-weight: 600;">
-       Email
-    </h4>
-    <input type="mail" id="mail" required placeholder="Enter your email" style="min-width: 30%;padding:5px 10px;border:1px solid #eae9e9">
-</div>
+        <div class="mail text-center">
+            <h4 class="text-center mt-3 pb-2" style="font-weight: 600;">
+                Email
+            </h4>
+            <input type="mail" id="mail" required placeholder="Enter your email"
+                style="min-width: 30%;padding:5px 10px;border:1px solid #eae9e9">
+        </div>
 
         <script>
             // Function to convert time from America time zone to user's time zone
@@ -347,13 +348,13 @@ assets/css/home.css
         const selectedDateElement = document.querySelector('.date-element.selected');
         const selectedTimeElement = document.querySelector('.time-slot.selected');
         const userEmail = document.getElementById('mail').value;
-    
+
 
 
         if (selectedDateElement && selectedTimeElement && userEmail) {
             const selectedDate = selectedDateElement.id.replace('date-', '');
             const selectedTime = selectedTimeElement.textContent.trim();
-    
+
             // Prepare data to be sent in the AJAX request
             const requestData = {
                 selectedDate: selectedDate,
@@ -362,11 +363,12 @@ assets/css/home.css
                 currentTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 currentTime: new Date().toLocaleTimeString()
             };
-    
+
             console.log(requestData);
 
 
-            // Perform AJAX request
+            console.log('Before fetch:', requestData);
+
             fetch('index.php?route=common/consulting_form', {
                 method: 'POST',
                 headers: {
@@ -374,14 +376,14 @@ assets/css/home.css
                 },
                 body: JSON.stringify(requestData),
             })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response from the server if needed
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server if needed
+                    console.log('Success:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         } else {
             // Handle the case when date, time, or email is not selected
             alert('Please select date, time, and enter your email before submitting.');
