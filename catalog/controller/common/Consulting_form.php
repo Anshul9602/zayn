@@ -13,21 +13,32 @@ class ControllerCommonConsultingForm extends Controller {
 	}
 	
 	protected function validateAndSendEmail($requestData) {
-		$response = array();
-	
-		if ($requestData) {
-			// Debug: Print all POST data
-			echo '<pre>';
-			print_r($requestData);
-			echo '</pre>';
-	
+		
+		    $response = array();
+			// $currentTime = $requestData['currentTime'];
+			// $currentTimezone = $requestData['currentTimezone'];
+			// $selectedDate = $requestData['selectedDate'];
+			// $userEmail = $requestData['userEmail'];
+
+		
+		
+			if ($requestData) {
+				$this->load->model('account/consulting');
 			
-			$response['success'] = true;
-		} else {
-			$response['error'] = 'Validation failed';
-			// You can customize this message
-		}
+				// Call the model method to save consulting data
+				$this->model_account_consulting->saveConsultingData($requestData['currentTime'],
+				 $requestData['currentTimezone'], 
+				 $requestData['selectedTime'],				
+				$requestData['selectedDate'], $requestData['userEmail']);
+			
+				$response['success'] = true;
+			} else {
+				$response['error'] = 'Validation failed';
+				// You can customize this message
+			}
+		
 	
 		return $response;
 	}
+	
 }
