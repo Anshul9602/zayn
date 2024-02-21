@@ -72,6 +72,10 @@ assets/css/home.css
     }
 </style>
 
+<?php echo "<pre>";
+    print_r($con);
+    echo "</pre>" ?>
+
 <section class="section-padding pb-3 pt-3" style="margin-top:30px;min-height:100vh;">
     <div style="padding:0 7%;">
         <div class="row justify-content-center">
@@ -218,13 +222,13 @@ assets/css/home.css
                     timeSlotElement.style.padding = '5px 10px';
                     timeSlotElement.style.width = '100%';
                     timeSlotElement.style.border = '1px solid #eae9e9';
-
+console.log(formattedTime);
                     // Set styles for slot based on whether it's disabled or not
                     if (!slotPassed) {
                         timeSlotElement.textContent = formattedTime;
                         timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
                     } else {
-                        timeSlotElement.textContent = 'Slot Passed';
+                        timeSlotElement.textContent = formattedTime;
                         timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
                         timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
                     }

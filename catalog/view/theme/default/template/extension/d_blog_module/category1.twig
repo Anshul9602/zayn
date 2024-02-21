@@ -1,80 +1,111 @@
 {{header}}
 <style>
-{{custom_style}}
-</style>
+	{{custom_style}}</style>
 
 <style>
-    .banner-text2 {
-        color: #423c9e;
-        font-size: 22px;
-    }
+	.banner-text2 {
+		color: #423c9e;
+		font-size: 22px;
+	}
 
-    .leaf {
-        width: 160px;
-        position: absolute;
-        z-index: 9999;
-        right: -50px;
-        top: -50px;
-        transform: rotate(20deg);
-    }
+	.leaf {
+		width: 160px;
+		position: absolute;
+		z-index: 9999;
+		right: -50px;
+		top: -50px;
+		transform: rotate(20deg);
+	}
 
-    .demo-msg {
-        display: none !important;
-    }
-    .button {
-    display: block;
-    width: 115px;
-    height: 34px;
-    background: #423c9e;
-    padding-top: 5px;
-    text-align: center;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    /* line-height: 25px; */
-    margin-top:20px;
-    
-}
-.blogbanner{
-    background-color:#dcebf7;
-    margin-bottom:50px;
-    padding-top:20px;
-    padding-right:40px;
-}
+	.demo-msg {
+		display: none !important;
+	}
+	.button {
+		display: block;
+		width: 115px;
+		height: 34px;
+		background: #423c9e;
+		padding-top: 5px;
+		text-align: center;
+		border-radius: 5px;
+		color: white;
+		font-weight: bold;
+		/* line-height: 25px; */
+		margin-top: 20px;
+
+	}
+	.blogbanner {
+		background-color: #dcebf7;
+		margin-bottom: 50px;
+		padding-top: 20px;
+		padding-right: 40px;
+	}
 </style>
 
 <section class="about-us section-padding pb-0">
-    <div class="container blogbanner">
-        <div class="row align-items-center">
-            <div class="col-lg-5">
-            <a href="index.php?route=common/g1"  >
-                <div class="about-thumb">
-                    <img src="assets/img/blog/stones/Aquamarine-1.png" alt="Birth stone">
-                </div>
-</a>
-            </div>
-            <div class="col-lg-7">
-            
-                <div class="about-content">
-                <a href="index.php?route=common/g1"  >
-                    <h3 style="color:#423c9e">Spot Jewelry According to your Birthstone</h3></a>
-                    <br />
-                    <p>We are very connected with our birth month, and jewels with your birthstone are the new way to flaunt who you really are.
-                    Each piece of jewelry tells the story of the wearer, and adding a touch of personalisation is now turning out to be a given for every jewelry buyer.    
-                    <a href="index.php?route=common/g1"  class="button">
-                                Read More...
-                            </a>
-</p>
+	<div class="container blogbanner">
+		<div class="row align-items-center">
+			<div class="col-lg-5">
+				<a href="index.php?route=common/g1">
+					<div class="about-thumb">
+						<img src="image/blog22.jpg" alt="Birth stone" >
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-7">
 
-                </div>
-                
-            </div>
-        </div>
-        <br />
-        <br />
-        <br />
+				<div class="about-content">
+					<a href="index.php?route=common/g1">
+						<h3 style="color:#423c9e">Cross necklaces symbolism and fashion traditions </h3>
+					</a>
+					<br/>
+					<p>Cross necklaces have a long and varied history, deeply intertwined with religious, cultural, and fashion traditions. 
+                        The cross is a central symbol in Christianity, representing the crucifixion of Jesus Christ and his sacrifice for humanity's salvation. 
+                        
+						<a href="index.php?route=common/g2" class="button">
+							Read More...
+						</a>
+					</p>
 
-    </div>
+				</div>
+
+			</div>
+		</div>
+		<br>
+
+	</div>
+	<div class="container blogbanner">
+		<div class="row align-items-center">
+			<div class="col-lg-5">
+				<a href="index.php?route=common/g1">
+					<div class="about-thumb">
+						<img src="assets/img/blog/stones/Aquamarine-1.png" alt="Birth stone">
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-7">
+
+				<div class="about-content">
+					<a href="index.php?route=common/g1">
+						<h3 style="color:#423c9e">Spot Jewelry According to your Birthstone</h3>
+					</a>
+					<br/>
+					<p>We are very connected with our birth month, and jewels with your birthstone are the new way to flaunt who you really are.
+						                    Each piece of jewelry tells the story of the wearer, and adding a touch of personalisation is now turning out to be a given for every jewelry buyer.
+						<a href="index.php?route=common/g1" class="button">
+							Read More...
+						</a>
+					</p>
+
+				</div>
+
+			</div>
+		</div>
+		<br/>
+		<br/>
+		<br/>
+
+	</div>
 </section>
 
 
@@ -103,20 +134,14 @@
 <script src="assets/js/src/3dflipbook.min.js"></script>
 
 
+{% include template('partial/d_layout_open') %}
+<div class="bm">
+
+	{% if posts %}
+		{% include template(layout_template) with posts %}
+	{% endif %}
 
 
-
-
-
-    {% include template('partial/d_layout_open') %}
-        <div class="bm">
-
-            {% if posts %}
-                {% include template(layout_template) with posts %}
-            {% endif %}
-
-
-        </div>
-    {% include template('/partial/d_layout_close') %}
+</div>
+{% include template('/partial/d_layout_close') %}
 {{footer}}
-
