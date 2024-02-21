@@ -22,7 +22,7 @@ assets/css/home.css
                 <h4 class="text-center bold pb-4">Thank you for your submission!</h4>
                 <p class="date">Your appointment is scheduled for <span id="apdate"></span> at <span id="aptime"></span>
                     .</p>
-                    <button type="button" id="okButton" class="btn btn-primary mt-3" >Ok</button>
+                <button type="button" id="okButton" class="btn btn-primary mt-3">Ok</button>
             </div>
         </div>
     </div>
@@ -58,6 +58,12 @@ assets/css/home.css
 
         cursor: pointer;
     }
+.slote .disabled{
+    background-color: gray;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+    color: white;
+}
 
     .date-element.selected .bg1 {
         background-color: #423c9e;
@@ -71,15 +77,21 @@ assets/css/home.css
         color: white;
     }
 </style>
+<?php
+echo "<script>";
+echo "const co = " . json_encode($con) . ";";
+echo "</script>";
 
-<?php echo "<pre>";
-    print_r($con);
-    echo "</pre>" ?>
+
+
+?>
+
+
 
 <section class="section-padding pb-3 pt-3" style="margin-top:30px;min-height:100vh;">
     <div style="padding:0 7%;">
         <div class="row justify-content-center">
-            <h4 class="col-md-8 text-center pb-3"style="font-weight: 600;">What day is best for you?</h4>
+            <h4 class="col-md-8 text-center pb-3" style="font-weight: 600;">What day is best for you?</h4>
             <div class="col-md-8 mt-md-5 mt-3">
                 <div class="splide splidecol" aria-label="Splide Basic HTML Example">
                     <div class="splide__track">
@@ -134,14 +146,19 @@ assets/css/home.css
                                     li.className = 'splide__slide mr-0';
                                     li.style.border = '1px solid #eae9e9';
                                     li.innerHTML = `
-                                        <div id="date-${day}-${monthName}" class="date-element text-center" onclick="selectDate('${day}-${monthName}')">
-                                            <p class="tops" style="background-color: #eae9e9;margin-bottom: 0px;">${dayName}</p>
-                                            <p class="bg1 pt-2">${day}</p>
-                                            <p class="bg1">${monthName}</p>
-                                        </div>
-                                    `;
+            <div id="date-${day}-${monthName}" class="date-element text-center" onclick="selectDate('${day}-${monthName}')">
+                <p class="tops" style="background-color: #eae9e9;margin-bottom: 0px;">${dayName}</p>
+                <p class="bg1 pt-2">${day}</p>
+                <p class="bg1">${monthName}</p>
+            </div>
+        `;
                                     dateSlider.appendChild(li);
                                 }
+
+                                // Select the current date by default
+                                const currentDay = currentDate.getDate();
+                                const currentMonthName = getDateForOffset(0).monthName;
+                                selectDate(`${currentDay}-${currentMonthName}`);
                             </script>
 
                         </ul>
@@ -217,18 +234,37 @@ assets/css/home.css
                     const timeSlotElement = document.createElement('div');
                     const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
                     timeSlotElement.id = timeSlotId;
-                    timeSlotElement.className = `col-md-3 text-center ${slotPassed ? 'disabled' : 'time-slot'}`;
+
+                    // Check if the time slot should be disabled based on the selected date and time
+                    let isDisabledSlot;
+                    co.map((el, index) => {
+                        console.log("Value ==>", el.selected_date, momentObject.format('DD-MMM'), el.selected_time, formattedTime)
+                        if (el.selected_date === momentObject.format('DD-MMM') && el.selected_time === formattedTime) {
+                            return isDisabledSlot = el.selected_date === momentObject.format('DD-MMM') && el.selected_time === formattedTime;
+                        }
+
+                    })
+
+
+                    console.log("is dis ==>", isDisabledSlot)
+
+
+                    timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
                     timeSlotElement.style.margin = '10px 20px';
                     timeSlotElement.style.padding = '5px 10px';
                     timeSlotElement.style.width = '100%';
                     timeSlotElement.style.border = '1px solid #eae9e9';
-console.log(formattedTime);
+
                     // Set styles for slot based on whether it's disabled or not
                     if (!slotPassed) {
                         timeSlotElement.textContent = formattedTime;
-                        timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
+
+                        // Add click event listener to each time slot
+                        if (!isDisabledSlot) {
+                            timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
+                        }
                     } else {
-                        timeSlotElement.textContent = formattedTime;
+                        timeSlotElement.textContent = 'Slot Passed';
                         timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
                         timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
                     }
@@ -236,6 +272,7 @@ console.log(formattedTime);
                     timeSlotsContainer.appendChild(timeSlotElement);
                 });
             }
+
 
             // Function to handle time slot selection
             function selectSlot(selectedSlot) {
@@ -410,7 +447,7 @@ console.log(formattedTime);
                     console.log('Success:', data);
                     document.getElementById('apdate').textContent = data.selectedDate;
                     document.getElementById('aptime').textContent = data.selectedTime;
-            
+
                     // Show the modal
                     document.getElementById('id01').style.display = 'block';
                 })
@@ -428,7 +465,7 @@ console.log(formattedTime);
     });
 
     var splide = new Splide('.splidecol', {
-        pagination: false, 
+        pagination: false,
         perPage: 7,
         perMove: 3,
         breakpoints: {

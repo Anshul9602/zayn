@@ -478,7 +478,7 @@
 </style>
 
 <br /><br />
-<h2 style="text-align:center; color:#423c9e;">Cross necklaces symbolism and fashion traditions</h2>
+<h2 style="text-align:center; color:#423c9e;">History of Cross Jewelry</h2>
 
 <div class="banner-statistics-area ptb-30">
   <div class="container ptb-30">
@@ -486,9 +486,9 @@
       <div class="col-sm-12">
         <div class="row row-20 mtn-20" style=" padding:20px">
           <div class="col-12">
-            <figure class="banner-statistics mt-20" style="margin: auto;justify-content: center;display: flex;">
+            <figure class="banner-statistics mt-20" >
 
-              <img src="image/blog21.jpg" alt="product banner" style="width: 700px;margin:auto;">
+              <img src="image/blog24.jpg" alt="product banner" >
 
             </figure>
           </div>
@@ -516,9 +516,9 @@
       <div class="col-sm-12">
         <div class="row row-20 mtn-20" style=" padding:20px">
           <div class="col-12">
-            <figure class="banner-statistics mt-20" style="margin: auto;justify-content: center;display: flex;">
+            <figure class="banner-statistics mt-20" style="justify-content: center;display:flex;" >
 
-              <img src="image/blog22.jpg" alt="product banner" style="width: 700px;margin:auto;">
+              <img src="image/blog25.jpg" alt="product banner" style="width: 800px;" >
 
             </figure>
           </div>
@@ -547,7 +547,7 @@
           <div class="col-12">
             <figure class="banner-statistics mt-20" style="margin: auto;justify-content: center;display: flex;">
 
-              <img src="image/blog23.jpg" alt="product banner" style="width: 500px;margin:auto;">
+              <img src="image/blog23.jpg" alt="product banner" style="width: 800px;margin:auto;">
 
             </figure>
           </div>

@@ -67,7 +67,16 @@ class ControllerCommonConsulting extends Controller
 		}
 
 		$this->load->model('account/consulting');
-		$data['con'] = $this->model_account_consulting->getAllConsultingData();
+		$condata = $this->model_account_consulting->getAllConsultingData();
+		if ($condata == null) {
+			$data['con'][] = array(
+				'current_timezone' => '1',
+				'selected_time'  => '00',
+				'selected_date' => '0'
+			);
+		}else{
+			$data['con'] = $this->model_account_consulting->getAllConsultingData();
+		}
 
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
