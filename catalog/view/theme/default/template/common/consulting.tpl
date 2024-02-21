@@ -60,14 +60,14 @@ assets/css/home.css
     }
 
     .date-element.selected .bg1 {
-        background-color: green;
+        background-color: #423c9e;
         margin-bottom: 0;
         padding-bottom: 10px;
         color: white;
     }
 
     .time-slot.selected {
-        background-color: green;
+        background-color: #423c9e;
         color: white;
     }
 </style>
@@ -393,7 +393,7 @@ assets/css/home.css
 
             console.log('Before fetch:', requestData);
 
-            fetch('index.php?route=common/consulting_form', {
+            fetch('index.php?route=common/consulting/con_form', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
