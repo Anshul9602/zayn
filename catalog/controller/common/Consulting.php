@@ -66,8 +66,8 @@ class ControllerCommonConsulting extends Controller
 			}
 		}
 
-		
-
+		$this->load->model('account/consulting');
+		$consultingData = $this->model_account_consulting->getAllConsultingData();
 
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');

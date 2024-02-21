@@ -8,4 +8,9 @@ class ModelAccountConsulting extends Model {
             VALUES ('$currentTime', '$currentTimezone', '$selectedTime', '$selectedDate', '$userEmail')"
         );
     }
+    public function getAllConsultingData() {
+        $query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "consulting_data`");
+    
+        return $query->rows;
+    }
 }

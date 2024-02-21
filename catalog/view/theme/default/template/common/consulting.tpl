@@ -20,8 +20,8 @@ assets/css/home.css
                 class="w3-button w3-display-topright">&times;</span>
             <div class="mode">
                 <h4 class="text-center bold pb-4">Thank you for your submission!</h4>
-                <p class="date">Your appointment date <span id="apdate"></span> and timing is <span id="aptime"></span>
-                    conformed.</p>
+                <p class="date">Your appointment is scheduled for <span id="apdate"></span> at <span id="aptime"></span>
+                    .</p>
                     <button type="button" id="okButton" class="btn btn-primary mt-3" >Ok</button>
             </div>
         </div>
@@ -75,7 +75,7 @@ assets/css/home.css
 <section class="section-padding pb-3 pt-3" style="margin-top:30px;min-height:100vh;">
     <div style="padding:0 7%;">
         <div class="row justify-content-center">
-            <h4 class="col-md-8 text-center pb-3">What day is best for you?</h4>
+            <h4 class="col-md-8 text-center pb-3"style="font-weight: 600;">What day is best for you?</h4>
             <div class="col-md-8 mt-md-5 mt-3">
                 <div class="splide splidecol" aria-label="Splide Basic HTML Example">
                     <div class="splide__track">
@@ -159,11 +159,13 @@ assets/css/home.css
         </div>
 
 
-        <div class="mail text-center">
-            <h4 class="text-center mt-3 pb-2" style="font-weight: 600;">
+        <div class="mail text-center mt-5">
+            <h4 class="text-center mt-3 mb-0" style="font-weight: 600;">
                 Email
             </h4>
-            <input type="mail" id="mail" required placeholder="Enter your email"
+            <p class="mb-0">(mandatory field)</p>
+            <br>
+            <input type="mail" id="mail" required placeholder="Enter your email*"
                 style="min-width: 30%;padding:5px 10px;border:1px solid #eae9e9">
         </div>
 
@@ -422,7 +424,7 @@ assets/css/home.css
     });
 
     var splide = new Splide('.splidecol', {
-
+        pagination: false, 
         perPage: 7,
         perMove: 3,
         breakpoints: {
