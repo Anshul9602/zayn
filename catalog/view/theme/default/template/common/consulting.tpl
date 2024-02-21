@@ -58,12 +58,13 @@ assets/css/home.css
 
         cursor: pointer;
     }
-.slote .disabled{
-    background-color: gray;
-    margin-bottom: 0;
-    padding-bottom: 10px;
-    color: white;
-}
+
+    .slote .disabled {
+        background-color: gray;
+        margin-bottom: 0;
+        padding-bottom: 10px;
+        color: white;
+    }
 
     .date-element.selected .bg1 {
         background-color: #423c9e;
@@ -82,6 +83,9 @@ echo "<script>";
 echo "const co = " . json_encode($con) . ";";
 echo "</script>";
 
+echo "<pre ";
+print_r($con);
+echo "</pre>";
 
 
 ?>
@@ -117,7 +121,7 @@ echo "</script>";
 
                                 function selectDate(selectedDate) {
                                     console.log(selectedDate);
-
+                                    selected_date1 = selectedDate;
                                     // Reset styles for all date elements
                                     const dateElements = document.querySelectorAll('.date-element');
                                     dateElements.forEach((dateElement) => {
@@ -132,6 +136,7 @@ echo "</script>";
 
                                     // Update available time slots based on the selected date
                                     updateAvailableTimeSlots(selectedDate);
+                                    return selectedDate;
                                 }
 
                                 // Populate the current date
@@ -159,6 +164,7 @@ echo "</script>";
                                 const currentDay = currentDate.getDate();
                                 const currentMonthName = getDateForOffset(0).monthName;
                                 selectDate(`${currentDay}-${currentMonthName}`);
+                                var selected_date1 = "";
                             </script>
 
                         </ul>
@@ -195,15 +201,11 @@ echo "</script>";
             function convertToUserTimeZone(americaTime) {
                 const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
                 const userTimeZone = moment.tz.guess();
-
-                // Create a Moment object for the current date and time in America time zone
                 const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
-
-                // Convert to the user's time zone
                 const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
-
                 return { momentObject: americaDateTime, formattedTime: userTimeSlot };
             }
+
 
             // Function to get the current time in America time zone
             function getCurrentTimeInAmericaTimeZone() {
@@ -235,6 +237,7 @@ echo "</script>";
                     const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
                     timeSlotElement.id = timeSlotId;
 
+                    console.log("Date =============>by ak", selected_date1)
                     // Check if the time slot should be disabled based on the selected date and time
                     let isDisabledSlot;
                     co.map((el, index) => {
@@ -264,7 +267,7 @@ echo "</script>";
                             timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
                         }
                     } else {
-                        timeSlotElement.textContent = 'Slot Passed';
+                        timeSlotElement.textContent = formattedTime;
                         timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
                         timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
                     }
@@ -336,7 +339,7 @@ echo "</script>";
 
             // Function to handle date selection
             function selectDate(selectedDate) {
-                console.log(selectedDate);
+                console.log(selectedDate, "date");
 
                 // Reset styles for all date elements
                 const dateElements = document.querySelectorAll('.date-element');

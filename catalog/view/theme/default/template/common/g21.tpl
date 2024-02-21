@@ -492,7 +492,7 @@
 
             </figure>
           </div>
-        </div><br />
+        </div>
       </div>
     </div>
   </div>
@@ -508,10 +508,10 @@
 
   </p>
 </div>
-<br /><br />
+
 
 <div class="banner-statistics-area ptb-30">
-  <div class="container ptb-30">
+  <div class="container ">
     <div class="row">
       <div class="col-sm-12">
         <div class="row row-20 mtn-20" style=" padding:20px">
@@ -522,7 +522,7 @@
 
             </figure>
           </div>
-        </div><br />
+        </div>
       </div>
     </div>
   </div>
@@ -538,7 +538,7 @@
     
 
   </p>
-</div><br><br>
+</div>
 <div class="banner-statistics-area ptb-30">
   <div class="container ptb-30">
     <div class="row">
@@ -551,7 +551,7 @@
 
             </figure>
           </div>
-        </div><br />
+        </div>
       </div>
     </div>
   </div>
