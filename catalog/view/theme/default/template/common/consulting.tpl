@@ -101,7 +101,7 @@ echo "</script>";
                                 }
 
                                 function selectDate(selectedDate) {
-                                    console.log(selectedDate);
+                                  
                                     selected_date1 = selectedDate;
                                     // Reset styles for all date elements
                                     const dateElements = document.querySelectorAll('.date-element');
@@ -290,7 +290,6 @@ echo "</script>";
                 const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
                 const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
 
-                console.log("Time compare ===>", time1Minutes, time2Minutes);
 
                 // Compare the two times
                 return time1Minutes < time2Minutes;
@@ -298,11 +297,11 @@ echo "</script>";
             let slotPassed = false
 
             if (selected_date1 === formattedDate && compareTimes(formattedTime, formattedTime1)) {
-                console.log("Slot passed tru ======>", selected_date1, formattedDate)
+                
                 slotPassed = true;
             }
             else {
-                console.log("Slot passed tru ======>", selected_date1, formattedDate)
+                
                 slotPassed = false;
             }
 
@@ -347,7 +346,7 @@ echo "</script>";
 
     // Function to handle time slot selection
     function selectSlot(selectedSlot) {
-        console.log(selectedSlot);
+        
 
         // Reset styles for all time slots
         const slotElements = document.querySelectorAll('.time-slot');
@@ -404,7 +403,7 @@ echo "</script>";
                     const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
                     const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
 
-                    console.log("Time compare ===>", time1Minutes, time2Minutes);
+                   
 
                     // Compare the two times
                     return time1Minutes < time2Minutes;
@@ -412,11 +411,11 @@ echo "</script>";
 
 
                 if (selected_date1 === formattedDate && compareTimes(formattedTime, formattedTime1)) {
-                    console.log("Slot passed tru ======>", selected_date1, formattedDate)
+                   
                     slotPassed = true;
                 }
                 else {
-                    console.log("Slot passed tru ======>", selected_date1, formattedDate)
+                   
                     slotPassed = false;
                 }
 
@@ -434,7 +433,7 @@ echo "</script>";
                 })
 
 
-                console.log("is dis ==>", isDisabledSlot)
+             
 
 
                 timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
@@ -479,7 +478,7 @@ echo "</script>";
         }
 
         // Log the selected time slot
-        console.log(`Selected Time: ${selectedTime}`);
+   
     }
     // Rest of your existing code...
 </script>
@@ -545,13 +544,13 @@ echo "</script>";
         const usermessage1 = document.getElementById('message').value;
         let usermessage = '';
 
-        if (usermessage1 == null) {
+        if (usermessage1 === null) {
             usermessage = '.';
         } else {
             usermessage = document.getElementById('message').value;
         }
 
-        if (selectedDateElement && selectedTimeElement && userEmail && userName && meetingTitle && usermessage) {
+        if (selectedDateElement && selectedTimeElement && userEmail && userName && meetingTitle) {
             const selectedDate = selectedDateElement.id.replace('date-', '');
             const selectedTime = selectedTimeElement.textContent.trim();
 
@@ -567,10 +566,10 @@ echo "</script>";
                 currentTime: new Date().toLocaleTimeString()
             };
 
-            console.log(requestData);
+     
 
 
-            console.log('Before fetch:', requestData);
+     
 
             fetch('index.php?route=common/consulting/con_form', {
                 method: 'POST',
@@ -582,7 +581,7 @@ echo "</script>";
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response from the server if needed
-                    console.log('Success:', data);
+                  
                     document.getElementById('apdate').textContent = data.selectedDate;
                     document.getElementById('aptime').textContent = data.selectedTime;
             
