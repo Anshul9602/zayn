@@ -109,16 +109,23 @@ class ControllerCommonConsulting extends Controller
 				$this->load->model('account/consulting');
 			
 				// Call the model method to save consulting data
-				$this->model_account_consulting->saveConsultingData($requestData['currentTime'],
-				 $requestData['currentTimezone'], 
-				 $requestData['selectedTime'],				
-				$requestData['selectedDate'], 
-				$requestData['userEmail'],
-				$requestData['userName'],
-				$requestData['meetingTitle'],
-				$requestData['usermessage']
-			);
+				$this->model_account_consulting->saveConsultingData($requestData['currentTime'],$requestData['currentTimezone'], 
+				 $requestData['selectedTime'],$requestData['selectedDate'],$requestData['userEmail'],
+				$requestData['userName'],$requestData['meetingTitle'],$requestData['usermessage']);
 			
+
+
+				$this->send_email(
+					$requestData['currentTime'],
+					$requestData['currentTimezone'],
+					$requestData['selectedTime'],
+					$requestData['selectedDate'],
+					$requestData['userEmail'],
+					$requestData['userName'],
+					$requestData['meetingTitle'],
+					$requestData['usermessage']
+				);
+
 				$response = $requestData;
 			} else {
 				$response['error'] = 'Validation failed';
@@ -128,4 +135,36 @@ class ControllerCommonConsulting extends Controller
 	
 		return $response;
 	}
+	public function send_email($currentTime, $currentTimezone, $selectedTime, $selectedDate, $userEmail, $userName, $meetingTitle, $usermessage)
+{
+    $mail = new Mail();
+    $mail->protocol = $this->config->get('config_mail_protocol');
+    $mail->parameter = $this->config->get('config_mail_parameter');
+    $mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+    $mail->smtp_username = $this->config->get('config_mail_smtp_username');
+    $mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+    $mail->smtp_port = $this->config->get('config_mail_smtp_port');
+    $mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+
+    $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
+    //$mail->setTo('ronakvaya@gmail.com');
+
+    $mail->setFrom($this->config->get('config_email'));
+    $mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+    $mail->setSubject("Contact Request On Website");
+	$mail->setReplyTo($userEmail);   
+
+    $message = "Hello Team,\n\nYou have a message on the website .\n\n";
+    $message .= "From: " . $userName . "\n";
+    $message .= "Email: " . $userEmail . "\n";
+    $message .= "Subject: " . $meetingTitle . "\n";
+    $message .= "Date" . $selectedDate . "\n";
+    $message .= "Time" . $selectedTime . "\n";
+    $message .= "Time Zone" . $currentTimezone . "\n";
+
+    $message .= "Message: " . $usermessage;
+
+    $mail->setText($message);
+    $mail->send();
+}
 }
