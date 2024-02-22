@@ -12,21 +12,7 @@ assets/css/home.css
 " rel="stylesheet">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-<div id="id01" class="w3-modal">
-    <div class="w3-modal-content p-4" style="min-height: 300px;justify-content: center;display: flex;
-    align-items: center;padding: 30px;top:30%;">
-        <div class="w3-container">
-            <span onclick="document.getElementById('id01').style.display='none'"
-                class="w3-button w3-display-topright">&times;</span>
-            <div class="mode">
-                <h4 class="text-center bold pb-4">Thank you for your submission!</h4>
-                <p class="date">Your appointment is scheduled for <span id="apdate"></span> at <span id="aptime"></span>
-                    .</p>
-                <button type="button" id="okButton" class="btn btn-primary mt-3">Ok</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 
 
@@ -82,12 +68,6 @@ assets/css/home.css
 echo "<script>";
 echo "const co = " . json_encode($con) . ";";
 echo "</script>";
-
-echo "<pre ";
-print_r($con);
-echo "</pre>";
-
-
 ?>
 
 
@@ -103,6 +83,7 @@ echo "</pre>";
 
                             <!-- Dynamically generate slides for the next 10 days -->
                             <script>
+                                var selected_date1 = "";
                                 // Function to get the date string for a specific day offset from today
                                 function getDateForOffset(offset) {
                                     const today = new Date();
@@ -164,7 +145,7 @@ echo "</pre>";
                                 const currentDay = currentDate.getDate();
                                 const currentMonthName = getDateForOffset(0).monthName;
                                 selectDate(`${currentDay}-${currentMonthName}`);
-                                var selected_date1 = "";
+
                             </script>
 
                         </ul>
@@ -185,207 +166,318 @@ echo "</pre>";
             <!-- Time slots will be dynamically added here -->
         </div>
 
-
-        <div class="mail text-center mt-5">
-            <h4 class="text-center mt-3 mb-0" style="font-weight: 600;">
-                Email
-            </h4>
-            <p class="mb-0">(mandatory field)</p>
-            <br>
-            <input type="mail" id="mail" required placeholder="Enter your email*"
-                style="min-width: 30%;padding:5px 10px;border:1px solid #eae9e9">
-        </div>
-
-        <script>
-            // Function to convert time from America time zone to user's time zone
-            function convertToUserTimeZone(americaTime) {
-                const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
-                const userTimeZone = moment.tz.guess();
-                const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
-                const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
-                return { momentObject: americaDateTime, formattedTime: userTimeSlot };
-            }
-
-
-            // Function to get the current time in America time zone
-            function getCurrentTimeInAmericaTimeZone() {
-                const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
-                return moment.tz(americaTimeZone);
-            }
-            function getAvailableTimeSlots(selectedDate) {
-                // For demonstration, return a fixed set of time slots
-                return ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
-            }
-            // Time slots in America time zone
-            const americaTimeSlots = ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
-
-            // Get the container to append time slots
-            const timeSlotsContainer = document.getElementById('timeSlotsContainer');
-
-            // Get the current time in America time zone
-            const currentTimeInAmericaTimeZone = getCurrentTimeInAmericaTimeZone();
-
-            // Populate time slots in user's time zone
-            if (timeSlotsContainer) {
-                americaTimeSlots.forEach((americaTimeSlot, index) => {
-                    const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot);
-
-                    // Check if the slot has passed based on the current time
-                    const slotPassed = momentObject.isBefore(currentTimeInAmericaTimeZone);
-
-                    const timeSlotElement = document.createElement('div');
-                    const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
-                    timeSlotElement.id = timeSlotId;
-
-                    console.log("Date =============>by ak", selected_date1)
-                    // Check if the time slot should be disabled based on the selected date and time
-                    let isDisabledSlot;
-                    co.map((el, index) => {
-                        console.log("Value ==>", el.selected_date, momentObject.format('DD-MMM'), el.selected_time, formattedTime)
-                        if (el.selected_date === momentObject.format('DD-MMM') && el.selected_time === formattedTime) {
-                            return isDisabledSlot = el.selected_date === momentObject.format('DD-MMM') && el.selected_time === formattedTime;
-                        }
-
-                    })
-
-
-                    console.log("is dis ==>", isDisabledSlot)
-
-
-                    timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
-                    timeSlotElement.style.margin = '10px 20px';
-                    timeSlotElement.style.padding = '5px 10px';
-                    timeSlotElement.style.width = '100%';
-                    timeSlotElement.style.border = '1px solid #eae9e9';
-
-                    // Set styles for slot based on whether it's disabled or not
-                    if (!slotPassed) {
-                        timeSlotElement.textContent = formattedTime;
-
-                        // Add click event listener to each time slot
-                        if (!isDisabledSlot) {
-                            timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
-                        }
-                    } else {
-                        timeSlotElement.textContent = formattedTime;
-                        timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
-                        timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
-                    }
-
-                    timeSlotsContainer.appendChild(timeSlotElement);
-                });
-            }
-
-
-            // Function to handle time slot selection
-            function selectSlot(selectedSlot) {
-                console.log(selectedSlot);
-
-                // Reset styles for all time slots
-                const slotElements = document.querySelectorAll('.time-slot');
-                slotElements.forEach((slotElement) => {
-                    slotElement.classList.remove('selected');
-                });
-
-                // Highlight the selected slot
-                const selectedSlotElement = document.querySelector(`.time-slot:contains("${selectedSlot}")`);
-                if (selectedSlotElement) {
-                    selectedSlotElement.classList.add('selected');
-                }
-            }
-
-            // Function to update available time slots based on the selected date
-            function updateAvailableTimeSlots(selectedDate) {
-                // Logic to fetch available time slots for the selected date
-                // For demonstration, using a fixed set of time slots
-                const availableTimeSlots = getAvailableTimeSlots(selectedDate);
-
-                // Update the displayed time slots
-                const timeSlotsContainer = document.getElementById('timeSlotsContainer');
-                if (timeSlotsContainer) {
-                    // Clear existing time slots
-                    timeSlotsContainer.innerHTML = '';
-
-                    // Populate time slots in user's time zone
-                    availableTimeSlots.forEach((americaTimeSlot, index) => {
-                        const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot);
-
-                        // Check if the slot has passed based on the current time
-                        const slotPassed = momentObject.isBefore(currentTimeInAmericaTimeZone);
-
-                        const timeSlotElement = document.createElement('div');
-                        const timeSlotId = `time-slot-${index}`; // Unique id for each time slot based on formatted time
-                        timeSlotElement.id = timeSlotId;
-                        timeSlotElement.className = `col-md-3 text-center ${slotPassed ? 'disabled' : 'time-slot'}`;
-                        timeSlotElement.style.margin = '10px 20px';
-                        timeSlotElement.style.padding = '5px 10px';
-                        timeSlotElement.style.width = '100%';
-                        timeSlotElement.style.border = '1px solid #eae9e9';
-                        timeSlotElement.textContent = formattedTime;
-
-                        // Set styles for slot based on whether it's disabled or not
-                        if (!slotPassed) {
-                            // Add click event listener to each time slot
-                            timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
-                        } else {
-                            timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
-                            timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
-                        }
-
-                        timeSlotsContainer.appendChild(timeSlotElement);
-                    });
-                }
-            }
-
-            // Function to handle date selection
-            function selectDate(selectedDate) {
-                console.log(selectedDate, "date");
-
-                // Reset styles for all date elements
-                const dateElements = document.querySelectorAll('.date-element');
-                dateElements.forEach((dateElement) => {
-                    dateElement.classList.remove('selected');
-                });
-
-                // Highlight the selected date
-                const selectedDateElement = document.getElementById(`date-${selectedDate}`);
-                if (selectedDateElement) {
-                    selectedDateElement.classList.add('selected');
-                }
-
-                // Update available time slots based on the selected date
-                updateAvailableTimeSlots(selectedDate);
-            }
-            // Function to handle time slot selection
-            function selectSlot(selectedTime, timeSlotId) {
-                // Reset styles for all time slots
-                const timeSlotElements = document.querySelectorAll('.time-slot');
-                timeSlotElements.forEach((element) => {
-                    element.classList.remove('selected');
-                });
-
-                // Highlight the selected time slot
-                const selectedTimeSlotElement = document.getElementById(timeSlotId);
-                if (selectedTimeSlotElement) {
-                    selectedTimeSlotElement.classList.add('selected');
-                }
-
-                // Log the selected time slot
-                console.log(`Selected Time: ${selectedTime}`);
-            }
-            // Rest of your existing code...
-        </script>
-
-
         <div class="sub mt-3">
-            <button type="button" id="submit" class="btn btn-primary">Submit</button>
+            <button type="button" id="submit1" class="btn btn-primary">Continue</button>
         </div>
 
 
+        <div id="id01" class="w3-modal">
+            <div class="w3-modal-content p-4" style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;">
+                <div class="w3-container">
+                    <span onclick="document.getElementById('id01').style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>
+                    <div class="mode">
+                        <h4 class="text-center bold pb-4">Thank you for your submission!</h4>
+                        <p class="date">Your appointment is scheduled for <span id="apdate"></span> at <span
+                                id="aptime"></span>
+                            .</p>
+                        <button type="button" id="okButton" class="btn btn-primary mt-3">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="id02" class="w3-modal">
+            <div class="w3-modal-content p-4" style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;">
+                <div class="w3-container">
+                    <span onclick="document.getElementById('id02').style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>
+                    <div class="row" style="justify-content: space-around;">
+                        <div class="col-md-5 mt-2">
+                            <label for="name">Name</label><br>
+                            <input type="text" id="name" placeholder="Enter name*" required style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
+                        </div>
+                        <div class="col-md-5 mt-3">
+                            <label for="name">Meeting title</label><br>
+                            <input type="text" id="meeting" placeholder="Enter text*" required style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
+                        </div>
+                        <div class="col-md-11 mt-3">
+                            <label for="name">Email</label><br>
+                            <input type="mail" id="mail" required placeholder="Enter your email*"
+                            style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
+                        </div>
+                        <div class="col-md-11 mt-3">
+                            <label for="name">Message</label><br>
+                            <textarea type="text" id="message" placeholder="Enter text" style="width: 100%;padding:5px 10px;border:1px solid #eae9e9"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="sub mt-4 ">
+                                <button type="button" id="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </section>
 
+
+
+<script>
+    // Function to convert time from America time zone to user's time zone
+    function convertToUserTimeZone(americaTime) {
+        const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
+        const userTimeZone = moment.tz.guess();
+        const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
+        const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
+        return { momentObject: americaDateTime, formattedTime: userTimeSlot };
+    }
+
+
+    // Function to get the current time in America time zone
+    function getCurrentTimeInAmericaTimeZone() {
+        const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
+        return moment.tz(americaTimeZone);
+    }
+    function getAvailableTimeSlots(selectedDate) {
+        // For demonstration, return a fixed set of time slots
+        return ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
+    }
+    // Time slots in America time zone
+    const americaTimeSlots = ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
+
+    // Get the container to append time slots
+    const timeSlotsContainer = document.getElementById('timeSlotsContainer');
+
+    // Get the current time in America time zone
+    const currentTimeInAmericaTimeZone = getCurrentTimeInAmericaTimeZone();
+
+    // Populate time slots in user's time zone
+    if (timeSlotsContainer) {
+        americaTimeSlots.forEach((americaTimeSlot, index) => {
+            const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot);
+
+            // Check if the slot has passed based on the current time
+            const currentDate = new Date();
+            const { dayName, day, monthName } = getDateForOffset(0);
+            // Format date as "DD-Mon"
+            const optionsDate = { day: '2-digit', month: 'short' };
+            const formattedDate = day + "-" + monthName;
+
+            // Format time as "h:mm AM/PM"
+            const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
+            const formattedTime1 = currentDate.toLocaleTimeString('en-US', optionsTime);
+
+
+            function parseTime(timeString) {
+                const [time, period] = timeString.split(' ');
+                const [hours, minutes] = time.split(':');
+                return { hours: parseInt(hours), minutes: parseInt(minutes), period };
+            }
+
+            function compareTimes(formattedTime, formattedTime1) {
+                const time1 = parseTime(formattedTime);
+                const time2 = parseTime(formattedTime1);
+
+                // Convert time objects to minutes since midnight
+                const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
+                const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
+
+                console.log("Time compare ===>", time1Minutes, time2Minutes);
+
+                // Compare the two times
+                return time1Minutes < time2Minutes;
+            }
+            let slotPassed = false
+
+            if (selected_date1 === formattedDate && compareTimes(formattedTime, formattedTime1)) {
+                console.log("Slot passed tru ======>", selected_date1, formattedDate)
+                slotPassed = true;
+            }
+            else {
+                console.log("Slot passed tru ======>", selected_date1, formattedDate)
+                slotPassed = false;
+            }
+
+
+            const timeSlotElement = document.createElement('div');
+            const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
+            timeSlotElement.id = timeSlotId;
+            // Check if the time slot should be disabled based on the selected date and time
+            let isDisabledSlot;
+            co.map((el, index) => {
+
+                if (el.selected_date === selected_date1 && el.selected_time === formattedTime) {
+                    return isDisabledSlot = el.selected_date === selected_date1 && el.selected_time === formattedTime;
+                }
+
+            })
+
+            timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
+            timeSlotElement.style.margin = '10px 20px';
+            timeSlotElement.style.padding = '5px 10px';
+            timeSlotElement.style.width = '100%';
+            timeSlotElement.style.border = '1px solid #eae9e9';
+
+            // Set styles for slot based on whether it's disabled or not
+            if (!slotPassed) {
+                timeSlotElement.textContent = formattedTime;
+
+                // Add click event listener to each time slot
+                if (!isDisabledSlot) {
+                    timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
+                }
+            } else {
+                timeSlotElement.textContent = formattedTime;
+                timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
+                timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
+            }
+
+            timeSlotsContainer.appendChild(timeSlotElement);
+        });
+    }
+
+
+    // Function to handle time slot selection
+    function selectSlot(selectedSlot) {
+        console.log(selectedSlot);
+
+        // Reset styles for all time slots
+        const slotElements = document.querySelectorAll('.time-slot');
+        slotElements.forEach((slotElement) => {
+            slotElement.classList.remove('selected');
+        });
+
+        // Highlight the selected slot
+        const selectedSlotElement = document.querySelector(`.time-slot:contains("${selectedSlot}")`);
+        if (selectedSlotElement) {
+            selectedSlotElement.classList.add('selected');
+        }
+    }
+
+    // Function to update available time slots based on the selected date
+    function updateAvailableTimeSlots(selectedDate) {
+        // Logic to fetch available time slots for the selected date
+        // For demonstration, using a fixed set of time slots
+        const availableTimeSlots = getAvailableTimeSlots(selectedDate);
+
+        // Update the displayed time slots
+        const timeSlotsContainer = document.getElementById('timeSlotsContainer');
+        if (timeSlotsContainer) {
+            // Clear existing time slots
+            timeSlotsContainer.innerHTML = '';
+
+            // Populate time slots in user's time zone
+            americaTimeSlots.forEach((americaTimeSlot, index) => {
+                const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot);
+
+                // Check if the slot has passed based on the current time
+                const currentDate = new Date();
+                const { dayName, day, monthName } = getDateForOffset(0);
+                // Format date as "DD-Mon"
+                const optionsDate = { day: '2-digit', month: 'short' };
+                const formattedDate = day + "-" + monthName;
+
+                // Format time as "h:mm AM/PM"
+                const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
+                const formattedTime1 = currentDate.toLocaleTimeString('en-US', optionsTime);
+
+
+                function parseTime(timeString) {
+                    const [time, period] = timeString.split(' ');
+                    const [hours, minutes] = time.split(':');
+                    return { hours: parseInt(hours), minutes: parseInt(minutes), period };
+                }
+
+                function compareTimes(formattedTime, formattedTime1) {
+                    const time1 = parseTime(formattedTime);
+                    const time2 = parseTime(formattedTime1);
+
+                    // Convert time objects to minutes since midnight
+                    const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
+                    const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
+
+                    console.log("Time compare ===>", time1Minutes, time2Minutes);
+
+                    // Compare the two times
+                    return time1Minutes < time2Minutes;
+                }
+
+
+                if (selected_date1 === formattedDate && compareTimes(formattedTime, formattedTime1)) {
+                    console.log("Slot passed tru ======>", selected_date1, formattedDate)
+                    slotPassed = true;
+                }
+                else {
+                    console.log("Slot passed tru ======>", selected_date1, formattedDate)
+                    slotPassed = false;
+                }
+
+                const timeSlotElement = document.createElement('div');
+                const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
+                timeSlotElement.id = timeSlotId;
+                // Check if the time slot should be disabled based on the selected date and time
+                let isDisabledSlot;
+                co.map((el, index) => {
+
+                    if (el.selected_date === selectedDate && el.selected_time === formattedTime) {
+                        return isDisabledSlot = el.selected_date === selectedDate && el.selected_time === formattedTime;
+                    }
+
+                })
+
+
+                console.log("is dis ==>", isDisabledSlot)
+
+
+                timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
+                timeSlotElement.style.margin = '10px 20px';
+                timeSlotElement.style.padding = '5px 10px';
+                timeSlotElement.style.width = '100%';
+                timeSlotElement.style.border = '1px solid #eae9e9';
+
+                // Set styles for slot based on whether it's disabled or not
+                if (!slotPassed) {
+                    timeSlotElement.textContent = formattedTime;
+
+                    // Add click event listener to each time slot
+                    if (!isDisabledSlot) {
+                        timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
+                    }
+                } else {
+                    timeSlotElement.textContent = formattedTime;
+                    timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
+                    timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
+                }
+
+                timeSlotsContainer.appendChild(timeSlotElement);
+            });
+        }
+    }
+
+    // Function to handle date selection
+
+    // Function to handle time slot selection
+    function selectSlot(selectedTime, timeSlotId) {
+        // Reset styles for all time slots
+        const timeSlotElements = document.querySelectorAll('.time-slot');
+        timeSlotElements.forEach((element) => {
+            element.classList.remove('selected');
+        });
+
+        // Highlight the selected time slot
+        const selectedTimeSlotElement = document.getElementById(timeSlotId);
+        if (selectedTimeSlotElement) {
+            selectedTimeSlotElement.classList.add('selected');
+        }
+
+        // Log the selected time slot
+        console.log(`Selected Time: ${selectedTime}`);
+    }
+    // Rest of your existing code...
+</script>
 <script>
     // When the user clicks on div, open the popup
     function myFunction() {
@@ -407,7 +499,33 @@ echo "</pre>";
     updateDateTime();
     setInterval(updateDateTime, 60000); // Update every 60 seconds (1 minute)
 </script>
+<script>
+    // Add an event listener to the "Continue" button
+    document.getElementById('submit1').addEventListener('click', function() {
+        // Show the modal popup for id02
+        document.getElementById('id02').style.display='block';
+    });
 
+    // Add any additional scripting you need
+
+    // Example: Close modal when "Ok" button is clicked
+    document.getElementById('okButton').addEventListener('click', function() {
+        document.getElementById('id02').style.display='none';
+    });
+
+    // Example: Handle form submission
+    document.getElementById('submit').addEventListener('click', function() {
+        // Perform form submission logic here
+
+        // Close the modal after submission
+        document.getElementById('id02').style.display='none';
+
+        // Optionally, update the content of id01 modal and show it
+        // document.getElementById('apdate').innerText = ...;
+        // document.getElementById('aptime').innerText = ...;
+        // document.getElementById('id01').style.display='block';
+    });
+</script>
 <script>
 
 
