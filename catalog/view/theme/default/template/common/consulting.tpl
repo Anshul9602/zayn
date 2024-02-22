@@ -125,7 +125,7 @@ echo "</script>";
 
                                 // Generate and append slides for the next 10 days
                                 const dateSlider = document.getElementById('dateSlider');
-                                for (let i = 0; i <= 10; i++) {
+                                for (let i = 0; i <= 7; i++) {
                                     const { dayName, day, monthName } = getDateForOffset(i);
 
                                     const li = document.createElement('li');
@@ -171,8 +171,47 @@ echo "</script>";
         </div>
 
 
+
+        <div id="id02" class="w3-modal">
+            <div class="w3-modal-content p-4"
+                style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;">
+                <div class="w3-container">
+                    <span onclick="document.getElementById('id02').style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>
+                    <div class="row" style="justify-content: space-around;">
+                        <div class="col-md-5 mt-2">
+                            <label for="name">Name</label><br>
+                            <input type="text" id="name" placeholder="Enter name*" required
+                                style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
+                        </div>
+                        <div class="col-md-5 mt-3">
+                            <label for="name">Meeting title</label><br>
+                            <input type="text" id="meeting" placeholder="Enter text*" required
+                                style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
+                        </div>
+                        <div class="col-md-11 mt-3">
+                            <label for="name">Email</label><br>
+                            <input type="mail" id="mail" required placeholder="Enter your email*"
+                                style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
+                        </div>
+                        <div class="col-md-11 mt-3">
+                            <label for="name">Message</label><br>
+                            <textarea type="text" id="message" placeholder="Enter text"
+                                style="width: 100%;padding:5px 10px;border:1px solid #eae9e9"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="sub mt-4 ">
+                                <button type="button" id="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="id01" class="w3-modal">
-            <div class="w3-modal-content p-4" style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;">
+            <div class="w3-modal-content p-4"
+                style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;">
                 <div class="w3-container">
                     <span onclick="document.getElementById('id01').style.display='none'"
                         class="w3-button w3-display-topright">&times;</span>
@@ -186,40 +225,6 @@ echo "</script>";
                 </div>
             </div>
         </div>
-        <div id="id02" class="w3-modal">
-            <div class="w3-modal-content p-4" style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;">
-                <div class="w3-container">
-                    <span onclick="document.getElementById('id02').style.display='none'"
-                        class="w3-button w3-display-topright">&times;</span>
-                    <div class="row" style="justify-content: space-around;">
-                        <div class="col-md-5 mt-2">
-                            <label for="name">Name</label><br>
-                            <input type="text" id="name" placeholder="Enter name*" required style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
-                        </div>
-                        <div class="col-md-5 mt-3">
-                            <label for="name">Meeting title</label><br>
-                            <input type="text" id="meeting" placeholder="Enter text*" required style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
-                        </div>
-                        <div class="col-md-11 mt-3">
-                            <label for="name">Email</label><br>
-                            <input type="mail" id="mail" required placeholder="Enter your email*"
-                            style="width: 100%;padding:5px 10px;border:1px solid #eae9e9">
-                        </div>
-                        <div class="col-md-11 mt-3">
-                            <label for="name">Message</label><br>
-                            <textarea type="text" id="message" placeholder="Enter text" style="width: 100%;padding:5px 10px;border:1px solid #eae9e9"></textarea>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="sub mt-4 ">
-                                <button type="button" id="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </section>
 
@@ -501,24 +506,24 @@ echo "</script>";
 </script>
 <script>
     // Add an event listener to the "Continue" button
-    document.getElementById('submit1').addEventListener('click', function() {
+    document.getElementById('submit1').addEventListener('click', function () {
         // Show the modal popup for id02
-        document.getElementById('id02').style.display='block';
+        document.getElementById('id02').style.display = 'block';
     });
 
     // Add any additional scripting you need
 
     // Example: Close modal when "Ok" button is clicked
-    document.getElementById('okButton').addEventListener('click', function() {
-        document.getElementById('id02').style.display='none';
+    document.getElementById('okButton').addEventListener('click', function () {
+        document.getElementById('id02').style.display = 'none';
     });
 
     // Example: Handle form submission
-    document.getElementById('submit').addEventListener('click', function() {
+    document.getElementById('submit').addEventListener('click', function () {
         // Perform form submission logic here
 
         // Close the modal after submission
-        document.getElementById('id02').style.display='none';
+        document.getElementById('id02').style.display = 'none';
 
         // Optionally, update the content of id01 modal and show it
         // document.getElementById('apdate').innerText = ...;
@@ -528,16 +533,25 @@ echo "</script>";
 </script>
 <script>
 
-
     document.getElementById('submit').addEventListener('click', function () {
         // Get the selected date, time, and email
         const selectedDateElement = document.querySelector('.date-element.selected');
         const selectedTimeElement = document.querySelector('.time-slot.selected');
         const userEmail = document.getElementById('mail').value;
 
+        const selectedDate = selected_date1;
+        const userName = document.getElementById('name').value;
+        const meetingTitle = document.getElementById('meeting').value;
+        const usermessage1 = document.getElementById('message').value;
+        let usermessage = '';
 
+        if (usermessage1 == null) {
+            usermessage = '.';
+        } else {
+            usermessage = document.getElementById('message').value;
+        }
 
-        if (selectedDateElement && selectedTimeElement && userEmail) {
+        if (selectedDateElement && selectedTimeElement && userEmail && userName && meetingTitle && usermessage) {
             const selectedDate = selectedDateElement.id.replace('date-', '');
             const selectedTime = selectedTimeElement.textContent.trim();
 
@@ -545,6 +559,9 @@ echo "</script>";
             const requestData = {
                 selectedDate: selectedDate,
                 selectedTime: selectedTime,
+                userName: userName,
+                meetingTitle: meetingTitle,
+                usermessage: usermessage,
                 userEmail: userEmail,
                 currentTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 currentTime: new Date().toLocaleTimeString()
@@ -568,7 +585,7 @@ echo "</script>";
                     console.log('Success:', data);
                     document.getElementById('apdate').textContent = data.selectedDate;
                     document.getElementById('aptime').textContent = data.selectedTime;
-
+            
                     // Show the modal
                     document.getElementById('id01').style.display = 'block';
                 })
@@ -580,8 +597,8 @@ echo "</script>";
             alert('Please select date, time, and enter your email before submitting.');
         }
     });
+   
     document.getElementById('okButton').addEventListener('click', function () {
-        // Reload the page
         location.reload();
     });
 

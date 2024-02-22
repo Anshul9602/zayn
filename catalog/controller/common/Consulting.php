@@ -102,7 +102,9 @@ class ControllerCommonConsulting extends Controller
 	protected function validateAndSendEmail($requestData) {
 		
 		    $response = array();
-		
+		// echo "<pre>";
+		// print_r($requestData);
+		// echo "</pre>";
 			if ($requestData) {
 				$this->load->model('account/consulting');
 			
@@ -110,7 +112,12 @@ class ControllerCommonConsulting extends Controller
 				$this->model_account_consulting->saveConsultingData($requestData['currentTime'],
 				 $requestData['currentTimezone'], 
 				 $requestData['selectedTime'],				
-				$requestData['selectedDate'], $requestData['userEmail']);
+				$requestData['selectedDate'], 
+				$requestData['userEmail'],
+				$requestData['userName'],
+				$requestData['meetingTitle'],
+				$requestData['usermessage']
+			);
 			
 				$response = $requestData;
 			} else {
