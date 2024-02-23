@@ -8,12 +8,22 @@
   .half-row {
     width: 50%;
   }
+.mob{
+display: none;
+}
+
+.slote div{
+cursor: pointer;
+}
 
   @media screen and (max-width:650px) {
     .mob-padding {
       padding: 0px 20px;
     }
-
+.desk{
+display: none;}
+.mob{
+display: block;}
     .half-row {
       width: 100%;
     }
@@ -492,7 +502,9 @@
           <div class="col-12">
             <figure class="banner-statistics mt-20">
 
-              <img src="image/blog24.jpg" alt="product banner">
+              <img class="desk" src="image/blog24.jpg" alt="product banner">
+              <img class="mob" src="image/blog221.jpg" alt="product banner">
+
 
             </figure>
           </div>
@@ -548,6 +560,12 @@
     by others as fashion statements or symbols of spirituality. Cross necklaces come in various styles and materials,
     ranging from simple and understated to elaborate and luxurious.
     <br><br>
+    <figure class="banner-statistics mt-20" style="margin: auto;justify-content: center;display: flex;">
+
+      <img src="image/blog26.jpg" alt="product banner" style="width: 800px;margin:auto;">
+  
+    </figure>
+    <br><br>
     Whatever your choice maybe, we have a cross for you!<br>
     Check out our <a href="/index.php?route=product/category&path=106" style="color: #423c9e;font-weight:600;">Cross
       Collection</a> Here!
@@ -562,11 +580,7 @@
       <div class="col-sm-12">
         <div class="row row-20 mtn-20" style=" padding:20px">
           <div class="col-12">
-            <figure class="banner-statistics mt-20" style="margin: auto;justify-content: center;display: flex;">
-
-              <img src="image/blog26.jpg" alt="product banner" style="width: 800px;margin:auto;">
-          
-            </figure>
+            
           </div>
         </div>
       </div>

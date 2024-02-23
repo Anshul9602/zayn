@@ -17,6 +17,11 @@ assets/css/home.css
 
 
 <style>
+    .slote div {
+        cursor: pointer;
+    }
+
+       
     #New .splide__pagination {
         display: none !important;
     }
@@ -63,6 +68,13 @@ assets/css/home.css
         background-color: #423c9e;
         color: white;
     }
+
+    #submit.loading {
+        cursor: not-allowed;
+        opacity: 0.7;
+        /* You can adjust the opacity to indicate loading */
+        /* Add more styles if needed */
+    }
 </style>
 <?php
 echo "<script>";
@@ -101,7 +113,7 @@ echo "</script>";
                                 }
 
                                 function selectDate(selectedDate) {
-                                  
+
                                     selected_date1 = selectedDate;
                                     // Reset styles for all date elements
                                     const dateElements = document.querySelectorAll('.date-element');
@@ -156,8 +168,10 @@ echo "</script>";
                 <h4 class="text-center mt-md-5 mt-3 pb-2" style="font-weight: 600;">
                     What time works?
                 </h4>
-                <p>30-minute meeting &nbsp;&nbsp;&nbsp; <span id="current-timezone"></span> &nbsp;&nbsp;Time (<span
-                        id="current-time"></span>)</p>
+                <p>30-minute meeting &nbsp;&nbsp;&nbsp; <select id="timezone" onchange="displayCurrentTime()">
+
+                    </select> Current time: <span id="currentTime"></span></p>
+
             </div>
         </div>
 
@@ -226,156 +240,47 @@ echo "</script>";
             </div>
         </div>
     </div>
+    <div class="hh" style="height: 50px;"></div>
 </section>
+<script>
+    // Get all time zones
+    const allTimezones = moment.tz.names();
 
+    // Get the select element
+    const timezoneSelect = document.getElementById("timezone");
 
+    // Function to populate the select element with time zones
+    function populateTimezones() {
+        // Clear existing options
+        timezoneSelect.innerHTML = "";
+
+        // Loop through all time zones and create options
+        allTimezones.forEach(timezone => {
+            const option = document.createElement("option");
+            option.value = timezone;
+            option.textContent = timezone;
+            timezoneSelect.appendChild(option);
+        });
+    }
+
+    // Function to display the current time based on the selected time zone
+    function displayCurrentTime() {
+        const selectedTimezone = timezoneSelect.value;
+        const currentTime = moment().tz(selectedTimezone).format("YYYY-MM-DD HH:mm:ss");
+        console.log(`Current time in ${selectedTimezone}: ${currentTime}`);
+    }
+
+    // Populate the select element on page load
+    populateTimezones();
+</script>
 
 <script>
-    // Function to convert time from America time zone to user's time zone
-    function convertToUserTimeZone(americaTime) {
-        const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
-        const userTimeZone = moment.tz.guess();
-        const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
-        const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
-        return { momentObject: americaDateTime, formattedTime: userTimeSlot };
-    }
-
-
-    // Function to get the current time in America time zone
-    function getCurrentTimeInAmericaTimeZone() {
-        const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
-        return moment.tz(americaTimeZone);
-    }
-    function getAvailableTimeSlots(selectedDate) {
-        // For demonstration, return a fixed set of time slots
-        return ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
-    }
-    // Time slots in America time zone
-    const americaTimeSlots = ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
-
-    // Get the container to append time slots
-    const timeSlotsContainer = document.getElementById('timeSlotsContainer');
-
-    // Get the current time in America time zone
-    const currentTimeInAmericaTimeZone = getCurrentTimeInAmericaTimeZone();
-
-    // Populate time slots in user's time zone
-    if (timeSlotsContainer) {
-        americaTimeSlots.forEach((americaTimeSlot, index) => {
-            const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot);
-
-            // Check if the slot has passed based on the current time
-            const currentDate = new Date();
-            const { dayName, day, monthName } = getDateForOffset(0);
-            // Format date as "DD-Mon"
-            const optionsDate = { day: '2-digit', month: 'short' };
-            const formattedDate = day + "-" + monthName;
-
-            // Format time as "h:mm AM/PM"
-            const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
-            const formattedTime1 = currentDate.toLocaleTimeString('en-US', optionsTime);
-
-
-            function parseTime(timeString) {
-                const [time, period] = timeString.split(' ');
-                const [hours, minutes] = time.split(':');
-                return { hours: parseInt(hours), minutes: parseInt(minutes), period };
-            }
-
-            function compareTimes(formattedTime, formattedTime1) {
-                const time1 = parseTime(formattedTime);
-                const time2 = parseTime(formattedTime1);
-
-                // Convert time objects to minutes since midnight
-                const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
-                const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
-
-
-                // Compare the two times
-                return time1Minutes < time2Minutes;
-            }
-            let slotPassed = false
-
-            if (selected_date1 === formattedDate && compareTimes(formattedTime, formattedTime1)) {
-                
-                slotPassed = true;
-            }
-            else {
-                
-                slotPassed = false;
-            }
-
-
-            const timeSlotElement = document.createElement('div');
-            const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
-            timeSlotElement.id = timeSlotId;
-            // Check if the time slot should be disabled based on the selected date and time
-            let isDisabledSlot;
-            co.map((el, index) => {
-
-                if (el.selected_date === selected_date1 && el.selected_time === formattedTime) {
-                    return isDisabledSlot = el.selected_date === selected_date1 && el.selected_time === formattedTime;
-                }
-
-            })
-
-            timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
-            timeSlotElement.style.margin = '10px 20px';
-            timeSlotElement.style.padding = '5px 10px';
-            timeSlotElement.style.width = '100%';
-            timeSlotElement.style.border = '1px solid #eae9e9';
-
-            // Set styles for slot based on whether it's disabled or not
-            if (!slotPassed) {
-                timeSlotElement.textContent = formattedTime;
-
-                // Add click event listener to each time slot
-                if (!isDisabledSlot) {
-                    timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
-                }
-            } else {
-                timeSlotElement.textContent = formattedTime;
-                timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
-                timeSlotElement.style.pointerEvents = 'none'; // Disable click on passed slots
-            }
-
-            timeSlotsContainer.appendChild(timeSlotElement);
-        });
-    }
-
-
-    // Function to handle time slot selection
-    function selectSlot(selectedSlot) {
-        
-
-        // Reset styles for all time slots
-        const slotElements = document.querySelectorAll('.time-slot');
-        slotElements.forEach((slotElement) => {
-            slotElement.classList.remove('selected');
-        });
-
-        // Highlight the selected slot
-        const selectedSlotElement = document.querySelector(`.time-slot:contains("${selectedSlot}")`);
-        if (selectedSlotElement) {
-            selectedSlotElement.classList.add('selected');
-        }
-    }
-
-    // Function to update available time slots based on the selected date
-    function updateAvailableTimeSlots(selectedDate) {
-        // Logic to fetch available time slots for the selected date
-        // For demonstration, using a fixed set of time slots
-        const availableTimeSlots = getAvailableTimeSlots(selectedDate);
-
-        // Update the displayed time slots
+    function displayTimeSlots(selectedTimeZone) {
         const timeSlotsContainer = document.getElementById('timeSlotsContainer');
         if (timeSlotsContainer) {
-            // Clear existing time slots
             timeSlotsContainer.innerHTML = '';
-
-            // Populate time slots in user's time zone
             americaTimeSlots.forEach((americaTimeSlot, index) => {
-                const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot);
+                const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot, selectedTimeZone);
 
                 // Check if the slot has passed based on the current time
                 const currentDate = new Date();
@@ -403,7 +308,120 @@ echo "</script>";
                     const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
                     const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
 
-                   
+
+                    // Compare the two times
+                    return time1Minutes < time2Minutes;
+                }
+                let slotPassed = false
+
+                if (selected_date1 === formattedDate && compareTimes(formattedTime, formattedTime1)) {
+
+                    slotPassed = true;
+                }
+                else {
+
+                    slotPassed = false;
+                }
+
+
+                const timeSlotElement = document.createElement('div');
+                const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
+                timeSlotElement.id = timeSlotId;
+                // Check if the time slot should be disabled based on the selected date and time
+                let isDisabledSlot;
+                co.map((el, index) => {
+
+                    if (el.selected_date === selected_date1 && el.selected_time === formattedTime) {
+                        return isDisabledSlot = el.selected_date === selected_date1 && el.selected_time === formattedTime;
+                    }
+
+                })
+
+                timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
+                timeSlotElement.style.margin = '10px 20px';
+                timeSlotElement.style.padding = '5px 10px';
+                timeSlotElement.style.width = '100%';
+                timeSlotElement.style.border = '1px solid #eae9e9';
+
+                // Set styles for slot based on whether it's disabled or not
+                if (!slotPassed) {
+                    timeSlotElement.textContent = formattedTime;
+
+                    // Add click event listener to each time slot
+                    if (!isDisabledSlot) {
+                        timeSlotElement.addEventListener('click', () => selectSlot(americaTimeSlot, timeSlotId));
+                    }
+
+                } else {
+                    timeSlotElement.textContent = formattedTime;
+                    timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
+                    // Disable click on passed slots
+                }
+                if (slotPassed) {
+                    timeSlotElement.textContent = formattedTime;
+                    timeSlotElement.addEventListener('click', () => showBookedMessage(timeSlotElement));
+                    timeSlotElement.addEventListener('click', () => hideBookedMessage(timeSlotElement));
+                }
+
+                timeSlotsContainer.appendChild(timeSlotElement);
+            });
+        }
+    }
+    function showBookedMessage(element) {
+        console.log("Elemt booked message ")
+        const bookedMessage = document.createElement('div');
+        bookedMessage.textContent = 'Booked Slot';
+        bookedMessage.className = 'booked-message';
+        element.appendChild(bookedMessage);
+    }
+
+    // Function to hide "Booked" message when not hovered over
+    function hideBookedMessage(element) {
+        console.log("Elemt booked message ")
+        const bookedMessage = element.querySelector('.booked-message');
+        if (bookedMessage) {
+            element.removeChild(bookedMessage);
+        }
+    }
+    // Function to convert time from America time zone to user's time zone
+
+    function displayTimeSlots2(selectedTimeZone, availableTimeSlots, selectedDate) {
+        const timeSlotsContainer = document.getElementById('timeSlotsContainer');
+        if (timeSlotsContainer) {
+            // Clear existing time slots
+            timeSlotsContainer.innerHTML = '';
+
+            // Populate time slots in user's time zone
+            americaTimeSlots.forEach((americaTimeSlot, index) => {
+                const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot, selectedTimeZone);
+
+                // Check if the slot has passed based on the current time
+                const currentDate = new Date();
+                const { dayName, day, monthName } = getDateForOffset(0);
+                // Format date as "DD-Mon"
+                const optionsDate = { day: '2-digit', month: 'short' };
+                const formattedDate = day + "-" + monthName;
+
+                // Format time as "h:mm AM/PM"
+                const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
+                const formattedTime1 = currentDate.toLocaleTimeString('en-US', optionsTime);
+
+
+                function parseTime(timeString) {
+                    const [time, period] = timeString.split(' ');
+                    const [hours, minutes] = time.split(':');
+                    return { hours: parseInt(hours), minutes: parseInt(minutes), period };
+                }
+
+                function compareTimes(formattedTime, formattedTime1) {
+                    const time1 = parseTime(formattedTime);
+                    const time2 = parseTime(formattedTime1);
+
+                    // Convert time objects to minutes since midnight
+                    const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
+                    const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
+
+
 
                     // Compare the two times
                     return time1Minutes < time2Minutes;
@@ -411,11 +429,11 @@ echo "</script>";
 
 
                 if (selected_date1 === formattedDate && compareTimes(formattedTime, formattedTime1)) {
-                   
+
                     slotPassed = true;
                 }
                 else {
-                   
+
                     slotPassed = false;
                 }
 
@@ -433,7 +451,7 @@ echo "</script>";
                 })
 
 
-             
+
 
 
                 timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
@@ -460,6 +478,72 @@ echo "</script>";
             });
         }
     }
+    function convertToUserTimeZone(americaTime, selectedZone) {
+
+        const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
+        const userTimeZone = selectedZone;
+
+
+
+
+        const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
+        const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
+        return { momentObject: americaDateTime, formattedTime: userTimeSlot };
+    }
+
+
+    // Function to get the current time in America time zone
+    function getCurrentTimeInAmericaTimeZone() {
+        const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
+        return moment.tz(americaTimeZone);
+    }
+    function getAvailableTimeSlots(selectedDate) {
+        // For demonstration, return a fixed set of time slots
+        return ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
+    }
+    // Time slots in America time zone
+    const americaTimeSlots = ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
+
+    // Get the container to append time slots
+    const timeSlotsContainer = document.getElementById('timeSlotsContainer');
+
+    // Get the current time in America time zone
+    const currentTimeInAmericaTimeZone = getCurrentTimeInAmericaTimeZone();
+
+
+    // Populate time slots in user's time zone
+
+
+
+
+
+
+
+    // Function to handle time slot selection
+    function selectSlot(selectedSlot) {
+
+
+        // Reset styles for all time slots
+        const slotElements = document.querySelectorAll('.time-slot');
+        slotElements.forEach((slotElement) => {
+            slotElement.classList.remove('selected');
+        });
+
+        // Highlight the selected slot
+        const selectedSlotElement = document.querySelector(`.time-slot:contains("${selectedSlot}")`);
+        if (selectedSlotElement) {
+            selectedSlotElement.classList.add('selected');
+        }
+    }
+
+    // Function to update available time slots based on the selected date
+    function updateAvailableTimeSlots(selectedDate) {
+        // Logic to fetch available time slots for the selected date
+        // For demonstration, using a fixed set of time slots
+        const availableTimeSlots = getAvailableTimeSlots(selectedDate);
+
+        displayTimeSlots2(selectedTimeZone, availableTimeSlots, selectedDate)
+    }
 
     // Function to handle date selection
 
@@ -478,10 +562,48 @@ echo "</script>";
         }
 
         // Log the selected time slot
-   
+
     }
     // Rest of your existing code...
 </script>
+
+<script>
+    var selectedTimeZone;
+    function displayCurrentTime() {
+        // Get the select element
+        var selectElement = document.getElementById("timezone");
+
+        // Get the selected value
+        var selectedTimeZone1 = selectElement.value;
+
+        if (selectedTimeZone1) {
+            selectedTimeZone = selectElement.value;
+
+        } else {
+            selectedTimeZone = moment.tz.guess();
+
+        }
+
+        displayTimeSlots(selectedTimeZone);
+
+        // Get the current time in the selected timezone
+        var currentTime = new Date().toLocaleTimeString("en-US", { timeZone: selectedTimeZone });
+
+        // Display the current time
+        document.getElementById("currentTime").textContent =currentTime;
+    }
+
+    // Set the initial value of the dropdown to the user's timezone
+    var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.getElementById("timezone").value = userTimeZone;
+
+    // Display the current time on page load
+    displayCurrentTime();
+
+    // Update the time initially and set interval to update every minute
+    setInterval(displayCurrentTime, 60000); // Update every 60 seconds (1 minute)
+</script>
+
 <script>
     // When the user clicks on div, open the popup
     function myFunction() {
@@ -489,20 +611,7 @@ echo "</script>";
         popup.classList.toggle("show");
     }
 </script>
-<script>
-    // Function to update the current time and timezone
-    function updateDateTime() {
-        var currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        var currentTime = new Date().toLocaleTimeString();
 
-        document.getElementById('current-timezone').textContent = currentTimezone;
-        document.getElementById('current-time').textContent = currentTime;
-    }
-
-    // Update the time initially and set interval to update every minute
-    updateDateTime();
-    setInterval(updateDateTime, 60000); // Update every 60 seconds (1 minute)
-</script>
 <script>
     // Add an event listener to the "Continue" button
     document.getElementById('submit1').addEventListener('click', function () {
@@ -533,6 +642,10 @@ echo "</script>";
 <script>
 
     document.getElementById('submit').addEventListener('click', function () {
+        const submitButton = document.getElementById('submit');
+
+        // Add loading class to the submit button
+        submitButton.classList.add('loading');
         // Get the selected date, time, and email
         const selectedDateElement = document.querySelector('.date-element.selected');
         const selectedTimeElement = document.querySelector('.time-slot.selected');
@@ -542,6 +655,7 @@ echo "</script>";
         const userName = document.getElementById('name').value;
         const meetingTitle = document.getElementById('meeting').value;
         const usermessage1 = document.getElementById('message').value;
+        const currentTime = document.getElementById('currentTime').innerText;
         let usermessage = '';
 
         if (usermessage1 === null) {
@@ -562,14 +676,10 @@ echo "</script>";
                 meetingTitle: meetingTitle,
                 usermessage: usermessage,
                 userEmail: userEmail,
-                currentTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                currentTimezone: selectedTimeZone,
                 currentTime: new Date().toLocaleTimeString()
             };
 
-     
-
-
-     
 
             fetch('index.php?route=common/consulting/con_form', {
                 method: 'POST',
@@ -581,22 +691,24 @@ echo "</script>";
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response from the server if needed
-                  
+
                     document.getElementById('apdate').textContent = data.selectedDate;
                     document.getElementById('aptime').textContent = data.selectedTime;
-            
+                    submitButton.classList.remove('loading');
                     // Show the modal
                     document.getElementById('id01').style.display = 'block';
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    submitButton.classList.remove('loading');
                 });
         } else {
             // Handle the case when date, time, or email is not selected
             alert('Please select date, time, and enter your email before submitting.');
         }
     });
-   
+
     document.getElementById('okButton').addEventListener('click', function () {
         location.reload();
     });

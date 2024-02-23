@@ -146,25 +146,155 @@ class ControllerCommonConsulting extends Controller
     $mail->smtp_port = $this->config->get('config_mail_smtp_port');
     $mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
-    $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
-    //$mail->setTo('ronakvaya@gmail.com');
+    // $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
+    $mail->setTo('ronakvaya@gmail.com');
 
     $mail->setFrom($this->config->get('config_email'));
     $mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
-    $mail->setSubject("Contact Request On Website");
+    $mail->setSubject("Appointment Confirmation -" . $userName . "\n");
 	$mail->setReplyTo($userEmail);   
 
-    $message = "Hello Team,\n\nYou have a message on the website .\n\n";
-    $message .= "From: " . $userName . "\n";
-    $message .= "Email: " . $userEmail . "\n";
-    $message .= "Subject: " . $meetingTitle . "\n";
-    $message .= "Date" . $selectedDate . "\n";
-    $message .= "Time" . $selectedTime . "\n";
-    $message .= "Time Zone" . $currentTimezone . "\n";
+	$message =`
 
-    $message .= "Message: " . $usermessage;
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+          
+          td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+          
+          tr:nth-child(even) {
+            background-color: #dddddd;
+          } 
+    </style>
 
-    $mail->setText($message);
+    <h4>Hello Team Zayn Jewels,</h4>
+    <br>
+    <p>You have a new appointment booking through the website. Below are the details of the appointment:</p>
+    
+    <br><br>
+    <p>Appointment with: Zayn Jewels (Link to the website)</p>
+
+    <table>
+        <tr>
+          <th>Name </th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Country</th>
+          <th>Time Zone</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Email</th>
+          
+        </tr>
+        <tr>
+          <td>`. $userName .`</td>
+          <td>`. $selectedDate .`</td>
+          <td>`. $selectedTime .`</td>
+          <td>`. $currentTimezone .`</td>
+          <td>`. $meetingTitle .`</td>
+          <td>`. $usermessage .`</td>
+          <td>`. $userEmail .`</td>
+        </tr>
+       
+      </table>
+
+
+	  <p>Please take a moment to review this information and confirm the appointment at your earliest convenience.</p>
+
+	
+	`;
+
+$mail->setHtml($message);
+    $mail->send();
+
+
+// mail to cutomer
+
+
+    $mail = new Mail();
+    $mail->protocol = $this->config->get('config_mail_protocol');
+    $mail->parameter = $this->config->get('config_mail_parameter');
+    $mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+    $mail->smtp_username = $this->config->get('config_mail_smtp_username');
+    $mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+    $mail->smtp_port = $this->config->get('config_mail_smtp_port');
+    $mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+
+    // $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
+    $mail->setTo($userEmail);
+
+    $mail->setFrom($this->config->get('config_email'));
+    $mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+    $mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
+  
+
+    $message =`
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+          
+          td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+          
+          tr:nth-child(even) {
+            background-color: #dddddd;
+          } 
+    </style>
+
+    <h4>Dear ` . $userName .  `,</h4>
+    <br>
+    <p>We are delighted to confirm that we have received your appointment booking through our website. We look forward to assisting you.</p>
+    <br>
+    <p></p>Here are the details of your upcoming appointment:
+    <br><br>
+    <p>Appointment with: Zayn Jewels (Link to the website)</p>
+
+    <table>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Country</th>
+          <th>Time Zone</th>
+          <th>Subject</th>
+          <th>Message</th>
+          
+        </tr>
+        <tr>
+          <td>`. $selectedDate .`</td>
+          <td>`. $selectedTime .`</td>
+          <td>`. $currentTimezone .`</td>
+          <td>`. $meetingTitle .`</td>
+          <td>`. $usermessage .`</td>
+        </tr>
+       
+      </table>
+	  <br><br>
+<p>If you need to make any changes to your appointment or have any specific requirements, please do not hesitate to reply to this email.</p>
+<br><br>
+<h6>Best regards,</h6>
+<p>-Team Zayn Jewels</p>
+
+	
+	`;
+
+
+    
+
+	$mail->setHtml($message);
     $mail->send();
 }
 }
