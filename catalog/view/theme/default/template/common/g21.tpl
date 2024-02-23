@@ -36,6 +36,10 @@
     text-align: left;
   }
 
+  .banner-statistics:hover img {
+    opacity: 1 !important;
+  }
+
   .heading3 {
     font-weight: 400;
     font: gray;
@@ -486,9 +490,9 @@
       <div class="col-sm-12">
         <div class="row row-20 mtn-20" style=" padding:20px">
           <div class="col-12">
-            <figure class="banner-statistics mt-20" >
+            <figure class="banner-statistics mt-20">
 
-              <img src="image/blog24.jpg" alt="product banner" >
+              <img src="image/blog24.jpg" alt="product banner">
 
             </figure>
           </div>
@@ -499,12 +503,18 @@
 </div>
 
 <div class="col-12 container mob-padding" style=" justify-content:center">
-  <p class="para1 ">Cross necklaces have a long and varied history, deeply intertwined with religious, cultural, and fashion traditions. <br>
-    The cross is a central symbol in Christianity, representing the crucifixion of Jesus Christ and his sacrifice for humanity's salvation. <br><br>
-    In the early days of Christianity, wearing a cross as a necklace wasn't common due to the persecution of Christians. However, as Christianity gained acceptance and eventually became the state religion of the Roman Empire, the cross began to be displayed more openly.<br><br>
-    Crosses can also be a symbol of sacrifice, faith, and victory over death. The wearing of a cross necklace can serve as a personal reminder of these beliefs and can also be worn as a symbol of one's faith.<br><br>
-    During the medieval and Renaissance eras, crosses were typically simple and made of materials such as wood, bone, or metal. They were worn not just as jewelry but also as a visible declaration of religious allegiance. 
-    
+  <p class="para1 ">Cross necklaces have a long and varied history, deeply intertwined with religious, cultural, and
+    fashion traditions. <br>
+    The cross is a central symbol in Christianity, representing the crucifixion of Jesus Christ and his sacrifice for
+    humanity's salvation. <br><br>
+    In the early days of Christianity, wearing a cross as a necklace wasn't common due to the persecution of Christians.
+    However, as Christianity gained acceptance and eventually became the state religion of the Roman Empire, the cross
+    began to be displayed more openly.<br><br>
+    Crosses can also be a symbol of sacrifice, faith, and victory over death. The wearing of a cross necklace can serve
+    as a personal reminder of these beliefs and can also be worn as a symbol of one's faith.<br><br>
+    During the medieval and Renaissance eras, crosses were typically simple and made of materials such as wood, bone, or
+    metal. They were worn not just as jewelry but also as a visible declaration of religious allegiance.
+
 
   </p>
 </div>
@@ -516,9 +526,9 @@
       <div class="col-sm-12">
         <div class="row row-20 mtn-20" style=" padding:20px">
           <div class="col-12">
-            <figure class="banner-statistics mt-20" style="justify-content: center;display:flex;" >
+            <figure class="banner-statistics mt-20" style="justify-content: center;display:flex;">
 
-              <img src="image/blog25.jpg" alt="product banner" style="width: 800px;" >
+              <img src="image/blog25.jpg" alt="product banner" style="width: 800px;">
 
             </figure>
           </div>
@@ -529,13 +539,20 @@
 </div>
 
 <div class="col-12 container mob-padding" style=" justify-content:center">
-  <p class="para1 ">In the 19th century, with the rise of sentimentality and romanticism, cross necklaces became popular fashion accessories, especially among women. These crosses were often ornate, featuring intricate designs and embellishments such as gemstones and filigree work. They were worn not only as symbols of faith but also as decorative pieces.<br><br>
-    Cross necklaces remain popular in the modern era, worn by Christians as expressions of their religious beliefs and by others as fashion statements or symbols of spirituality. Cross necklaces come in various styles and materials, ranging from simple and understated to elaborate and luxurious.
+  
+  <p class="para1 ">In the 19th century, with the rise of sentimentality and romanticism, cross necklaces became popular
+    fashion accessories, especially among women. These crosses were often ornate, featuring intricate designs and
+    embellishments such as gemstones and filigree work. They were worn not only as symbols of faith but also as
+    decorative pieces.<br><br>
+    Cross necklaces remain popular in the modern era, worn by Christians as expressions of their religious beliefs and
+    by others as fashion statements or symbols of spirituality. Cross necklaces come in various styles and materials,
+    ranging from simple and understated to elaborate and luxurious.
     <br><br>
     Whatever your choice maybe, we have a cross for you!<br>
-    Check out our <a href="/index.php?route=product/category&path=106" style="color: #423c9e;font-weight:600;">Cross Collection</a> Here!
-    
-    
+    Check out our <a href="/index.php?route=product/category&path=106" style="color: #423c9e;font-weight:600;">Cross
+      Collection</a> Here!
+
+
 
   </p>
 </div>
@@ -547,8 +564,8 @@
           <div class="col-12">
             <figure class="banner-statistics mt-20" style="margin: auto;justify-content: center;display: flex;">
 
-              <img src="image/blog23.jpg" alt="product banner" style="width: 800px;margin:auto;">
-
+              <img src="image/blog26.jpg" alt="product banner" style="width: 800px;margin:auto;">
+          
             </figure>
           </div>
         </div>
