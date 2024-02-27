@@ -529,7 +529,7 @@
 
         <div class="subbox">
             <div style="margin-bottom:20px; position:relative;" class="col-sm-12 text-center">
-                <p style="color: #333; font-size: 14px;">
+                <p style="color: #333; font-size: 18px;">
                     Be the first to hear from us
                     <br />
                     New Launches | Sales | Surprises

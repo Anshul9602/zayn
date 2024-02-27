@@ -627,85 +627,66 @@ echo "</script>";
     });
 
     // Example: Handle form submission
-    document.getElementById('submit').addEventListener('click', function () {
-        // Perform form submission logic here
-
-        // Close the modal after submission
-        document.getElementById('id02').style.display = 'none';
-
-        // Optionally, update the content of id01 modal and show it
-        // document.getElementById('apdate').innerText = ...;
-        // document.getElementById('aptime').innerText = ...;
-        // document.getElementById('id01').style.display='block';
-    });
+    
 </script>
 <script>
 
     document.getElementById('submit').addEventListener('click', function () {
         const submitButton = document.getElementById('submit');
-
-        // Add loading class to the submit button
         submitButton.classList.add('loading');
-        // Get the selected date, time, and email
+        submitButton.innerHTML= '<i class="fa fa-spinner fa-spin"></i>Loading';
+    
         const selectedDateElement = document.querySelector('.date-element.selected');
         const selectedTimeElement = document.querySelector('.time-slot.selected');
         const userEmail = document.getElementById('mail').value;
-
-        const selectedDate = selected_date1;
         const userName = document.getElementById('name').value;
         const meetingTitle = document.getElementById('meeting').value;
-        const usermessage1 = document.getElementById('message').value;
-        const currentTime = document.getElementById('currentTime').innerText;
-        let usermessage = '';
-
-        if (usermessage1 === null) {
-            usermessage = '.';
-        } else {
-            usermessage = document.getElementById('message').value;
-        }
-
+        const userMessage = document.getElementById('message').value || '.';
+    
         if (selectedDateElement && selectedTimeElement && userEmail && userName && meetingTitle) {
             const selectedDate = selectedDateElement.id.replace('date-', '');
             const selectedTime = selectedTimeElement.textContent.trim();
-
-            // Prepare data to be sent in the AJAX request
+    
             const requestData = {
                 selectedDate: selectedDate,
                 selectedTime: selectedTime,
                 userName: userName,
                 meetingTitle: meetingTitle,
-                usermessage: usermessage,
+                userMessage: userMessage,
                 userEmail: userEmail,
                 currentTimezone: selectedTimeZone,
                 currentTime: new Date().toLocaleTimeString()
             };
-
-
-            fetch('index.php?route=common/consulting/con_form', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the response from the server if needed
-
-                    document.getElementById('apdate').textContent = data.selectedDate;
-                    document.getElementById('aptime').textContent = data.selectedTime;
-                    submitButton.classList.remove('loading');
-                    // Show the modal
-                    document.getElementById('id01').style.display = 'block';
-
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    submitButton.classList.remove('loading');
-                });
+    
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'index.php?route=common/consulting/con_form', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+    
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const data = JSON.parse(xhr.responseText);
+                        document.getElementById('id02').style.display = 'none';
+                        document.getElementById('apdate').textContent = data.selectedDate;
+                        document.getElementById('aptime').textContent = data.selectedTime;
+                        submitButton.classList.remove('loading');
+                        document.getElementById('id01').style.display = 'block';
+                    } else {
+                        console.error('Error:', xhr.statusText);
+                        submitButton.classList.remove('loading');
+                    }
+                }
+            };
+    
+            xhr.onerror = function (error) {
+                console.error('Error:', error);
+                submitButton.classList.remove('loading');
+            };
+    
+            xhr.send(JSON.stringify(requestData));
         } else {
-            // Handle the case when date, time, or email is not selected
             alert('Please select date, time, and enter your email before submitting.');
+            submitButton.classList.remove('loading');
         }
     });
 
