@@ -244,8 +244,24 @@ echo "</script>";
 </section>
 <script>
     // Get all time zones
-    const allTimezones = moment.tz.names();
 
+const allTimezones = [
+  "US/Alaska",
+  "US/Aleutian",
+  "US/Arizona",
+  "US/Central",
+  "US/East-Indiana",
+  "US/Eastern",
+  "US/Hawaii",
+  "US/Indiana-Starke",
+  "US/Michigan",
+  "US/Mountain",
+  "US/Pacific",
+  "US/Samoa",
+  "Asia/Calcutta"
+];
+    
+console.log(allTimezones);
     // Get the select element
     const timezoneSelect = document.getElementById("timezone");
 
@@ -499,10 +515,60 @@ echo "</script>";
     }
     function getAvailableTimeSlots(selectedDate) {
         // For demonstration, return a fixed set of time slots
-        return ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
+        return [
+            '6:00 AM',
+            '6:30 AM',
+            '7:00 AM',
+            '7:30 AM',
+            '8:00 AM',
+            '8:30 AM',
+            '9:00 AM',
+            '9:30 AM',
+            '10:00 AM',
+            '10:30 AM',
+             '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', 
+             '3:00 PM',
+             '3:30 PM',
+             '4:00 PM',
+             '4:30 PM',
+             '5:00 PM',
+             '5:30 PM',
+             '6:00 PM',
+             '6:30 PM',
+             '7:00 PM'
+            
+             ];
     }
     // Time slots in America time zone
-    const americaTimeSlots = ['10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'];
+    const americaTimeSlots = [
+        '2:00 AM',
+            '2:30 AM',
+            '3:00 AM',
+            '3:30 AM',
+            '4:00 AM',
+            '4:30 AM',
+            '5:00 AM',
+            '5:30 AM',
+            '6:00 AM',
+            '6:30 AM',
+             '7:00 AM',
+             '7:30 AM',
+             '8:00 AM', 
+             '8:30 AM', 
+             '9:00 AM', 
+             '9:30 AM', 
+             '10:00 AM', 
+             '10:30 AM', 
+             '11:00 AM',
+             '11:30 AM',
+             '12:00 AM',
+             '12:30 AM',
+             '1:00 AM',
+             '1:30 AM',
+             '2:00 AM',
+             '2:30 AM',
+             '3:00 AM'
+        ];
 
     // Get the container to append time slots
     const timeSlotsContainer = document.getElementById('timeSlotsContainer');
@@ -545,8 +611,6 @@ echo "</script>";
         displayTimeSlots2(selectedTimeZone, availableTimeSlots, selectedDate)
     }
 
-    // Function to handle date selection
-
     // Function to handle time slot selection
     function selectSlot(selectedTime, timeSlotId) {
         // Reset styles for all time slots
@@ -587,7 +651,12 @@ echo "</script>";
         displayTimeSlots(selectedTimeZone);
 
         // Get the current time in the selected timezone
-        var currentTime = new Date().toLocaleTimeString("en-US", { timeZone: selectedTimeZone });
+        var currentTime = new Date().toLocaleTimeString("en-US", {
+            timeZone: selectedTimeZone,
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+          });
 
         // Display the current time
         document.getElementById("currentTime").textContent =currentTime;
@@ -601,7 +670,7 @@ echo "</script>";
     displayCurrentTime();
 
     // Update the time initially and set interval to update every minute
-    setInterval(displayCurrentTime, 60000); // Update every 60 seconds (1 minute)
+    setInterval(displayCurrentTime,1000); // Update every 60 seconds (1 minute)
 </script>
 
 <script>

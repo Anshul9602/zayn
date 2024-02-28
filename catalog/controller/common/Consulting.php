@@ -111,7 +111,7 @@ class ControllerCommonConsulting extends Controller
 				// Call the model method to save consulting data
 				$this->model_account_consulting->saveConsultingData($requestData['currentTime'],$requestData['currentTimezone'], 
 				 $requestData['selectedTime'],$requestData['selectedDate'],$requestData['userEmail'],
-				$requestData['userName'],$requestData['meetingTitle'],$requestData['usermessage']);
+				$requestData['userName'],$requestData['meetingTitle'],$requestData['userMessage']);
 			
 
 
@@ -123,7 +123,7 @@ class ControllerCommonConsulting extends Controller
 					$requestData['userEmail'],
 					$requestData['userName'],
 					$requestData['meetingTitle'],
-					$requestData['usermessage']
+					$requestData['userMessage']
 				);
 
 				$response = $requestData;
@@ -135,7 +135,7 @@ class ControllerCommonConsulting extends Controller
 	
 		return $response;
 	}
-	public function send_email($currentTime, $currentTimezone, $selectedTime, $selectedDate, $userEmail, $userName, $meetingTitle, $usermessage)
+	public function send_email($currentTime, $currentTimezone, $selectedTime, $selectedDate, $userEmail, $userName, $meetingTitle, $userMessage)
 {
     $mail = new Mail();
     $mail->protocol = $this->config->get('config_mail_protocol');
@@ -147,7 +147,7 @@ class ControllerCommonConsulting extends Controller
     $mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
     // $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
-    $mail->setTo($userEmail);
+    $mail->setTo('info@zaynjewels.com');
 
     $mail->setFrom($this->config->get('config_email'));
     $mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
@@ -162,7 +162,7 @@ class ControllerCommonConsulting extends Controller
 	$message .= "Time- " . $selectedTime . "\n\n";
 	$message .= "Time Zone- " .$currentTimezone . "\n\n";
 	$message .= "Subject- " . $meetingTitle . "\n\n";
-	$message .= "Message- " . $usermessage . "\n\n";
+	$message .= "Message- " . $userMessage . "\n\n";
 	$message .= "Email- " . $userEmail . "\n\n";
 	$message .= "\n\n";
 	$message .= "Please take a moment to review this information and confirm the appointment at your earliest convenience.\n\n";
@@ -180,13 +180,15 @@ class ControllerCommonConsulting extends Controller
 		$userEmail,
 		$userName,
 		$meetingTitle,
-		$usermessage
+		$userMessage
 	);
 
+// mail to cutomer
 
 
+   
 }
-	public function send_email_user($currentTime, $currentTimezone, $selectedTime, $selectedDate, $userEmail, $userName, $meetingTitle, $usermessage)
+	public function send_email_user($currentTime, $currentTimezone, $selectedTime, $selectedDate, $userEmail, $userName, $meetingTitle, $userMessage)
 {
     
     $mail = new Mail();
@@ -206,25 +208,24 @@ class ControllerCommonConsulting extends Controller
     $mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
   
 
-	$message .= "Dear". $userName ." ,\n\n";
+	$message .= "Hello". $userName ." ,\n\n";
 
-	$message .= "We are delighted to confirm that we have received your appointment booking through our website. We look forward to assisting you.\n\n";
-	$message .= "Here are the details of your upcoming appointment:\n\n";
-
-	$message .= "Appointment with-Zayn Jewels https://zaynjewels.com/ \n\n";
-	
+	$message .= "hank you for setting up an appointment with Zayn Jewels. \n\n";
+	$message .= "Appointment Details:\n\n";
+	$message .= "Name- " . $userName . "\n\n";
 	$message .= "Date- " . $selectedDate . "\n\n";
 	$message .= "Time- " . $selectedTime . "\n\n";
 	$message .= "Time Zone- " .$currentTimezone . "\n\n";
 	$message .= "Subject- " . $meetingTitle . "\n\n";
-	$message .= "Message- " . $usermessage . "\n\n";
+	$message .= "Message- " . $userMessage . "\n\n";
 	$message .= "Email- " . $userEmail . "\n\n";
 
-	$message .= "If you need to make any changes to your appointment or have any specific requirements, please do not hesitate to reply to this email.\n\n";
+	$message .= "Look forward to meeting with you. \n\n";
 
-	$message .= "Best regards,\n\n";
+	$message .= "Best ,\n\n";
 	
 	$message .= "-Team Zayn Jewels\n\n";
+	$message .= "Note : You can reschedule your appointment anytime by clicking here https://zaynjewels.com/index.php?route=common/consulting \n\n";
 	
 
     
