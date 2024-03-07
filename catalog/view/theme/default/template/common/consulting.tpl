@@ -21,7 +21,7 @@ assets/css/home.css
         cursor: pointer;
     }
 
-       
+
     #New .splide__pagination {
         display: none !important;
     }
@@ -245,23 +245,23 @@ echo "</script>";
 <script>
     // Get all time zones
 
-const allTimezones = [
-  "US/Alaska",
-  "US/Aleutian",
-  "US/Arizona",
-  "US/Central",
-  "US/East-Indiana",
-  "US/Eastern",
-  "US/Hawaii",
-  "US/Indiana-Starke",
-  "US/Michigan",
-  "US/Mountain",
-  "US/Pacific",
-  "US/Samoa",
-  "Asia/Calcutta"
-];
-    
-console.log(allTimezones);
+    const allTimezones = [
+        "US/Alaska",
+        "US/Aleutian",
+        "US/Arizona",
+        "US/Central",
+        "US/East-Indiana",
+        "US/Eastern",
+        "US/Hawaii",
+        "US/Indiana-Starke",
+        "US/Michigan",
+        "US/Mountain",
+        "US/Pacific",
+        "US/Samoa",
+        "Asia/Calcutta"
+    ];
+
+    console.log(allTimezones);
     // Get the select element
     const timezoneSelect = document.getElementById("timezone");
 
@@ -294,6 +294,9 @@ console.log(allTimezones);
     function displayTimeSlots(selectedTimeZone) {
         const timeSlotsContainer = document.getElementById('timeSlotsContainer');
         if (timeSlotsContainer) {
+
+console.log("runn");
+
             timeSlotsContainer.innerHTML = '';
             americaTimeSlots.forEach((americaTimeSlot, index) => {
                 const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot, selectedTimeZone);
@@ -421,8 +424,6 @@ console.log(allTimezones);
                 // Format time as "h:mm AM/PM"
                 const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
                 const formattedTime1 = currentDate.toLocaleTimeString('en-US', optionsTime);
-
-
                 function parseTime(timeString) {
                     const [time, period] = timeString.split(' ');
                     const [hours, minutes] = time.split(':');
@@ -436,9 +437,6 @@ console.log(allTimezones);
                     // Convert time objects to minutes since midnight
                     const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
                     const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
-
-
-
                     // Compare the two times
                     return time1Minutes < time2Minutes;
                 }
@@ -465,11 +463,6 @@ console.log(allTimezones);
                     }
 
                 })
-
-
-
-
-
                 timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
                 timeSlotElement.style.margin = '10px 20px';
                 timeSlotElement.style.padding = '5px 10px';
@@ -498,10 +491,6 @@ console.log(allTimezones);
 
         const americaTimeZone = 'America/New_York'; // Replace with the appropriate America time zone
         const userTimeZone = selectedZone;
-
-
-
-
         const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
         const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
         return { momentObject: americaDateTime, formattedTime: userTimeSlot };
@@ -526,49 +515,49 @@ console.log(allTimezones);
             '9:30 AM',
             '10:00 AM',
             '10:30 AM',
-             '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', 
-             '3:00 PM',
-             '3:30 PM',
-             '4:00 PM',
-             '4:30 PM',
-             '5:00 PM',
-             '5:30 PM',
-             '6:00 PM',
-             '6:30 PM',
-             '7:00 PM'
-            
-             ];
+            '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM',
+            '3:00 PM',
+            '3:30 PM',
+            '4:00 PM',
+            '4:30 PM',
+            '5:00 PM',
+            '5:30 PM',
+            '6:00 PM',
+            '6:30 PM',
+            '7:00 PM'
+
+        ];
     }
     // Time slots in America time zone
     const americaTimeSlots = [
+        '2:00 PM',
+        '2:30 PM',
+        '3:00 PM',
+        '3:30 PM',
+        '4:00 PM',
+        '4:30 PM',
+        '5:00 PM',
+        '5:30 PM',
+        '6:00 PM',
+        '6:30 PM',
+        '7:00 PM',
+        '7:30 PM',
+        '8:00 PM',
+        '8:30 PM',
+        '9:00 PM',
+        '9:30 PM',
+        '10:00 PM',
+        '10:30 PM',
+        '11:00 PM',
+        '11:30 PM',
+        '12:00 AM',
+        '12:30 AM',
+        '1:00 AM',
+        '1:30 AM',
         '2:00 AM',
-            '2:30 AM',
-            '3:00 AM',
-            '3:30 AM',
-            '4:00 AM',
-            '4:30 AM',
-            '5:00 AM',
-            '5:30 AM',
-            '6:00 AM',
-            '6:30 AM',
-             '7:00 AM',
-             '7:30 AM',
-             '8:00 AM', 
-             '8:30 AM', 
-             '9:00 AM', 
-             '9:30 AM', 
-             '10:00 AM', 
-             '10:30 AM', 
-             '11:00 AM',
-             '11:30 AM',
-             '12:00 AM',
-             '12:30 AM',
-             '1:00 AM',
-             '1:30 AM',
-             '2:00 AM',
-             '2:30 AM',
-             '3:00 AM'
-        ];
+        '2:30 AM',
+        '3:00 AM'
+    ];
 
     // Get the container to append time slots
     const timeSlotsContainer = document.getElementById('timeSlotsContainer');
@@ -578,11 +567,6 @@ console.log(allTimezones);
 
 
     // Populate time slots in user's time zone
-
-
-
-
-
 
 
     // Function to handle time slot selection
@@ -656,10 +640,10 @@ console.log(allTimezones);
             hour: 'numeric',
             minute: 'numeric',
             hour12: true
-          });
+        });
 
         // Display the current time
-        document.getElementById("currentTime").textContent =currentTime;
+        document.getElementById("currentTime").textContent = currentTime;
     }
 
     // Set the initial value of the dropdown to the user's timezone
@@ -670,7 +654,7 @@ console.log(allTimezones);
     displayCurrentTime();
 
     // Update the time initially and set interval to update every minute
-    setInterval(displayCurrentTime,1000); // Update every 60 seconds (1 minute)
+   setInterval(displayCurrentTime, 300000); 
 </script>
 
 <script>
@@ -696,26 +680,26 @@ console.log(allTimezones);
     });
 
     // Example: Handle form submission
-    
+
 </script>
 <script>
 
     document.getElementById('submit').addEventListener('click', function () {
         const submitButton = document.getElementById('submit');
         submitButton.classList.add('loading');
-        submitButton.innerHTML= '<i class="fa fa-spinner fa-spin"></i>Loading';
-    
+        submitButton.innerHTML = '<i class="fa fa-spinner fa-spin"></i>Loading';
+
         const selectedDateElement = document.querySelector('.date-element.selected');
         const selectedTimeElement = document.querySelector('.time-slot.selected');
         const userEmail = document.getElementById('mail').value;
         const userName = document.getElementById('name').value;
         const meetingTitle = document.getElementById('meeting').value;
         const userMessage = document.getElementById('message').value || '.';
-    
+
         if (selectedDateElement && selectedTimeElement && userEmail && userName && meetingTitle) {
             const selectedDate = selectedDateElement.id.replace('date-', '');
             const selectedTime = selectedTimeElement.textContent.trim();
-    
+
             const requestData = {
                 selectedDate: selectedDate,
                 selectedTime: selectedTime,
@@ -726,11 +710,11 @@ console.log(allTimezones);
                 currentTimezone: selectedTimeZone,
                 currentTime: new Date().toLocaleTimeString()
             };
-    
+
             const xhr = new XMLHttpRequest();
             xhr.open('POST', 'index.php?route=common/consulting/con_form', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-    
+
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
@@ -746,12 +730,12 @@ console.log(allTimezones);
                     }
                 }
             };
-    
+
             xhr.onerror = function (error) {
                 console.error('Error:', error);
                 submitButton.classList.remove('loading');
             };
-    
+
             xhr.send(JSON.stringify(requestData));
         } else {
             alert('Please select date, time, and enter your email before submitting.');
