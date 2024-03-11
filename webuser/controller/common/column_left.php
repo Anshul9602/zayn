@@ -48,8 +48,7 @@ class ControllerCommonColumnLeft extends Controller
 			// 	'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
 			// 	'children' => array()
 			// );
-			$data['appointh']=$this->url->link('report/appoint', 'token=' . $this->session->data['token'], true);
-			// Catalog
+				// Catalog
 			$catalog = array();
 
 			if ($this->user->hasPermission('access', 'catalog/category')) {
@@ -923,7 +922,8 @@ class ControllerCommonColumnLeft extends Controller
 			} else {
 				$data['other_status'] = 0;
 			}
-
+			$data['appointh']=$this->url->link('report/appoint', 'token=' . $this->session->data['token'], true);
+		// echo $data['appointh'];
 			return $this->load->view('common/column_left', $data);
 		}
 	}

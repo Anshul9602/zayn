@@ -160,7 +160,7 @@
       </div>
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
   <script>
     $(document).ready(function () {
       $('button').on('click', function () {
@@ -194,7 +194,7 @@
       });
     });
   </script>
-  <script type="text/javascript"><!-
+  <script type="text/javascript">
 $('#button-filter').on('click', function() {
 url = 'index.php?route=report/sale_order&token=<?php echo $token; ?>';
 	
@@ -225,7 +225,7 @@ url += '&filter_order_status_id=' + encodeURIComponent(filter_order_status_id);
 location = url;
 });
 //--></script>
-  <script type="text/javascript"><!-
+  <script type="text/javascript">
 $('.date').datetimepicker({
 pickTime: false
 });

@@ -2,45 +2,66 @@
   <div id="profile">
     <div>
       <?php if ($image) { ?>
-      <img src="<?php echo $image; ?>" alt="<?php echo $firstname; ?> <?php echo $lastname; ?>" title="<?php echo $username; ?>" class="img-circle" />
+      <img src="<?php echo $image; ?>" alt="<?php echo $firstname; ?> <?php echo $lastname; ?>"
+        title="<?php echo $username; ?>" class="img-circle" />
       <?php } else { ?>
       <i class="fa fa-opencart"></i>
       <?php } ?>
     </div>
     <div>
-      <h4><?php echo $firstname; ?> <?php echo $lastname; ?></h4>
-      <small><?php echo $user_group; ?></small></div>
+      <h4>
+        <?php echo $firstname; ?>
+        <?php echo $lastname; ?>
+      </h4>
+      <small>
+        <?php echo $user_group; ?>
+      </small>
+    </div>
   </div>
   <ul id="menu">
     <?php foreach ($menus as $menu) { ?>
     <li id="<?php echo $menu['id']; ?>">
       <?php if ($menu['href']) { ?>
-      <a href="<?php echo $menu['href']; ?>"><i class="fa <?php echo $menu['icon']; ?> fw"></i> <span><?php echo $menu['name']; ?></span></a>
+      <a href="<?php echo $menu['href']; ?>"><i class="fa <?php echo $menu['icon']; ?> fw"></i> <span>
+          <?php echo $menu['name']; ?>
+        </span></a>
       <?php } else { ?>
-      <a class="parent"><i class="fa <?php echo $menu['icon']; ?> fw"></i> <span><?php echo $menu['name']; ?></span></a>
+      <a class="parent"><i class="fa <?php echo $menu['icon']; ?> fw"></i> <span>
+          <?php echo $menu['name']; ?>
+        </span></a>
       <?php } ?>
       <?php if ($menu['children']) { ?>
       <ul>
         <?php foreach ($menu['children'] as $children_1) { ?>
         <li>
           <?php if ($children_1['href']) { ?>
-          <a href="<?php echo $children_1['href']; ?>"><?php echo $children_1['name']; ?></a>
+          <a href="<?php echo $children_1['href']; ?>">
+            <?php echo $children_1['name']; ?>
+          </a>
           <?php } else { ?>
-          <a class="parent"><?php echo $children_1['name']; ?></a>
+          <a class="parent">
+            <?php echo $children_1['name']; ?>
+          </a>
           <?php } ?>
           <?php if ($children_1['children']) { ?>
           <ul>
             <?php foreach ($children_1['children'] as $children_2) { ?>
             <li>
               <?php if ($children_2['href']) { ?>
-              <a href="<?php echo $children_2['href']; ?>"><?php echo $children_2['name']; ?></a>
+              <a href="<?php echo $children_2['href']; ?>">
+                <?php echo $children_2['name']; ?>
+              </a>
               <?php } else { ?>
-              <a class="parent"><?php echo $children_2['name']; ?></a>
+              <a class="parent">
+                <?php echo $children_2['name']; ?>
+              </a>
               <?php } ?>
               <?php if ($children_2['children']) { ?>
               <ul>
                 <?php foreach ($children_2['children'] as $children_3) { ?>
-                <li><a href="<?php echo $children_3['href']; ?>"><?php echo $children_3['name']; ?></a></li>
+                <li><a href="<?php echo $children_3['href']; ?>">
+                    <?php echo $children_3['name']; ?>
+                  </a></li>
                 <?php } ?>
               </ul>
               <?php } ?>
@@ -55,27 +76,52 @@
       <?php } ?>
     </li>
     <?php } ?>
-    <li><a href="<?php echo $appointh; ?>"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#fff" stroke="#fff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="m 6.5 0 c -3.578125 0 -6.5 2.921875 -6.5 6.5 s 2.921875 6.5 6.5 6.5 c 0.167969 0 0.335938 -0.007812 0.5 -0.019531 v -2.007813 c -0.164062 0.019532 -0.332031 0.027344 -0.5 0.027344 c -2.496094 0 -4.5 -2.003906 -4.5 -4.5 s 2.003906 -4.5 4.5 -4.5 s 4.5 2.003906 4.5 4.5 c 0 0.167969 -0.007812 0.335938 -0.027344 0.5 h 2.007813 c 0.011719 -0.164062 0.019531 -0.332031 0.019531 -0.5 c 0 -3.578125 -2.921875 -6.5 -6.5 -6.5 z m 0 3 c -0.277344 0 -0.5 0.222656 -0.5 0.5 v 2.5 h -1.5 c -0.277344 0 -0.5 0.222656 -0.5 0.5 s 0.222656 0.5 0.5 0.5 h 2 c 0.277344 0 0.5 -0.222656 0.5 -0.5 v -3 c 0 -0.277344 -0.222656 -0.5 -0.5 -0.5 z m 4.5 5 v 3 h -3 v 2 h 3 v 3 h 2 v -3 h 3 v -2 h -3 v -3 z m 0 0" fill="#2e3436"></path> </g></svg></a></li>
-  
+    <li><a href="<?php echo $appointh; ?>">
+      <i class="fa fa-tages fw"></i><span>Appointment</span>
+      </a></li>
+
   </ul>
   <div id="stats">
     <ul>
       <li>
-        <div><?php echo $text_complete_status; ?> <span class="pull-right"><?php echo $complete_status; ?>%</span></div>
+        <div>
+          <?php echo $text_complete_status; ?> <span class="pull-right">
+            <?php echo $complete_status; ?>%
+          </span>
+        </div>
         <div class="progress">
-          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $complete_status; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $complete_status; ?>%"> <span class="sr-only"><?php echo $complete_status; ?>%</span></div>
+          <div class="progress-bar progress-bar-success" role="progressbar"
+            aria-valuenow="<?php echo $complete_status; ?>" aria-valuemin="0" aria-valuemax="100"
+            style="width: <?php echo $complete_status; ?>%"> <span class="sr-only">
+              <?php echo $complete_status; ?>%
+            </span></div>
         </div>
       </li>
       <li>
-        <div><?php echo $text_processing_status; ?> <span class="pull-right"><?php echo $processing_status; ?>%</span></div>
+        <div>
+          <?php echo $text_processing_status; ?> <span class="pull-right">
+            <?php echo $processing_status; ?>%
+          </span>
+        </div>
         <div class="progress">
-          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo $processing_status; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $processing_status; ?>%"> <span class="sr-only"><?php echo $processing_status; ?>%</span></div>
+          <div class="progress-bar progress-bar-warning" role="progressbar"
+            aria-valuenow="<?php echo $processing_status; ?>" aria-valuemin="0" aria-valuemax="100"
+            style="width: <?php echo $processing_status; ?>%"> <span class="sr-only">
+              <?php echo $processing_status; ?>%
+            </span></div>
         </div>
       </li>
       <li>
-        <div><?php echo $text_other_status; ?> <span class="pull-right"><?php echo $other_status; ?>%</span></div>
+        <div>
+          <?php echo $text_other_status; ?> <span class="pull-right">
+            <?php echo $other_status; ?>%
+          </span>
+        </div>
         <div class="progress">
-          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="<?php echo $other_status; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $other_status; ?>%"> <span class="sr-only"><?php echo $other_status; ?>%</span></div>
+          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="<?php echo $other_status; ?>"
+            aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $other_status; ?>%"> <span class="sr-only">
+              <?php echo $other_status; ?>%
+            </span></div>
         </div>
       </li>
     </ul>
