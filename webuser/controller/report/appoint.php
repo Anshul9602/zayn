@@ -69,37 +69,17 @@ class ControllerReportAppoint extends Controller {
 			'href' => $this->url->link('report/appoint', 'token=' . $this->session->data['token'] . $url, true)
 		);
 
-		$this->load->model('report/sale');
+		$this->load->model('report/consulting');
+		$data['appoint'] = $this->model_report_consulting->getAllConsultingData();
+	
 
-		$data['orders'] = array();
+		$order_total = $this->model_report_consulting->getTotalAppoint();
 
-		$filter_data = array(
-			'filter_date_start'	     => $filter_date_start,
-			'filter_date_end'	     => $filter_date_end,
-			'filter_group'           => $filter_group,
-			'filter_order_status_id' => $filter_order_status_id,
-			'start'                  => ($page - 1) * $this->config->get('config_limit_admin'),
-			'limit'                  => $this->config->get('config_limit_admin')
-		);
+		
 
-		$order_total = $this->model_report_sale->getTotalOrders($filter_data);
+		$data['heading_title'] = "Appointment";
 
-		$results = $this->model_report_sale->getOrders($filter_data);
-
-		foreach ($results as $result) {
-			$data['orders'][] = array(
-				'date_start' => date($this->language->get('date_format_short'), strtotime($result['date_start'])),
-				'date_end'   => date($this->language->get('date_format_short'), strtotime($result['date_end'])),
-				'orders'     => $result['orders'],
-				'products'   => $result['products'],
-				'tax'        => $this->currency->format($result['tax'], $this->config->get('config_currency')),
-				'total'      => $this->currency->format($result['total'], $this->config->get('config_currency'))
-			);
-		}
-
-		$data['heading_title'] = $this->language->get('heading_title');
-
-		$data['text_list'] = $this->language->get('text_list');
+		$data['text_list'] = "Appointments List";
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
 		$data['text_all_status'] = $this->language->get('text_all_status');
@@ -185,4 +165,90 @@ class ControllerReportAppoint extends Controller {
 
 		$this->response->setOutput($this->load->view('report/appoint', $data));
 	}
+	public function updatestatus() {
+        // Check if the request is coming from AJAX
+        if ($this->request->server['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && $this->request->server['REQUEST_METHOD'] == 'POST') {
+            // Validate and sanitize the input data (orderId)
+            $Id = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
+  echo $Id;
+  die();
+            // Perform the status update in the database based on $orderId
+            // Replace the following code with your actual database update logic
+            $this->load->model('report/consulting');
+            $this->model_report_consulting->updateStatus($Id);
+            $requestData = $this->model_report_consulting->getConsultingDataById($Id);
+			$this->SendEmail($requestData);
+            // Send a response (e.g., success message)
+            $json['success'] = 'Status updated successfully';
+            
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+        } else {
+            // Handle non-AJAX requests or other cases
+            // You may redirect to an error page or perform other actions
+            $this->response->redirect($this->url->link('error/not_found', '', true));
+        }
+    }
+	protected function SendEmail($requestData) {
+		
+		$response = array();
+	// echo "<pre>";
+	// print_r($requestData);
+	// echo "</pre>";
+		if ($requestData) {
+		
+			// $this->send_email(
+			// 	$requestData['currentTime'],
+			// 	$requestData['currentTimezone'],
+			// 	$requestData['selectedTime'],
+			// 	$requestData['selectedDate'],
+			// 	$requestData['userEmail'],
+			// 	$requestData['userName'],
+			// 	$requestData['meetingTitle'],
+			// 	$requestData['userMessage']
+			// );
+
+			$mail = new Mail();
+			$mail->protocol = $this->config->get('config_mail_protocol');
+			$mail->parameter = $this->config->get('config_mail_parameter');
+			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+			$mail->smtp_username = $this->config->get('config_mail_smtp_username');
+			$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
+			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+		
+			// $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
+			$mail->setTo($requestData['userEmail']);
+		
+			$mail->setFrom($this->config->get('config_email'));
+			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+			$mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
+		  
+		
+			$message .= "Hello". $requestData['userName'] ." ,\n\n";
+		
+			$message .= "Your appointment has been confirmed with Zayn Jewels. \n\n";
+			
+		
+			$message .= "Look forward to meeting with you. \n\n";
+		
+			$message .= "Best ,\n\n";
+			
+			$message .= "-Team Zayn Jewels\n\n";
+			$message .= "Note : You can reschedule your appointment anytime by clicking here https://zaynjewels.com/index.php?route=common/consulting \n\n";
+			
+		
+			
+			 $mail->setText($message);
+			$mail->send();
+
+
+		} else {
+			$response['error'] = 'Validation failed';
+			// You can customize this message
+		}
+	
+
+	return $response;
+}
 }

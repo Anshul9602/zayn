@@ -41,7 +41,14 @@ class ControllerCommonColumnLeft extends Controller
 				'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
 				'children' => array()
 			);
-
+			// $data['menus'][] = array(
+			// 	'id'       => 'menu-dashboard',
+			// 	'icon'	   => 'fa-dashboard',
+			// 	'name'	   => $this->language->get('text_dashboard'),
+			// 	'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			// 	'children' => array()
+			// );
+			$data['appointh']=$this->url->link('report/appoint', 'token=' . $this->session->data['token'], true);
 			// Catalog
 			$catalog = array();
 
@@ -673,8 +680,26 @@ class ControllerCommonColumnLeft extends Controller
 			$report = array();
 
 			// Report Sales
+			$report_appoint = array();
+
+			if ($this->user->hasPermission('access', 'report/appoint')) {
+				$report_sale[] = array(
+					'name'	   => $this->language->get('appointments'),
+					'href'     => $this->url->link('report/appoint', 'token=' . $this->session->data['token'], true)
+					
+				);
+			}
+			if ($report_appoint) {
+				$report[] = array(
+					'name'	   => $this->language->get('text_report_sale'),
+					'href'     => '',
+					'children' => $report_appoint
+				);
+			}
+
 			$report_sale = array();
 
+			
 			if ($this->user->hasPermission('access', 'report/sale_order')) {
 				$report_sale[] = array(
 					'name'	   => $this->language->get('text_report_sale_order'),
