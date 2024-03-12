@@ -189,6 +189,30 @@ class ControllerReportAppoint extends Controller {
             $this->response->redirect($this->url->link('error/not_found', '', true));
         }
     }
+	public function delete() {
+        // Check if the request is coming from AJAX
+        if ($this->request->server['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && $this->request->server['REQUEST_METHOD'] == 'POST') {
+            // Validate and sanitize the input data (orderId)
+            $Id = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
+//   echo $Id;
+//   die();
+            // Perform the status update in the database based on $orderId
+            // Replace the following code with your actual database update logic
+            $this->load->model('report/consulting');
+            $this->model_report_consulting->delete($Id);
+            $requestData = $this->model_report_consulting->getConsultingDataById($Id);
+			// $this->SendEmail($requestData);
+            // Send a response (e.g., success message)
+            $json['success'] = 'Status updated successfully';
+            
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+        } else {
+            // Handle non-AJAX requests or other cases
+            // You may redirect to an error page or perform other actions
+            $this->response->redirect($this->url->link('error/not_found', '', true));
+        }
+    }
 	protected function SendEmail($requestData) {
 		
 		$response = array();

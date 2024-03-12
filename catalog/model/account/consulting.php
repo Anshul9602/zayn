@@ -10,10 +10,12 @@ class ModelAccountConsulting extends Model {
             `user_email`,
             `userName`,
             `meetingTitle`,
-            `usermessage`
-            ) 
+            `usermessage`,
+            `status`
+         
+            )
             VALUES ('$currentTime', '$currentTimezone', '$selectedTime', '$selectedDate', 
-            '$userEmail', '$userName', '$meetingTitle', '$userMessage'
+            '$userEmail', '$userName', '$meetingTitle', '$userMessage','0'
             )"
         );
     }

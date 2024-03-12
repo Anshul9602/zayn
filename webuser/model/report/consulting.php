@@ -19,6 +19,14 @@ class ModelReportConsulting extends Model {
         WHERE `ap_id` = '" . (int)$Id . "'
     ");
     }
+    public function delete($orderId) {
+        // Your database deletion logic goes here
+        // For example:
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "consulting_data` WHERE `ap_id` = '" . (int)$orderId . "'");
+
+        // Check if the deletion was successful
+        return $this->db->countAffected() > 0;
+    }
 	public function getConsultingDataById($apId) {
 		$query = $this->db->query("
 			SELECT *

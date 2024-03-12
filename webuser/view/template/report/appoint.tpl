@@ -107,8 +107,9 @@
                 <td class="text-left">AppointmentDate</td>
                 <td class="text-right">Time</td>
                 <td class="text-right">User Time Zone</td>
-                <td class="text-right">Status</td>
+
                 <td class="text-right">Date</td>
+                <td class="text-right">Action</td>
               </tr>
             </thead>
             <tbody>
@@ -127,15 +128,24 @@
                 <td class="text-right">
                   <?php echo $order['current_timezone']; ?>
                 </td>
-                <?php if ($order['status'] == 0) { ?>
-                <td class="text-right"><button id="primary_button_<?php echo $order['ap_id']; ?>"
-                    class="btn btn-primary">Pending</button></td>
-                <?php } elseif ($order['status'] == 1) { ?>
-                <td class="text-right"><button id="success_button_<?php echo $order['ap_id']; ?>"
-                    class="btn btn-success">Approve</button></td>
-                <?php } ?>
+
+
+
                 <td class="text-right">
                   <?php echo $order['Date']; ?>
+                </td>
+                <td class="text-right">
+                  <?php if ($order['status'] == 0) { ?>
+                    <button id="primary_button_<?php echo $order['ap_id']; ?>" class="btn btn-primary">Pending</button>
+                  <?php } elseif ($order['status'] == 1) { ?>
+                    <button id="success_button_<?php echo $order['ap_id']; ?>" class="btn btn-success">Approve</button>
+                  <?php } ?>
+                  <span><div id="edit_button_<?php echo $order['ap_id']; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></div></span>
+                  <span>
+                    <div id="delete_button_<?php echo $order['ap_id']; ?>" class="btn btn-danger delete-button" data-order-id="<?php echo $order['ap_id']; ?>">
+                      <i class="fa fa-trash-o"></i>
+                    </div>
+                  </span>
                 </td>
               </tr>
               <?php } ?>
@@ -160,7 +170,38 @@
       </div>
     </div>
   </div>
-
+  <script>
+    $(document).ready(function () {
+      $('.delete-button').on('click', function () {
+        var orderId = $(this).data('order-id');
+        if (confirm('Are you sure you want to delete this data?')) {
+          // Assuming AJAX request to delete data
+          $.ajax({
+            url: 'index.php?route=report/appoint/delete&token=<?php echo $token; ?>', // Update with your actual URL for deleting data
+            type: 'POST',
+            data: { orderId: orderId },
+            dataType: 'json',
+            success: function (response) {
+              // Handle the response
+              if (response.success) {
+                // Update the UI or show a success message
+                console.log(response.success);
+                // Optionally, you can refresh the page or update the UI as needed
+                location.reload(true);
+              } else {
+                // Handle any errors or show an error message
+                console.error(response.error);
+              }
+            },
+            error: function (xhr, status, error) {
+              // Handle AJAX errors
+              console.error(error);
+            }
+          });
+        }
+      });
+    });
+  </script>
   <script>
     $(document).ready(function () {
       $('button').on('click', function () {
@@ -181,7 +222,7 @@
             if (response.success) {
               // Update the UI or show a success message
               console.log(response.success);
-              location.reload(true); 
+              location.reload(true);
             } else {
               // Handle any errors or show an error message
               console.error(response.error);
@@ -196,40 +237,40 @@
     });
   </script>
   <script type="text/javascript">
-$('#button-filter').on('click', function() {
-url = 'index.php?route=report/sale_order&token=<?php echo $token; ?>';
-	
-var filter_date_start = $('input[name=\'filter_date_start\']').val();
-	
-if (filter_date_start) {
-url += '&filter_date_start=' + encodeURIComponent(filter_date_start);
-}
+    $('#button-filter').on('click', function () {
+      url = 'index.php?route=report/sale_order&token=<?php echo $token; ?>';
 
-var filter_date_end = $('input[name=\'filter_date_end\']').val();
-	
-if (filter_date_end) {
-url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
-}
-	
-var filter_group = $('select[name=\'filter_group\']').val();
-	
-if (filter_group) {
-url += '&filter_group=' + encodeURIComponent(filter_group);
-}
-	
-var filter_order_status_id = $('select[name=\'filter_order_status_id\']').val();
-	
-if (filter_order_status_id != 0) {
-url += '&filter_order_status_id=' + encodeURIComponent(filter_order_status_id);
-}	
+      var filter_date_start = $('input[name=\'filter_date_start\']').val();
 
-location = url;
-});
-//--></script>
+      if (filter_date_start) {
+        url += '&filter_date_start=' + encodeURIComponent(filter_date_start);
+      }
+
+      var filter_date_end = $('input[name=\'filter_date_end\']').val();
+
+      if (filter_date_end) {
+        url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
+      }
+
+      var filter_group = $('select[name=\'filter_group\']').val();
+
+      if (filter_group) {
+        url += '&filter_group=' + encodeURIComponent(filter_group);
+      }
+
+      var filter_order_status_id = $('select[name=\'filter_order_status_id\']').val();
+
+      if (filter_order_status_id != 0) {
+        url += '&filter_order_status_id=' + encodeURIComponent(filter_order_status_id);
+      }
+
+      location = url;
+    });
+    //--></script>
   <script type="text/javascript">
-$('.date').datetimepicker({
-pickTime: false
-});
-//--></script>
+    $('.date').datetimepicker({
+      pickTime: false
+    });
+    //--></script>
 </div>
 <?php echo $footer; ?>

@@ -514,8 +514,7 @@ console.log(formattedTime, "eeror--");
     function getAvailableTimeSlots(selectedDate) {
         // For demonstration, return a fixed set of time slots
         return [
-            '6:00 AM',
-            '6:30 AM',
+            
             '7:00 AM',
             '7:30 AM',
             '8:00 AM',
@@ -531,16 +530,12 @@ console.log(formattedTime, "eeror--");
             '4:30 PM',
             '5:00 PM',
             '5:30 PM',
-            '6:00 PM',
-            '6:30 PM',
-            '7:00 PM'
-
+            '6:00 PM'
         ];
     }
     // Time slots in America time zone
     const americaTimeSlots = [
-        '2:00 PM',
-        '2:30 PM',
+        
         '3:00 PM',
         '3:30 PM',
         '4:00 PM',
@@ -563,9 +558,8 @@ console.log(formattedTime, "eeror--");
         '12:30 AM',
         '1:00 AM',
         '1:30 AM',
-        '2:00 AM',
-        '2:30 AM',
-        '3:00 AM'
+        '2:00 AM'
+        
     ];
 
     // Get the container to append time slots
