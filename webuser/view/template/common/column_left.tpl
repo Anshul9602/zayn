@@ -76,9 +76,7 @@
       <?php } ?>
     </li>
     <?php } ?>
-    <li><a href="<?php echo $appointh; ?>">
-      <i class="fa fa-tages fw"></i><span>Appointment</span>
-      </a></li>
+ 
 
   </ul>
   <div id="stats">

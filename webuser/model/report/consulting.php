@@ -14,10 +14,10 @@ class ModelReportConsulting extends Model {
         // Your database update logic goes here
         // For example, assuming you have a table named oc_appointments with a status column
         $this->db->query("
-            UPDATE `" . DB_PREFIX . "consulting_data` 
-            SET `status` = IF(`status` = 1) 
-            WHERE `ap_id` = '" . (int)$Id . "'
-        ");
+        UPDATE `" . DB_PREFIX . "consulting_data` 
+        SET `status` = IF(`status` = 1, 0, 1) 
+        WHERE `ap_id` = '" . (int)$Id . "'
+    ");
     }
 	public function getConsultingDataById($apId) {
 		$query = $this->db->query("

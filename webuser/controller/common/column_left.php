@@ -682,15 +682,15 @@ class ControllerCommonColumnLeft extends Controller
 			$report_appoint = array();
 
 			if ($this->user->hasPermission('access', 'report/appoint')) {
-				$report_sale[] = array(
-					'name'	   => $this->language->get('appointments'),
+				$report_appoint[] = array(
+					'name'	   => $this->language->get('appointments_list'),
 					'href'     => $this->url->link('report/appoint', 'token=' . $this->session->data['token'], true)
 					
 				);
 			}
 			if ($report_appoint) {
 				$report[] = array(
-					'name'	   => $this->language->get('text_report_sale'),
+					'name'	   => 'appointments',
 					'href'     => '',
 					'children' => $report_appoint
 				);
@@ -877,6 +877,10 @@ class ControllerCommonColumnLeft extends Controller
 					'children' => $report
 				);
 			}
+
+
+// echo "<pre>"; print_r($report_appoint);
+// echo "</pre>";
 
 			// Stats
 			$data['text_complete_status'] = $this->language->get('text_complete_status');

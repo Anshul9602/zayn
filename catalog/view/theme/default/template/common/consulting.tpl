@@ -295,7 +295,7 @@ echo "</script>";
         const timeSlotsContainer = document.getElementById('timeSlotsContainer');
         if (timeSlotsContainer) {
 
-console.log("runn");
+            console.log("runn");
 
             timeSlotsContainer.innerHTML = '';
             americaTimeSlots.forEach((americaTimeSlot, index) => {
@@ -308,10 +308,16 @@ console.log("runn");
                 const optionsDate = { day: '2-digit', month: 'short' };
                 const formattedDate = day + "-" + monthName;
 
+
+
+                const selectedTimezone = timezoneSelect.value;
+                const currentTime = moment().tz(selectedTimezone).format("h:mm A");
+                console.log(`Current time in ${selectedTimezone}: ${currentTime}`);
+
                 // Format time as "h:mm AM/PM"
                 const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
-                const formattedTime1 = currentDate.toLocaleTimeString('en-US', optionsTime);
-
+                const formattedTime1 = currentTime;
+                console.log(formattedTime1, "-formated1");
 
                 function parseTime(timeString) {
                     const [time, period] = timeString.split(' ');
@@ -361,7 +367,7 @@ console.log("runn");
                 timeSlotElement.style.padding = '5px 10px';
                 timeSlotElement.style.width = '100%';
                 timeSlotElement.style.border = '1px solid #eae9e9';
-
+console.log(formattedTime, "eeror--");
                 // Set styles for slot based on whether it's disabled or not
                 if (!slotPassed) {
                     timeSlotElement.textContent = formattedTime;
@@ -372,6 +378,7 @@ console.log("runn");
                     }
 
                 } else {
+                    
                     timeSlotElement.textContent = formattedTime;
                     timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
                     // Disable click on passed slots
@@ -493,6 +500,8 @@ console.log("runn");
         const userTimeZone = selectedZone;
         const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
         const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
+
+        console.log(userTimeSlot,"slot", userTimeZone , "zone", americaDateTime, "dates");
         return { momentObject: americaDateTime, formattedTime: userTimeSlot };
     }
 
@@ -654,7 +663,7 @@ console.log("runn");
     displayCurrentTime();
 
     // Update the time initially and set interval to update every minute
-   setInterval(displayCurrentTime, 300000); 
+    setInterval(displayCurrentTime, 300000); 
 </script>
 
 <script>

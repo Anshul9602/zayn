@@ -172,7 +172,7 @@
 
         // Assuming AJAX request to update status
         $.ajax({
-          url: 'index.php?route=report/appoint/updatestatus', // Update with your actual URL
+          url: 'index.php?route=report/appoint/updatestatus&token=<?php echo $token; ?>', // Update with your actual URL
           type: 'POST',
           data: { orderId: orderId },
           dataType: 'json', // Expect JSON response
@@ -181,6 +181,7 @@
             if (response.success) {
               // Update the UI or show a success message
               console.log(response.success);
+              location.reload(true); 
             } else {
               // Handle any errors or show an error message
               console.error(response.error);

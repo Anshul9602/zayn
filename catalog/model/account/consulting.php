@@ -18,8 +18,7 @@ class ModelAccountConsulting extends Model {
         );
     }
     public function getAllConsultingData() {
-        $query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "consulting_data`");
-    
+        $query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "consulting_data` WHERE `status` = 1");
         return $query->rows;
     }
 }

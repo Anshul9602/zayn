@@ -170,14 +170,14 @@ class ControllerReportAppoint extends Controller {
         if ($this->request->server['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && $this->request->server['REQUEST_METHOD'] == 'POST') {
             // Validate and sanitize the input data (orderId)
             $Id = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
-  echo $Id;
-  die();
+//   echo $Id;
+//   die();
             // Perform the status update in the database based on $orderId
             // Replace the following code with your actual database update logic
             $this->load->model('report/consulting');
             $this->model_report_consulting->updateStatus($Id);
             $requestData = $this->model_report_consulting->getConsultingDataById($Id);
-			$this->SendEmail($requestData);
+			// $this->SendEmail($requestData);
             // Send a response (e.g., success message)
             $json['success'] = 'Status updated successfully';
             
