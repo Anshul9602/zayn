@@ -172,16 +172,16 @@ class ControllerCommonConsulting extends Controller
      $mail->setText($message);
 
     $mail->send();
-	$this->send_email_user(
-		$currentTime,
-		$currentTimezone,
-		$selectedTime,
-		$selectedDate,
-		$userEmail,
-		$userName,
-		$meetingTitle,
-		$userMessage
-	);
+	// $this->send_email_user(
+	// 	$currentTime,
+	// 	$currentTimezone,
+	// 	$selectedTime,
+	// 	$selectedDate,
+	// 	$userEmail,
+	// 	$userName,
+	// 	$meetingTitle,
+	// 	$userMessage
+	// );
 
 // mail to cutomer
 

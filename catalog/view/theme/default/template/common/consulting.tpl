@@ -231,7 +231,7 @@ echo "</script>";
                         class="w3-button w3-display-topright">&times;</span>
                     <div class="mode">
                         <h4 class="text-center bold pb-4">Thank you for your submission!</h4>
-                        <p class="date">Your appointment is scheduled for <span id="apdate"></span> at <span
+                        <p class="date">We have received your appointment request for <span id="apdate"></span> at <span
                                 id="aptime"></span>
                             .</p>
                         <button type="button" id="okButton" class="btn btn-primary mt-3">Ok</button>
@@ -307,7 +307,6 @@ echo "</script>";
                 // Format date as "DD-Mon"
                 const optionsDate = { day: '2-digit', month: 'short' };
                 const formattedDate = day + "-" + monthName;
-
 
 
                 const selectedTimezone = timezoneSelect.value;
@@ -752,7 +751,7 @@ console.log(formattedTime, "eeror--");
 
     var splide = new Splide('.splidecol', {
         pagination: false,
-        perPage: 7,
+        perPage: 8,
         perMove: 3,
         breakpoints: {
             640: {
