@@ -140,7 +140,7 @@
                   <?php } elseif ($order['status'] == 1) { ?>
                     <button id="success_button_<?php echo $order['ap_id']; ?>" class="btn btn-success">Approve</button>
                   <?php } ?>
-                  <span><div id="edit_button_<?php echo $order['ap_id']; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></div></span>
+                  
                   <span>
                     <div id="delete_button_<?php echo $order['ap_id']; ?>" class="btn btn-danger delete-button" data-order-id="<?php echo $order['ap_id']; ?>">
                       <i class="fa fa-trash-o"></i>
