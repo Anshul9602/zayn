@@ -187,7 +187,7 @@
                 // Update the UI or show a success message
                 console.log(response.success);
                 // Optionally, you can refresh the page or update the UI as needed
-                location.reload(true);
+                //location.reload(true);
               } else {
                 // Handle any errors or show an error message
                 console.error(response.error);

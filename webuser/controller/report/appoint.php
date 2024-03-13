@@ -202,9 +202,14 @@ class ControllerReportAppoint extends Controller {
             // Perform the status update in the database based on $orderId
             // Replace the following code with your actual database update logic
             $this->load->model('report/consulting');
-            $this->model_report_consulting->delete($Id);
+           
             $requestData = $this->model_report_consulting->getConsultingDataById($Id);
-			$this->SendEmail($requestData);
+			$this->model_report_consulting->delete($Id);
+	//     echo "<pre>";
+	//    print_r($requestData);
+	//    echo "</pre>";
+	//    die();
+			$this->SendEmaild($requestData);
             // Send a response (e.g., success message)
             $json['success'] = 'Status updated successfully';
             
@@ -219,13 +224,11 @@ class ControllerReportAppoint extends Controller {
 	protected function SendEmail($requestData) {
 		
 		// $response = array();
-	// echo "<pre>";
-	// print_r($requestData);
-	// echo "</pre>";
+	   // echo "<pre>";
+	   // print_r($requestData);
+	   // echo "</pre>";
 		if ($requestData) {
 		
-			
-
 			$mail = new Mail();
 			$mail->protocol = $this->config->get('config_mail_protocol');
 			$mail->parameter = $this->config->get('config_mail_parameter');
@@ -274,7 +277,62 @@ class ControllerReportAppoint extends Controller {
 			// You can customize this message
 		}
 	
+	 return $response;
+    }
+	protected function SendEmaild($requestData) {
+		
+		
+		if ($requestData) {
+		
+			$mail = new Mail();
+			$mail->protocol = $this->config->get('config_mail_protocol');
+			$mail->parameter = $this->config->get('config_mail_parameter');
+			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+			$mail->smtp_username = $this->config->get('config_mail_smtp_username');
+			$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
+			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+		
+			// $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
 
-	return $response;
-}
+			$mail->setTo($requestData[0]['user_email']);
+		
+			$mail->setFrom($this->config->get('config_email'));
+			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+			$mail->setSubject("Cancel your appointment from Zayn Jewels");
+		  
+		
+			$message .= "Hello ". $requestData[0]['userName'] ." ,\n\n";
+		
+			$message .= "Your appointment has been Cancel with Zayn Jewels. \n\n";
+			
+			$message .= "Full Name- " . $requestData[0]['userName']. "\n\n";
+			$message .= "Date- " . $requestData[0]['selected_date'] . "\n\n";
+			$message .= "Time- " . $requestData[0]['selected_time'] . "\n\n";
+			$message .= "Time Zone- " .$requestData[0]['current_timezone'] . "\n\n";
+			$message .= "Subject- " . $requestData[0]['meetingTitle'] . "\n\n";
+			$message .= "Message- " . $requestData[0]['usermessage'] . "\n\n";
+			$message .= "Email- " . $requestData[0]['user_email'] . "\n\n";
+			$message .= "\n\n";
+			
+		
+			$message .= "Best ,\n\n";
+			
+			$message .= "-Team Zayn Jewels\n\n";
+			$message .= "Note : You can reschedule your appointment anytime by clicking here https://zaynjewels.com/index.php?route=common/consulting \n\n";
+			
+		
+			
+			 $mail->setText($message);
+			$mail->send();
+
+
+		} else {
+			$response['error'] = 'Validation failed';
+			// You can customize this message
+		}
+	
+
+	   return $response;
+    }
 }
