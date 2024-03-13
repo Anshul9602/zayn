@@ -177,7 +177,10 @@ class ControllerReportAppoint extends Controller {
             $this->load->model('report/consulting');
             $this->model_report_consulting->updateStatus($Id);
             $requestData = $this->model_report_consulting->getConsultingDataById($Id);
-			// $this->SendEmail($requestData);
+
+			// echo json_encode($requestData); 
+
+			$this->SendEmail($requestData);
             // Send a response (e.g., success message)
             $json['success'] = 'Status updated successfully';
             
@@ -201,7 +204,7 @@ class ControllerReportAppoint extends Controller {
             $this->load->model('report/consulting');
             $this->model_report_consulting->delete($Id);
             $requestData = $this->model_report_consulting->getConsultingDataById($Id);
-			// $this->SendEmail($requestData);
+			$this->SendEmail($requestData);
             // Send a response (e.g., success message)
             $json['success'] = 'Status updated successfully';
             
@@ -215,22 +218,13 @@ class ControllerReportAppoint extends Controller {
     }
 	protected function SendEmail($requestData) {
 		
-		$response = array();
+		// $response = array();
 	// echo "<pre>";
 	// print_r($requestData);
 	// echo "</pre>";
 		if ($requestData) {
 		
-			// $this->send_email(
-			// 	$requestData['currentTime'],
-			// 	$requestData['currentTimezone'],
-			// 	$requestData['selectedTime'],
-			// 	$requestData['selectedDate'],
-			// 	$requestData['userEmail'],
-			// 	$requestData['userName'],
-			// 	$requestData['meetingTitle'],
-			// 	$requestData['userMessage']
-			// );
+			
 
 			$mail = new Mail();
 			$mail->protocol = $this->config->get('config_mail_protocol');
@@ -242,18 +236,26 @@ class ControllerReportAppoint extends Controller {
 			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 		
 			// $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
-			$mail->setTo($requestData['userEmail']);
+
+			$mail->setTo($requestData[0]['user_email']);
 		
 			$mail->setFrom($this->config->get('config_email'));
 			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
 			$mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
 		  
 		
-			$message .= "Hello". $requestData['userName'] ." ,\n\n";
+			$message .= "Hello ". $requestData[0]['userName'] ." ,\n\n";
 		
 			$message .= "Your appointment has been confirmed with Zayn Jewels. \n\n";
 			
-		
+			$message .= "Full Name- " . $requestData[0]['userName']. "\n\n";
+			$message .= "Date- " . $requestData[0]['selected_date'] . "\n\n";
+			$message .= "Time- " . $requestData[0]['selected_time'] . "\n\n";
+			$message .= "Time Zone- " .$requestData[0]['current_timezone'] . "\n\n";
+			$message .= "Subject- " . $requestData[0]['meetingTitle'] . "\n\n";
+			$message .= "Message- " . $requestData[0]['usermessage'] . "\n\n";
+			$message .= "Email- " . $requestData[0]['user_email'] . "\n\n";
+			$message .= "\n\n";
 			$message .= "Look forward to meeting with you. \n\n";
 		
 			$message .= "Best ,\n\n";
