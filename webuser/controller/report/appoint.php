@@ -301,11 +301,8 @@ class ControllerReportAppoint extends Controller {
 			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
 			$mail->setSubject("Cancel your appointment from Zayn Jewels");
 		  
-		
 			$message .= "Hello ". $requestData[0]['userName'] ." ,\n\n";
-		
 			$message .= "Your appointment has been Cancel with Zayn Jewels. \n\n";
-			
 			$message .= "Full Name- " . $requestData[0]['userName']. "\n\n";
 			$message .= "Date- " . $requestData[0]['selected_date'] . "\n\n";
 			$message .= "Time- " . $requestData[0]['selected_time'] . "\n\n";
