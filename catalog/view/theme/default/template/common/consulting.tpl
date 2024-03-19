@@ -12,10 +12,6 @@ assets/css/home.css
 " rel="stylesheet">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-
-
-
-
 <style>
     .slote div {
         cursor: pointer;
@@ -53,10 +49,8 @@ display: none;
 </style>
 <style>
     .date-element {
-
         cursor: pointer;
     }
-
     .slote .disabled {
         background-color: gray;
         margin-bottom: 0;
@@ -89,8 +83,6 @@ echo "const co = " . json_encode($con) . ";";
 echo "</script>";
 ?>
 
-
-
 <section class="section-padding pb-3 pt-3" style="margin-top:30px;min-height:100vh;">
     <div style="padding:0 7%;">
         <div class="row justify-content-center">
@@ -120,7 +112,6 @@ echo "</script>";
                                 }
 
                                 function selectDate(selectedDate) {
-
                                     selected_date1 = selectedDate;
                                     // Reset styles for all date elements
                                     const dateElements = document.querySelectorAll('.date-element');
