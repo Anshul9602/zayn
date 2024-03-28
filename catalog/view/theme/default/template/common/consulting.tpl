@@ -352,7 +352,7 @@ echo "</script>";
                 // Check if the time slot should be disabled based on the selected date and time
                 let isDisabledSlot;
                 co.map((el, index) => {
-
+el.selected_date
                     if (el.selected_date === selected_date1 && el.selected_time === formattedTime) {
                         return isDisabledSlot = el.selected_date === selected_date1 && el.selected_time === formattedTime;
                     }
