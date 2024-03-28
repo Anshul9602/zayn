@@ -87,7 +87,7 @@ echo "</script>";
     <div style="padding:0 7%;">
         <div class="row justify-content-center">
             <h4 class="col-md-8 text-center pb-3" style="font-weight: 600;">What day is best for you?</h4>
-            <div class="col-md-8 mt-md-5 mt-3">
+            <div class="col-md-8  mt-3">
                 <div class="splide splidecol" aria-label="Splide Basic HTML Example">
                     <div class="splide__track">
                         <ul class="splide__list broder" id="dateSlider">
@@ -352,7 +352,7 @@ echo "</script>";
                 // Check if the time slot should be disabled based on the selected date and time
                 let isDisabledSlot;
                 co.map((el, index) => {
-el.selected_date
+
                     if (el.selected_date === selected_date1 && el.selected_time === formattedTime) {
                         return isDisabledSlot = el.selected_date === selected_date1 && el.selected_time === formattedTime;
                     }
