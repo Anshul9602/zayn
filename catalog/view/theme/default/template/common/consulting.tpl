@@ -17,14 +17,16 @@ assets/css/home.css
         cursor: pointer;
     }
 
-.splide__arrows{
-display: none;
-}
-@media screen and (max-width:650px) {
-    .splide__arrows{
-        display: block;
+    .splide__arrows {
+        display: none;
+    }
+
+    @media screen and (max-width:650px) {
+        .splide__arrows {
+            display: block;
         }
-}
+    }
+
     #New .splide__pagination {
         display: none !important;
     }
@@ -51,6 +53,7 @@ display: none;
     .date-element {
         cursor: pointer;
     }
+
     .slote .disabled {
         background-color: gray;
         margin-bottom: 0;
@@ -259,7 +262,7 @@ echo "</script>";
         "Asia/Calcutta"
     ];
 
-    console.log(allTimezones);
+   
     // Get the select element
     const timezoneSelect = document.getElementById("timezone");
 
@@ -281,7 +284,7 @@ echo "</script>";
     function displayCurrentTime() {
         const selectedTimezone = timezoneSelect.value;
         const currentTime = moment().tz(selectedTimezone).format("YYYY-MM-DD HH:mm:ss");
-        console.log(`Current time in ${selectedTimezone}: ${currentTime}`);
+        //console.log(`Current time in ${selectedTimezone}: ${currentTime}`);
     }
 
     // Populate the select element on page load
@@ -293,7 +296,7 @@ echo "</script>";
         const timeSlotsContainer = document.getElementById('timeSlotsContainer');
         if (timeSlotsContainer) {
 
-            console.log("runn");
+        
 
             timeSlotsContainer.innerHTML = '';
             americaTimeSlots.forEach((americaTimeSlot, index) => {
@@ -309,12 +312,12 @@ echo "</script>";
 
                 const selectedTimezone = timezoneSelect.value;
                 const currentTime = moment().tz(selectedTimezone).format("h:mm A");
-                console.log(`Current time in ${selectedTimezone}: ${currentTime}`);
+                //console.log(`Current time in ${selectedTimezone}: ${currentTime}`);
 
                 // Format time as "h:mm AM/PM"
                 const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
                 const formattedTime1 = currentTime;
-                console.log(formattedTime1, "-formated1");
+               // console.log(formattedTime1, "-formated1");
 
                 function parseTime(timeString) {
                     const [time, period] = timeString.split(' ');
@@ -352,7 +355,10 @@ echo "</script>";
                 // Check if the time slot should be disabled based on the selected date and time
                 let isDisabledSlot;
                 co.map((el, index) => {
-
+                    var date_databased = el.selected_date;
+                    var time_databased = el.selected_time;
+                    var zone_databased = el.current_timezone;
+                    console.log(date_databased, time_databased, zone_databased, "databse data ");
                     if (el.selected_date === selected_date1 && el.selected_time === formattedTime) {
                         return isDisabledSlot = el.selected_date === selected_date1 && el.selected_time === formattedTime;
                     }
@@ -364,7 +370,7 @@ echo "</script>";
                 timeSlotElement.style.padding = '5px 10px';
                 timeSlotElement.style.width = '100%';
                 timeSlotElement.style.border = '1px solid #eae9e9';
-console.log(formattedTime, "eeror--");
+                //console.log(formattedTime, "eeror--");
                 // Set styles for slot based on whether it's disabled or not
                 if (!slotPassed) {
                     timeSlotElement.textContent = formattedTime;
@@ -375,7 +381,7 @@ console.log(formattedTime, "eeror--");
                     }
 
                 } else {
-                    
+
                     timeSlotElement.textContent = formattedTime;
                     timeSlotElement.style.backgroundColor = '#ccc'; // Disabled color
                     // Disable click on passed slots
@@ -498,7 +504,7 @@ console.log(formattedTime, "eeror--");
         const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
         const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
 
-        console.log(userTimeSlot,"slot", userTimeZone , "zone", americaDateTime, "dates");
+        console.log(userTimeSlot, "slot", userTimeZone, "zone", americaDateTime, "dates");
         return { momentObject: americaDateTime, formattedTime: userTimeSlot };
     }
 
@@ -511,7 +517,7 @@ console.log(formattedTime, "eeror--");
     function getAvailableTimeSlots(selectedDate) {
         // For demonstration, return a fixed set of time slots
         return [
-            
+
             '6:00 AM',
             '6:30 AM',
             '7:00 AM',
@@ -528,12 +534,12 @@ console.log(formattedTime, "eeror--");
             '4:00 PM',
             '4:30 PM',
             '5:00 PM'
-            
+
         ];
     }
     // Time slots in America time zone
     const americaTimeSlots = [
-        
+
         '2:00 PM',
         '2:30 PM',
         '3:00 PM',
@@ -557,8 +563,8 @@ console.log(formattedTime, "eeror--");
         '12:00 AM',
         '12:30 AM',
         '1:00 AM'
-        
-        
+
+
     ];
 
     // Get the container to append time slots
