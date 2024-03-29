@@ -354,7 +354,8 @@ echo "</script>";
                 timeSlotElement.id = timeSlotId;
                 // Check if the time slot should be disabled based on the selected date and time
                 let isDisabledSlot;
-                co.map((el, index) => {
+               
+                co && co.map((el, index) => {
                     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                     const date_databased = el.selected_date;
                     const time_databased = el.selected_time;
@@ -362,11 +363,13 @@ echo "</script>";
                     const date = date_databased + ' ' + time_databased;
                     const time = time_databased;
                     const timezone = zone_databased;
-                    const electedTimezone = selectedTimeZone;
-
+                    const selectedTimezone = selectedTimeZone;
+                  
                     const convertedDateTime = convertDateTimeToUserTimeZone(date, time, timezone, selectedTimezone);
                     console.log('Converted Time:', convertedDateTime[0]);
                     console.log('Converted Date:', convertedDateTime[1]);
+                    console.log(formattedTime, convertedDateTime[0]);
+                    console.log(selected_date1, convertedDateTime[1]);
 
 
                     //console.log(date_databased, time_databased, zone_databased, "databse data ");
@@ -413,6 +416,7 @@ echo "</script>";
         console.log("Input Date:", date);
         console.log("Input Time:", time);
         console.log("Input Timezone:", timezone);
+        console.log("Input selectedTimezone:", selectedTimezone);
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
         // Check if date is defined before attempting to split
@@ -422,24 +426,22 @@ echo "</script>";
             const [hours, minutes] = timeString.split(':').map(Number);
 
             // Construct a JavaScript Date object using the parsed values
-            const dateTime = new Date();
-            dateTime.setFullYear(new Date().getFullYear()); // Current year
-            dateTime.setMonth(months.indexOf(month)); // Month index (0-based)
-            dateTime.setDate(parseInt(day, 10)); // Day of the month
-            dateTime.setHours(hours + (period === 'PM' ? 12 : 0)); // Hours (adjusted for PM)
-            dateTime.setMinutes(minutes); // Minutes
-            dateTime.setSeconds(0); // Seconds (set to 0 for simplicity)
+            const desiredDate = '2024-03-30 09:00';
+         const desiredTimezone = 'US/Pacific'; // Indian Standard Time
 
-            // Convert the JavaScript Date object to the user's selected time zone using moment-timezone
+// Create a moment object with the desired date and timezone
+const dateTime = moment.tz(desiredDate, desiredTimezone);
+
+console.log(dateTime.format())
+           
+            console.log(dateTime, "dattime");
+            //const Convert the JavaScript Date object to the user's selected time zone using moment-timezone
             const userDateTime = moment.tz(dateTime, timezone);
-
+            console.log(userDateTime, "ttttime");
             // Convert the user's selected time zone to the selected time zone
             const convertedDateTime = userDateTime.clone().tz(selectedTimezone);
             const cTime = convertedDateTime.format('hh:mm A');
             const cDate = convertedDateTime.format('DD-MMM');
-
-
-            //console.log(cTime,cdate, "date timeee");
 
             // Return the formatted date and time in the selected time zone
             return [cTime, cDate];  
@@ -519,13 +521,28 @@ echo "</script>";
                 timeSlotElement.id = timeSlotId;
                 // Check if the time slot should be disabled based on the selected date and time
                 let isDisabledSlot;
-                co.map((el, index) => {
+                co && co.map((el, index) => {
+                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    const date_databased = el.selected_date;
+                    const time_databased = el.selected_time;
+                    const zone_databased = el.current_timezone;
+                    const date = date_databased + ' ' + time_databased;
+                    const time = time_databased;
+                    const timezone = zone_databased;
+                    const selectedTimezone = selectedTimeZone;
 
-                    if (el.selected_date === selectedDate && el.selected_time === formattedTime) {
-                        return isDisabledSlot = el.selected_date === selectedDate && el.selected_time === formattedTime;
+                    const convertedDateTime = convertDateTimeToUserTimeZone(date, time, timezone, selectedTimezone);
+                    console.log('Converted Time:', convertedDateTime[0]);
+                    console.log('Converted Date:', convertedDateTime[1]);
+
+
+                    //console.log(date_databased, time_databased, zone_databased, "databse data ");
+                    if (convertedDateTime[1] === selectedDate && convertedDateTime[0] === formattedTime) {
+                        return isDisabledSlot = convertedDateTime[1] === selectedDate && convertedDateTime[0] === formattedTime;
                     }
 
                 })
+                
                 timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
                 timeSlotElement.style.margin = '10px 20px';
                 timeSlotElement.style.padding = '5px 10px';
