@@ -308,12 +308,9 @@ echo "</script>";
                 // Format date as "DD-Mon"
                 const optionsDate = { day: '2-digit', month: 'short' };
                 const formattedDate = day + "-" + monthName;
-
-
                 const selectedTimezone = timezoneSelect.value;
                 const currentTime = moment().tz(selectedTimezone).format("h:mm A");
                 //console.log(`Current time in ${selectedTimezone}: ${currentTime}`);
-
                 // Format time as "h:mm AM/PM"
                 const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
                 const formattedTime1 = currentTime;
@@ -354,7 +351,7 @@ echo "</script>";
                 timeSlotElement.id = timeSlotId;
                 // Check if the time slot should be disabled based on the selected date and time
                 let isDisabledSlot;
-               
+
                 co && co.map((el, index) => {
                     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                     const date_databased = el.selected_date;
@@ -364,7 +361,7 @@ echo "</script>";
                     const time = time_databased;
                     const timezone = zone_databased;
                     const selectedTimezone = selectedTimeZone;
-                  
+
                     const convertedDateTime = convertDateTimeToUserTimeZone(date, time, timezone, selectedTimezone);
                     console.log('Converted Time:', convertedDateTime[0]);
                     console.log('Converted Date:', convertedDateTime[1]);
@@ -417,39 +414,42 @@ echo "</script>";
         console.log("Input Time:", time);
         console.log("Input Timezone:", timezone);
         console.log("Input selectedTimezone:", selectedTimezone);
+    
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
+    
         // Check if date is defined before attempting to split
         if (typeof date !== 'undefined') {
             // Parse the date and time string into a JavaScript Date object
-            const [day, month, timeString, period, timezoneAbbreviation] = date.split(/[\s-]+/);
+            const [day, month, timeString, period] = date.split(/[\s-]+/);
             const [hours, minutes] = timeString.split(':').map(Number);
-
+    
             // Construct a JavaScript Date object using the parsed values
-            const desiredDate = '2024-03-30 09:00';
-         const desiredTimezone = 'US/Pacific'; // Indian Standard Time
-
-// Create a moment object with the desired date and timezone
-const dateTime = moment.tz(desiredDate, desiredTimezone);
-
-console.log(dateTime.format())
-           
-            console.log(dateTime, "dattime");
-            //const Convert the JavaScript Date object to the user's selected time zone using moment-timezone
+            const dateTime = new Date();
+            dateTime.setFullYear(new Date().getFullYear()); // Current year
+            dateTime.setMonth(months.indexOf(month)); // Month index (0-based)
+            dateTime.setDate(parseInt(day, 10)); // Day of the month
+            dateTime.setHours(hours + (period === 'PM' ? 12 : 0)); // Hours (adjusted for PM)
+            dateTime.setMinutes(minutes); // Minutes
+            dateTime.setSeconds(0); // Seconds (set to 0 for simplicity)
+    
+            // Convert the JavaScript Date object to the user's selected time zone
             const userDateTime = moment.tz(dateTime, timezone);
-            console.log(userDateTime, "ttttime");
+    
             // Convert the user's selected time zone to the selected time zone
             const convertedDateTime = userDateTime.clone().tz(selectedTimezone);
+    
+            // Format the converted date and time
             const cTime = convertedDateTime.format('hh:mm A');
-            const cDate = convertedDateTime.format('DD-MMM');
-
+            const cDate = convertedDateTime.format('D-MMM');
+    
             // Return the formatted date and time in the selected time zone
-            return [cTime, cDate];  
+            return [cTime, cDate];
         } else {
             console.log("Date is undefined!");
             return null; // Or handle the undefined case appropriately
         }
     }
+    
 
     function showBookedMessage(element) {
         console.log("Elemt booked message ")
@@ -542,7 +542,7 @@ console.log(dateTime.format())
                     }
 
                 })
-                
+
                 timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
                 timeSlotElement.style.margin = '10px 20px';
                 timeSlotElement.style.padding = '5px 10px';
