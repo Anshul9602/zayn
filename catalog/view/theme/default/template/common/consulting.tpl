@@ -295,9 +295,6 @@ echo "</script>";
     function displayTimeSlots(selectedTimeZone) {
         const timeSlotsContainer = document.getElementById('timeSlotsContainer');
         if (timeSlotsContainer) {
-
-
-
             timeSlotsContainer.innerHTML = '';
             americaTimeSlots.forEach((americaTimeSlot, index) => {
                 const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot, selectedTimeZone);
@@ -414,15 +411,15 @@ echo "</script>";
         console.log("Input Time:", time);
         console.log("Input Timezone:", timezone);
         console.log("Input selectedTimezone:", selectedTimezone);
-    
+
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
+
         // Check if date is defined before attempting to split
         if (typeof date !== 'undefined') {
             // Parse the date and time string into a JavaScript Date object
             const [day, month, timeString, period] = date.split(/[\s-]+/);
             const [hours, minutes] = timeString.split(':').map(Number);
-    
+
             // Construct a JavaScript Date object using the parsed values
             const dateTime = new Date();
             dateTime.setFullYear(new Date().getFullYear()); // Current year
@@ -431,17 +428,30 @@ echo "</script>";
             dateTime.setHours(hours + (period === 'PM' ? 12 : 0)); // Hours (adjusted for PM)
             dateTime.setMinutes(minutes); // Minutes
             dateTime.setSeconds(0); // Seconds (set to 0 for simplicity)
-    
+
             // Convert the JavaScript Date object to the user's selected time zone
             const userDateTime = moment.tz(dateTime, timezone);
-    
+            console.log(userDateTime, "user date ==>", timezone, dateTime);
+            function convertToTimeZone1(userDateTime, targetTimeZone) {
+                // Convert the userDateTime to the target timezone
+                const convertedDateTime = userDateTime.clone().tz(targetTimeZone);
+
+                // Return the moment object in JSON format
+                return convertedDateTime;
+            }
+
+
+            const targetTimeZone = "America/New_York";
+
+            const convertedDateTime1 = userDateTime.tz('Asia/Calcutta').format("YYYY-MM-DD HH:mm:ss");
+            console.log(convertedDateTime1, "Asia/Calcutta ==>");
             // Convert the user's selected time zone to the selected time zone
             const convertedDateTime = userDateTime.clone().tz(selectedTimezone);
-    
+            console.log(convertedDateTime, "New York times 2 ==>");
             // Format the converted date and time
             const cTime = convertedDateTime.format('hh:mm A');
             const cDate = convertedDateTime.format('D-MMM');
-    
+
             // Return the formatted date and time in the selected time zone
             return [cTime, cDate];
         } else {
@@ -449,7 +459,7 @@ echo "</script>";
             return null; // Or handle the undefined case appropriately
         }
     }
-    
+
 
     function showBookedMessage(element) {
         console.log("Elemt booked message ")
@@ -474,7 +484,6 @@ echo "</script>";
         if (timeSlotsContainer) {
             // Clear existing time slots
             timeSlotsContainer.innerHTML = '';
-
             // Populate time slots in user's time zone
             americaTimeSlots.forEach((americaTimeSlot, index) => {
                 const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot, selectedTimeZone);
