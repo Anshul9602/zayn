@@ -195,9 +195,9 @@ echo "</script>";
 
 
 
-        <div id="id02" class="w3-modal">
+        <div id="id02" class="w3-modal" >
             <div class="w3-modal-content p-4"
-                style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;">
+                style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;margin-top: -100px !important;">
                 <div class="w3-container">
                     <span onclick="document.getElementById('id02').style.display='none'"
                         class="w3-button w3-display-topright">&times;</span>
@@ -234,7 +234,7 @@ echo "</script>";
         </div>
         <div id="id01" class="w3-modal">
             <div class="w3-modal-content p-4"
-                style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;">
+                style="min-height: 300px;justify-content: center;display: flex;align-items: center;padding: 30px;top:30%;margin-top: -100px !important;">
                 <div class="w3-container">
                     <span onclick="document.getElementById('id01').style.display='none'"
                         class="w3-button w3-display-topright">&times;</span>
@@ -334,12 +334,30 @@ echo "</script>";
                 function compareTimes(formattedTime, formattedTime1) {
                     const time1 = parseTime(formattedTime);
                     const time2 = parseTime(formattedTime1);
-
+                    console.log(formattedTime1 , formattedTime)
                     // Convert time objects to minutes since midnight
-                    const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
-                    const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
+                    const time1Minutes = convertTo24HourMinutes(time1);
+                    const time2Minutes = convertTo24HourMinutes(time2);
+                    
+                    function convertTo24HourMinutes(time) {
+                        let hours = time.hours;
+                        const minutes = time.minutes;
+                    
+                        // Convert 'PM' hours to 24-hour format
+                        if (time.period.toLowerCase() === 'pm' && hours < 12) {
+                            hours += 12;
+                        }
+                    
+                        // Handle '12 AM' case (midnight)
+                        if (time.period.toLowerCase() === 'am' && hours === 12) {
+                            hours = 0;
+                        }
+                    
+                        // Calculate total minutes in 24-hour format
+                        return hours * 60 + minutes;
+                    }
 
-
+console.log(time1Minutes < time2Minutes)
                     // Compare the two times
                     return time1Minutes < time2Minutes;
                 }
@@ -372,10 +390,7 @@ echo "</script>";
                     const selectedTimezone = selectedTimeZone;
 
                     const convertedDateTime = convertDateTimeToUserTimeZone(date, time, timezone, selectedTimezone);
-                    console.log('Converted Time:', convertedDateTime[0]);
-                    console.log('Converted Date:', convertedDateTime[1]);
-                    console.log(formattedTime, convertedDateTime[0]);
-                    console.log(selected_date1, convertedDateTime[1]);
+                  
                     function convertTo24HourTime(time12h) {
                         const [time, period] = time12h.split(' ');
                         let [hours, minutes] = time.split(':');
@@ -399,13 +414,13 @@ echo "</script>";
 // Compare the normalized time values
 
 
-                    console.log("yesss", convertedTime , formattedTime24);
+                 
                     //console.log(date_databased, time_databased, zone_databased, "databse data ");
                     if (convertedDateTime[1] == selected_date1 && convertedTime == formattedTime24) {
                        
                         return isDisabledSlot = convertedDateTime[1] === selected_date1 && convertedTime === formattedTime24;
                     }
-console.log(isDisabledSlot,"tttsds");
+
                 })
 
                 timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
@@ -476,8 +491,7 @@ console.log(isDisabledSlot,"tttsds");
            const cDate = dateTimeArray[0];
            const cTime = dateTimeArray[1];
            
-           console.log("cDate:", cDate);
-           console.log("cTime:", cTime);
+          
             
      
         // Check if date is defined before attempting to split
@@ -486,14 +500,14 @@ console.log(isDisabledSlot,"tttsds");
        
             return [cTime, cDate];
         } else {
-            console.log("Date is undefined!");
+            
             return null; // Or handle the undefined case appropriately
         }
     }
 
 
     function showBookedMessage(element) {
-        console.log("Elemt booked message ")
+      
         const bookedMessage = document.createElement('div');
         bookedMessage.textContent = 'Booked Slot';
         bookedMessage.className = 'booked-message';
@@ -502,7 +516,7 @@ console.log(isDisabledSlot,"tttsds");
 
     // Function to hide "Booked" message when not hovered over
     function hideBookedMessage(element) {
-        console.log("Elemt booked message ")
+     
         const bookedMessage = element.querySelector('.booked-message');
         if (bookedMessage) {
             element.removeChild(bookedMessage);
@@ -540,8 +554,26 @@ console.log(isDisabledSlot,"tttsds");
                     const time2 = parseTime(formattedTime1);
 
                     // Convert time objects to minutes since midnight
-                    const time1Minutes = time1.hours * 60 + time1.minutes + (time1.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
-                    const time2Minutes = time2.hours * 60 + time2.minutes + (time2.period.toLowerCase() === 'pm' ? 12 * 60 : 0);
+                    const time1Minutes = convertTo24HourMinutes(time1);
+                    const time2Minutes = convertTo24HourMinutes(time2);
+                    
+                    function convertTo24HourMinutes(time) {
+                        let hours = time.hours;
+                        const minutes = time.minutes;
+                    
+                        // Convert 'PM' hours to 24-hour format
+                        if (time.period.toLowerCase() === 'pm' && hours < 12) {
+                            hours += 12;
+                        }
+                    
+                        // Handle '12 AM' case (midnight)
+                        if (time.period.toLowerCase() === 'am' && hours === 12) {
+                            hours = 0;
+                        }
+                    
+                        // Calculate total minutes in 24-hour format
+                        return hours * 60 + minutes;
+                    }
                     // Compare the two times
                     return time1Minutes < time2Minutes;
                 }
@@ -555,7 +587,7 @@ console.log(isDisabledSlot,"tttsds");
 
                     slotPassed = false;
                 }
-                console.log(selectedDate, "ddggsfbnsd");
+                //console.log(selectedDate, "ddggsfbnsd");
                 const timeSlotElement = document.createElement('div');
                 const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
                 timeSlotElement.id = timeSlotId;
@@ -572,8 +604,8 @@ console.log(isDisabledSlot,"tttsds");
                     const selectedTimezone = selectedTimeZone;
 
                     const convertedDateTime = convertDateTimeToUserTimeZone(date, time, timezone, selectedTimezone);
-                    console.log('Converted Time:', convertedDateTime[0]);
-                    console.log('Converted Date:', convertedDateTime[1]);
+                   // console.log('Converted Time:', convertedDateTime[0]);
+                   // console.log('Converted Date:', convertedDateTime[1]);
                     function convertTo24HourTime(time12h) {
                         const [time, period] = time12h.split(' ');
                         let [hours, minutes] = time.split(':');
@@ -597,7 +629,7 @@ console.log(isDisabledSlot,"tttsds");
 // Compare the normalized time values
 
 
-                    console.log("yesss", convertedTime , formattedTime24);
+                    //console.log("yesss", convertedTime , formattedTime24);
                     //console.log(date_databased, time_databased, zone_databased, "databse data ");
                     if (convertedDateTime[1] == selectedDate && convertedTime == formattedTime24) {
                        
@@ -643,7 +675,7 @@ console.log(isDisabledSlot,"tttsds");
         const americaDateTime = moment.tz(`${moment().format('YYYY-MM-DD')} ${americaTime}`, americaTimeZone);
         const userTimeSlot = americaDateTime.clone().tz(userTimeZone).format('hh:mm A');
 
-        console.log(userTimeSlot, "slot", userTimeZone, "zone", americaDateTime, "dates");
+       // console.log(userTimeSlot, "slot", userTimeZone, "zone", americaDateTime, "dates");
         return { momentObject: americaDateTime, formattedTime: userTimeSlot };
     }
 
@@ -872,14 +904,14 @@ console.log(isDisabledSlot,"tttsds");
                         submitButton.classList.remove('loading');
                         document.getElementById('id01').style.display = 'block';
                     } else {
-                        console.error('Error:', xhr.statusText);
+                       // console.error('Error:', xhr.statusText);
                         submitButton.classList.remove('loading');
                     }
                 }
             };
 
             xhr.onerror = function (error) {
-                console.error('Error:', error);
+               // console.error('Error:', error);
                 submitButton.classList.remove('loading');
             };
 
