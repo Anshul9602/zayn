@@ -13,6 +13,10 @@ assets/css/home.css
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <style>
+    .w3-modal {
+     
+        padding-top: auto !important;
+    }
     .slote div {
         cursor: pointer;
     }
@@ -108,8 +112,12 @@ echo "</script>";
                                     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
                                     const dayName = dayNames[futureDate.getDay()];
-                                    const day = futureDate.getDate();
+                                   
+                                    const day = futureDate.getDate() ;
                                     const monthName = monthNames[futureDate.getMonth()];
+
+
+
 
                                     return { dayName, day, monthName };
                                 }
@@ -301,10 +309,14 @@ echo "</script>";
 
                 // Check if the slot has passed based on the current time
                 const currentDate = new Date();
+               
                 const { dayName, day, monthName } = getDateForOffset(0);
+                
                 // Format date as "DD-Mon"
                 const optionsDate = { day: '2-digit', month: 'short' };
                 const formattedDate = day + "-" + monthName;
+
+
                 const selectedTimezone = timezoneSelect.value;
                 const currentTime = moment().tz(selectedTimezone).format("h:mm A");
                 //console.log(`Current time in ${selectedTimezone}: ${currentTime}`);
@@ -347,7 +359,7 @@ echo "</script>";
                 const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
                 timeSlotElement.id = timeSlotId;
                 // Check if the time slot should be disabled based on the selected date and time
-                let isDisabledSlot;
+                let isDisabledSlot=false;
 
                 co && co.map((el, index) => {
                     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -364,13 +376,36 @@ echo "</script>";
                     console.log('Converted Date:', convertedDateTime[1]);
                     console.log(formattedTime, convertedDateTime[0]);
                     console.log(selected_date1, convertedDateTime[1]);
-
-
-                    //console.log(date_databased, time_databased, zone_databased, "databse data ");
-                    if (convertedDateTime[1] === selected_date1 && convertedDateTime[0] === formattedTime) {
-                        return isDisabledSlot = convertedDateTime[1] === selected_date1 && convertedDateTime[0] === formattedTime;
+                    function convertTo24HourTime(time12h) {
+                        const [time, period] = time12h.split(' ');
+                        let [hours, minutes] = time.split(':');
+                    
+                        if (period === 'PM') {
+                            hours = (parseInt(hours, 10) % 12) + 12;
+                        } else {
+                            hours = parseInt(hours, 10) % 12;
+                        }
+                    
+                        // Ensure leading zeros for hours and minutes
+                        hours = hours < 10 ? '0' + hours : hours;
+                        minutes = minutes < 10 ? '0' + minutes : minutes;
+                    
+                        return `${hours}:${minutes}`;
                     }
 
+                    const convertedTime = convertTo24HourTime(convertedDateTime[0]);
+                    const formattedTime24 = convertTo24HourTime(formattedTime);
+
+// Compare the normalized time values
+
+
+                    console.log("yesss", convertedTime , formattedTime24);
+                    //console.log(date_databased, time_databased, zone_databased, "databse data ");
+                    if (convertedDateTime[1] == selected_date1 && convertedTime == formattedTime24) {
+                       
+                        return isDisabledSlot = convertedDateTime[1] === selected_date1 && convertedTime === formattedTime24;
+                    }
+console.log(isDisabledSlot,"tttsds");
                 })
 
                 timeSlotElement.className = `col-md-3 text-center ${slotPassed || isDisabledSlot ? 'disabled' : 'time-slot'}`;
@@ -407,52 +442,48 @@ echo "</script>";
 
 
     function convertDateTimeToUserTimeZone(date, time, timezone, selectedTimezone) {
-        console.log("Input Date:", date);
-        console.log("Input Time:", time);
-        console.log("Input Timezone:", timezone);
-        console.log("Input selectedTimezone:", selectedTimezone);
+     
 
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+   
+     
 
+        const formattedDateTime111 = moment(date, 'D-MMM h:mm A').format('YYYY-MM-DD hh:mm A');
+        
+       // console.log(formattedDateTime,"tessttttt");
+            // Specify the original date, time, and time zone
+            var originalDateTime = formattedDateTime111;
+            var originalTimeZone = timezone; // EST
+        
+            
+            var momentInOriginalTimeZone = moment.tz(originalDateTime, "YYYY-MM-DD h:mm A", originalTimeZone);
+        
+            
+            var newTimeZone = selectedTimezone; // CET
+        
+            
+            var momentInNewTimeZone = momentInOriginalTimeZone.clone().tz(newTimeZone);
+           // var momentInOldTimeZone = momentInOriginalTimeZone.clone().tz(originalTimeZone);
+        
+            
+            var formattedDateTimeWithTimeZone = momentInNewTimeZone.format("D-MMM, hh:mm A ");
+        
+           // var formattedDateTimeWithTimeZoneold = momentInOldTimeZone.format("MMMM D, YYYY h:mm A z");
+          
+           const dateTimeArray = formattedDateTimeWithTimeZone.split(", ");
+
+           // Extract date and time from the array
+           const cDate = dateTimeArray[0];
+           const cTime = dateTimeArray[1];
+           
+           console.log("cDate:", cDate);
+           console.log("cTime:", cTime);
+            
+     
         // Check if date is defined before attempting to split
         if (typeof date !== 'undefined') {
             // Parse the date and time string into a JavaScript Date object
-            const [day, month, timeString, period] = date.split(/[\s-]+/);
-            const [hours, minutes] = timeString.split(':').map(Number);
-
-            // Construct a JavaScript Date object using the parsed values
-            const dateTime = new Date();
-            dateTime.setFullYear(new Date().getFullYear()); // Current year
-            dateTime.setMonth(months.indexOf(month)); // Month index (0-based)
-            dateTime.setDate(parseInt(day, 10)); // Day of the month
-            dateTime.setHours(hours + (period === 'PM' ? 12 : 0)); // Hours (adjusted for PM)
-            dateTime.setMinutes(minutes); // Minutes
-            dateTime.setSeconds(0); // Seconds (set to 0 for simplicity)
-
-            // Convert the JavaScript Date object to the user's selected time zone
-            const userDateTime = moment.tz(dateTime, timezone);
-            console.log(userDateTime, "user date ==>", timezone, dateTime);
-            function convertToTimeZone1(userDateTime, targetTimeZone) {
-                // Convert the userDateTime to the target timezone
-                const convertedDateTime = userDateTime.clone().tz(targetTimeZone);
-
-                // Return the moment object in JSON format
-                return convertedDateTime;
-            }
-
-
-            const targetTimeZone = "America/New_York";
-
-            const convertedDateTime1 = userDateTime.tz('Asia/Calcutta').format("YYYY-MM-DD HH:mm:ss");
-            console.log(convertedDateTime1, "Asia/Calcutta ==>");
-            // Convert the user's selected time zone to the selected time zone
-            const convertedDateTime = userDateTime.clone().tz(selectedTimezone);
-            console.log(convertedDateTime, "New York times 2 ==>");
-            // Format the converted date and time
-            const cTime = convertedDateTime.format('hh:mm A');
-            const cDate = convertedDateTime.format('D-MMM');
-
-            // Return the formatted date and time in the selected time zone
+       
             return [cTime, cDate];
         } else {
             console.log("Date is undefined!");
@@ -494,7 +525,7 @@ echo "</script>";
                 // Format date as "DD-Mon"
                 const optionsDate = { day: '2-digit', month: 'short' };
                 const formattedDate = day + "-" + monthName;
-
+              
                 // Format time as "h:mm AM/PM"
                 const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
                 const formattedTime1 = currentDate.toLocaleTimeString('en-US', optionsTime);
@@ -524,7 +555,7 @@ echo "</script>";
 
                     slotPassed = false;
                 }
-
+                console.log(selectedDate, "ddggsfbnsd");
                 const timeSlotElement = document.createElement('div');
                 const timeSlotId = `time-slot-${index}`; // Unique id for each time slot
                 timeSlotElement.id = timeSlotId;
@@ -543,7 +574,36 @@ echo "</script>";
                     const convertedDateTime = convertDateTimeToUserTimeZone(date, time, timezone, selectedTimezone);
                     console.log('Converted Time:', convertedDateTime[0]);
                     console.log('Converted Date:', convertedDateTime[1]);
+                    function convertTo24HourTime(time12h) {
+                        const [time, period] = time12h.split(' ');
+                        let [hours, minutes] = time.split(':');
+                    
+                        if (period === 'PM') {
+                            hours = (parseInt(hours, 10) % 12) + 12;
+                        } else {
+                            hours = parseInt(hours, 10) % 12;
+                        }
+                    
+                        // Ensure leading zeros for hours and minutes
+                        hours = hours < 10 ? '0' + hours : hours;
+                        minutes = minutes < 10 ? '0' + minutes : minutes;
+                    
+                        return `${hours}:${minutes}`;
+                    }
 
+                    const convertedTime = convertTo24HourTime(convertedDateTime[0]);
+                    const formattedTime24 = convertTo24HourTime(formattedTime);
+
+// Compare the normalized time values
+
+
+                    console.log("yesss", convertedTime , formattedTime24);
+                    //console.log(date_databased, time_databased, zone_databased, "databse data ");
+                    if (convertedDateTime[1] == selectedDate && convertedTime == formattedTime24) {
+                       
+                        return isDisabledSlot = convertedDateTime[1] === selectedDate && convertedTime === formattedTime24;
+                    }
+//console.log(isDisabledSlot,"tttsds");
 
                     //console.log(date_databased, time_databased, zone_databased, "databse data ");
                     if (convertedDateTime[1] === selectedDate && convertedDateTime[0] === formattedTime) {
