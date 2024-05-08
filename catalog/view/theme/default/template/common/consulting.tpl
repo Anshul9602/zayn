@@ -95,8 +95,8 @@ echo "</script>";
     <div style="padding:0 7%;">
         <div class="row justify-content-center">
 <div class="event col-12">
-    <h2 class="text-center">Events: </h2>
-    <p class="text-center"></p>
+    <h2 class="text-center">Events:  <?php echo $con1[0]['name']; ?> </h2>
+    <p class="text-center"><?php echo $con1[0]['dis']; ?></p>
 </div><br>
             <h4 class="col-md-8 text-center pb-3" style="font-weight: 600;">What day is best for you?</h4>
             <div class="col-md-8  mt-3">

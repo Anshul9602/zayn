@@ -68,6 +68,14 @@ class ControllerCommonConsulting extends Controller
 
 		$this->load->model('account/consulting');
 		$condata = $this->model_account_consulting->getAllConsultingData();
+		$condata1 = $this->model_account_consulting->getAllEventData();
+// print_r($condata1);
+
+		if ($condata1 == null) {
+			$data['con1'] = null;
+		}else{
+			$data['con1'] = $this->model_account_consulting->getAllEventData();
+		}
 		if ($condata == null) {
 			$data['con'] = null;
 		}else{
