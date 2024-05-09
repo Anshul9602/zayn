@@ -180,7 +180,7 @@
                       <button class="btn btn-primary edit-button" onclick="openEditPopup(<?php echo $order1['id']; ?>)">Edit</button>
 
                       <span>
-                        <div id="delete_Event_<?php echo $order1['id']; ?>" class="btn btn-danger delete-Event" data-order-id="<?php echo $order1['id']; ?>">
+                        <div id="delete_Event_<?php echo $order1['id']; ?>" class="btn btn-danger delete-Event" data-order-id="<?php echo $order1['id']; ?>" style="display:none;">
                           <i class="fa fa-trash-o"></i>
                         </div>
                       </span>
@@ -299,7 +299,7 @@
 
       </div>
 
-      <form  action="index.php?route=report/appoint/updateevent&token=<?php echo $token; ?>" method="POST" class="container">
+      <form  action="index.php?route=report/appoint/updateevent&token=<?php echo $token; ?>" method="POST" >
 
         <!-- Hidden input field for user ID -->
 
@@ -317,6 +317,7 @@
               <div class="col-md-12" style="padding: 0;"><label for="mobile_number">Description</label></div>
               <input type="text" name="dis" value="<?php echo $order1['dis']; ?>">
             </div>
+            
             <div class="col-md-8">
               <button type="submit" class="btn btn-primary save_event" style="padding: 10px 30px;    font-size: 18px;margin-top:20px">Save</button>
             </div>
