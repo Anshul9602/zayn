@@ -317,6 +317,10 @@
               <div class="col-md-12" style="padding: 0;"><label for="mobile_number">Description</label></div>
               <input type="text" name="dis" value="<?php echo $order1['dis']; ?>">
             </div>
+            <div class="col-md-8">
+              <div class="col-md-12" style="padding: 0;"><label for="date">Event Date</label></div>
+              <input type="text" name="date" value="<?php echo $order1['date']; ?>">
+            </div>
             
             <div class="col-md-8">
               <button type="submit" class="btn btn-primary save_event" style="padding: 10px 30px;    font-size: 18px;margin-top:20px">Save</button>

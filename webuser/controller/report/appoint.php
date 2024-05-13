@@ -204,6 +204,7 @@ class ControllerReportAppoint extends Controller
 			$data['id'] = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
 			$data['name'] = isset($this->request->post['name']) ? $this->request->post['name'] : '';
 			$data['des'] = isset($this->request->post['dis']) ? $this->request->post['dis'] : '';
+			$data['date'] = isset($this->request->post['date']) ? $this->request->post['date'] : '';
 			// echo  $orderId;
 			// die();
 			// Perform necessary validation and processing of the form data

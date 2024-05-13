@@ -60,10 +60,11 @@ class ModelReportConsulting extends Model
     {
         $name = $data['name'];
         $dis = $data['des'];
+        $date = $data['date'];
 
         $this->db->query("
         UPDATE `" . DB_PREFIX . "events` 
-        SET `name` = '$name', `dis` = '$dis'
+        SET `name` = '$name', `dis` = '$dis','date' = '$date
         WHERE `id` = '" . (int)$data['id'] . "'
     ");
     }
