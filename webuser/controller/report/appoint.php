@@ -201,6 +201,10 @@ class ControllerReportAppoint extends Controller
 		// Check if the request method is POST
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
 			// Retrieve the form data
+
+// print_r($_POST);
+// die();
+
 			$data['id'] = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
 			$data['name'] = isset($this->request->post['name']) ? $this->request->post['name'] : '';
 			$data['des'] = isset($this->request->post['dis']) ? $this->request->post['dis'] : '';
