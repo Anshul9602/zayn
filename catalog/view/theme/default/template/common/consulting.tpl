@@ -529,7 +529,7 @@ echo "</script>";
             // Clear existing time slots
             timeSlotsContainer.innerHTML = '';
             // Populate time slots in user's time zone
-            americaTimeSlots.reverse().forEach((americaTimeSlot, index) => {
+            americaTimeSlots.forEach((americaTimeSlot, index) => {
                 const { momentObject, formattedTime } = convertToUserTimeZone(americaTimeSlot, selectedTimeZone);
 
                 // Check if the slot has passed based on the current time
