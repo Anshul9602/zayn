@@ -202,8 +202,8 @@ class ControllerReportAppoint extends Controller
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
 			// Retrieve the form data
 
-// print_r($_POST);
-// die();
+			// print_r($_POST);
+			// die();
 
 			$data['id'] = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
 			$data['name'] = isset($this->request->post['name']) ? $this->request->post['name'] : '';
@@ -237,13 +237,13 @@ class ControllerReportAppoint extends Controller
 			// Replace the following code with your actual database update logic
 			$this->load->model('report/consulting');
 
-			
+
 			$this->model_report_consulting->deleteEvent($Id);
 			//     echo "<pre>";
 			//    print_r($requestData);
 			//    echo "</pre>";
 			//    die();
-			
+
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 
@@ -292,6 +292,7 @@ class ControllerReportAppoint extends Controller
 		// echo "<pre>";
 		// print_r($requestData);
 		// echo "</pre>";
+		$appoint_event = $this->model_report_consulting->getAllEventData();
 		if ($requestData) {
 
 			$mail = new Mail();
@@ -314,22 +315,23 @@ class ControllerReportAppoint extends Controller
 
 			$message .= "Hello " . $requestData[0]['userName'] . " ,\n\n";
 
-			$message .= "Your appointment has been confirmed with Zayn Jewels. \n\n";
+			$message .= "Your appointment has been scheduled with Zayn Jewels at the " . $appoint_event['name'] ."\n\n";
 
 			$message .= "Full Name- " . $requestData[0]['userName'] . "\n\n";
 			$message .= "Date- " . $requestData[0]['selected_date'] . "\n\n";
 			$message .= "Time- " . $requestData[0]['selected_time'] . "\n\n";
 			$message .= "Time Zone- " . $requestData[0]['current_timezone'] . "\n\n";
+			
 			$message .= "Subject- " . $requestData[0]['meetingTitle'] . "\n\n";
 			$message .= "Message- " . $requestData[0]['usermessage'] . "\n\n";
 			$message .= "Email- " . $requestData[0]['user_email'] . "\n\n";
 			$message .= "\n\n";
-			$message .= "Look forward to meeting with you. \n\n";
+			$message .= "We look forward to seeing you.  \n\n";
 
-			$message .= "Best ,\n\n";
+			$message .= "Kind Regrads,  \n\n";
 
-			$message .= "-Team Zayn Jewels\n\n";
-			$message .= "Note : You can reschedule your appointment anytime by clicking here https://zaynjewels.com/index.php?route=common/consulting \n\n";
+			$message .= "-Zayn Jewels Team- \n\n";
+			
 
 
 
