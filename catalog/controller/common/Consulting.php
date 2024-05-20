@@ -153,7 +153,7 @@ class ControllerCommonConsulting extends Controller
     // $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
     $mail->setTo('info@zaynjewels.com');
 
-    $mail->setFrom($this->config->get('config_email'));
+    $mail->setFrom('info@zaynjewels.com');
     $mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
     $mail->setSubject("Appointment Confirmation -" . $userName . "\n");
 	$mail->setReplyTo($userEmail);   
@@ -207,14 +207,14 @@ class ControllerCommonConsulting extends Controller
     // $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
     $mail->setTo($userEmail);
 
-    $mail->setFrom($this->config->get('config_email'));
+    $mail->setFrom('info@zaynjewels.com');
     $mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
     $mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
   
 
 	$message .= "Hello". $userName ." ,\n\n";
 
-	$message .= "hank you for setting up an appointment with Zayn Jewels. \n\n";
+	$message .= "Thank you for setting up an appointment with Zayn Jewels. \n\n";
 	$message .= "Appointment Details:\n\n";
 	$message .= "Name- " . $userName . "\n\n";
 	$message .= "Date- " . $selectedDate . "\n\n";

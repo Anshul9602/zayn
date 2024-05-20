@@ -330,7 +330,7 @@ class ControllerReportAppoint extends Controller
 			$message .= "\n\n";
 			$message .= "We look forward to seeing you.  \n\n";
 
-			$message .= "Kind Regrads,  \n\n";
+			$message .= "Kind Regards,  \n\n";
 
 			$message .= "-Zayn Jewels Team- \n\n";
 			
@@ -381,13 +381,9 @@ class ControllerReportAppoint extends Controller
 			$message .= "\n\n";
 
 
-			$message .= "Best ,\n\n";
+			$message .= "Best Regards,\n\n";
 
 			$message .= "-Team Zayn Jewels\n\n";
-			
-
-
-
 			$mail->setText($message);
 			$mail->send();
 		} else {
