@@ -394,7 +394,7 @@ class ControllerReportAppoint extends Controller
                         <p><strong>Date:</strong> " . $requestData[0]['selected_date'] . "</p>
                         <p><strong>Time:</strong> " . $requestData[0]['selected_time'] . "</p>
                         <p><strong>Time Zone:</strong> " . $requestData[0]['current_timezone'] . "</p>
-                        <p><strong>Subject:</strong> " . $requestData[0]['subject'] . "</p>
+                        <p><strong>Subject:</strong> " . $requestData[0]['meetingTitle'] . "</p>
                         <p><strong>Message:</strong> " . $requestData[0]['usermessage'] . "</p>
                         <p><strong>Email:</strong> " . $requestData[0]['user_email'] . "</p>
                     </div>
