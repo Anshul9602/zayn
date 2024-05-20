@@ -165,7 +165,7 @@ class ControllerReportAppoint extends Controller
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
-
+		
 		$this->response->setOutput($this->load->view('report/appoint', $data));
 	}
 	public function updatestatus()
@@ -293,14 +293,16 @@ class ControllerReportAppoint extends Controller
 		// print_r($requestData);
 		// echo "</pre>";
 		$appoint_event = $this->model_report_consulting->getAllEventData();
+		// print_r($appoint_event[0]['name']);
+		// die();
 		if ($requestData) {
 
 			$mail = new Mail();
 			$mail->protocol = $this->config->get('config_mail_protocol');
 			$mail->parameter = $this->config->get('config_mail_parameter');
 			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
-			$mail->smtp_username = $this->config->get('config_mail_smtp_username');
-			$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+			$mail->smtp_username = 'info@zaynjewels.com';
+			$mail->smtp_password = 'qjoiaxyxowiosggs';
 			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
 			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
@@ -315,7 +317,7 @@ class ControllerReportAppoint extends Controller
 
 			$message .= "Hello " . $requestData[0]['userName'] . " ,\n\n";
 
-			$message .= "Your appointment has been scheduled with Zayn Jewels at the " . $appoint_event['name'] ."\n\n";
+			$message .= "Your appointment has been scheduled with Zayn Jewels at the " . $appoint_event[0]['name'] ."\n\n";
 
 		
 			$message .= "Date- " . $requestData[0]['selected_date'] . "\n\n";
