@@ -310,7 +310,7 @@ class ControllerReportAppoint extends Controller
 
 			$mail->setTo($requestData[0]['user_email']);
 
-			$mail->setFrom($this->config->get('config_email'));
+			$mail->setFrom('info@zaynjewels.com');
 			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
 			$mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
 
@@ -365,7 +365,7 @@ class ControllerReportAppoint extends Controller
 
 			$mail->setTo($requestData[0]['user_email']);
 
-			$mail->setFrom($this->config->get('config_email'));
+			$mail->setFrom('info@zaynjewels.com');
 			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
 			$mail->setSubject("Cancel your appointment from Zayn Jewels");
 
@@ -384,7 +384,7 @@ class ControllerReportAppoint extends Controller
 			$message .= "Best ,\n\n";
 
 			$message .= "-Team Zayn Jewels\n\n";
-			$message .= "Note : You can reschedule your appointment anytime by clicking here https://zaynjewels.com/index.php?route=common/consulting \n\n";
+			
 
 
 
