@@ -317,7 +317,7 @@ class ControllerReportAppoint extends Controller
 
 			$message .= "Your appointment has been scheduled with Zayn Jewels at the " . $appoint_event['name'] ."\n\n";
 
-			$message .= "Full Name- " . $requestData[0]['userName'] . "\n\n";
+		
 			$message .= "Date- " . $requestData[0]['selected_date'] . "\n\n";
 			$message .= "Time- " . $requestData[0]['selected_time'] . "\n\n";
 			$message .= "Time Zone- " . $requestData[0]['current_timezone'] . "\n\n";
