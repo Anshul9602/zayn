@@ -327,8 +327,6 @@
 </div>
 <!-- Scroll to Top End -->
 <script>
-   
-   
    $(".filter").click(function() {
       $('.overlayx').fadeIn();
       $(".sidebar-wrapper").animate({
@@ -360,102 +358,60 @@
       $(".overlay").fadeOut();
    })
 
-   function localwish(a) {
-
-      $.ajax({
-         url: 'index.php?route=common/lustlist/add',
-         type: 'post',
-         data: 'product_id=' + a,
-         dataType: 'json',
-         success: function(a) {
-            console.log('works');
-         },
-         error: function(xhr, ajaxOptions, thrownError) {
-            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-         }
-      });
-   }
+ 
 </script>
-<script>
-   $(document).ready(function(e) {
-      if($(".product-item").length==0 || $(".product-item").length<16){
-         $(".paginatoin-area").css("display","none");
-      }
-     
-      $('.pagination li').each(function() {
-         if ($(this).text() == '>' || $(this).text() == '<' || $(this).text() == '>|' || $(this).text() ==
-            '|<') {
-            $(this).css('display', 'none');
-         }
-      });
-      var start_point = 6;
-      var chunk = 6;
-      var product_data = <?php print_r(json_encode($products)); ?>;
-      var imgss = <?php print_r(json_encode($images)); ?>;
 
-      console.log(product_data);
-
-      $(window).scroll(function() {
-         if ($('#reached').offset().top < $(this).height() + $(this).scrollTop()) {
-            var i;
-            console.log(start_point);
-            if (start_point < product_data.length) {
-               for (i = start_point; i < (start_point + chunk); i++) {
-                  if (typeof product_data[i] === 'undefined') {
-                     break;
-                  } else {
-                     var p =
-                        ' <div style="margin-bottom:20px" class="product-layout product-grid col-lg-4 col-md-4 col-sm-6 col-xs-6">';
-                     p += '<div class="product-thumb">';
-                     p += ' <div class="image"><a class="foo" href="' + product_data[i]['href'] + '">';
-                     p += ' <img style="z-index:99999999" src="' + product_data[i]['thumb'] + '" alt="' +
-                        product_data[i]['name'] + '" title="' + product_data[i]['name'] +
-                        '" class="img-responsive pthumb" />';
-                     p += '<img src="' + imgss[product_data[i]['product_id']]['popup'] +
-                        '" class="img-responsive" /></a>';
-
-                     p += '<span class="size-strip"><ul class="size-list">';
-
-                     for (j = 0; j < product_data[i]['option'].length; j++) {
-                        if (product_data[i]['option'][j]['option_id'] == 13) {
-                           for (k = 0; k < product_data[i]['option'][j]['product_option_value']
-                              .length; k++) {
-                              p += '<li>' + product_data[i]['option'][j]['product_option_value'][k][
-                                 'name'
-                              ] + '</li>';
-                           }
-                        }
-                     }
-
-
-                     p += '</ul></span></div>';
-                     p += '<div> <div class="caption"><h3 class="product_name">' + product_data[i]['name'] +
-                        '</h3>';
-                     p += '<p class="price">';
-
-                     if (!product_data[i]['special']) {
-                        p += product_data[i]['price'];
-                     } else {
-                        p += '<span class="flair-badge offPrice">ON SALE</span>';
-                        p += '<span style="white-space:nowrap" class="price-new">' + product_data[i][
-                           'special'
-                        ] + '</span> <span style="white-space:nowrap" class="price-old">' + product_data[
-                           i]['price'] + '</span>';
-                     }
-                     p += '</p></div></div>';
-                     $("#product_box").append(p);
-                  }
-
-               }
-            }
-
-            start_point = start_point + chunk;
-         }
-      });
-
-   });
-</script>
 <div class="overlayx">
 
 </div>
+
+<script type="text/javascript">
+   var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+    return false;
+};
+   
+   $(".filter1 label").click(function() {
+   
+     var checkBoxes = $(this).parent().find("input");
+     checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+     $("#button-filter").click();
+   });
+
+   $('.checks').click(function(){
+    $("#button-filter").click();
+   })
+
+   $('#button-filter').on('click', function() {
+     filter = [];
+
+     $('input[name^=\'filter\']:checked').each(function(element) {
+       filter.push(this.value);
+     });
+     var path = getUrlParameter('path');
+     if(path==107 && filter.length>0){
+      filter.push('25');
+     }
+
+     if(path==106 && filter.length>0){
+      filter.push('27');
+     }
+     location = 'index.php?route=product/category&path=' + path + '&filter=' + filter.join(',');
+   });
+   //
+ </script>
+
+
+
 <?php echo $footer; ?>

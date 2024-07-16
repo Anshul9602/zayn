@@ -74,10 +74,18 @@ class ModelExtensionPaymentSquareup extends Model {
         return $method_data;
     }
 
-    public function addTransaction($transaction, $merchant_id, $address, $order_id, $user_agent, $ip) {
-        $amount = $this->squareup_api->standardDenomination($transaction['tenders'][0]['amount_money']['amount'], $transaction['tenders'][0]['amount_money']['currency']);
+    public function addTransaction($transaction, $merchant_id, $address, $order_id, $user_agent, $ip, $cardToken = null) {
+        $amount = $this->squareup_api->standardDenomination($transaction['amount_money']['amount'], $transaction['amount_money']['currency']);
 
-        $this->db->query("INSERT INTO `" . DB_PREFIX . "squareup_transaction` SET transaction_id='" . $this->db->escape($transaction['id']) . "', square_customer_id='" . (!empty($transaction['customer_id']) ? $this->db->escape($transaction['customer_id']) : '') . "', merchant_id='" . $this->db->escape($merchant_id) . "', location_id='" . $this->db->escape($transaction['location_id']) . "', order_id='" . (int)$order_id . "', transaction_type='" . $this->db->escape($transaction['tenders'][0]['card_details']['status']) . "', transaction_amount='" . (float)$amount . "', transaction_currency='" . $this->db->escape($transaction['tenders'][0]['amount_money']['currency']) . "', billing_address_city='" . $this->db->escape($address['locality']) . "', billing_address_country='" . $this->db->escape($address['country']) . "', billing_address_postcode='" . $this->db->escape($address['postal_code']) . "', billing_address_province='" . $this->db->escape($address['sublocality']) . "', billing_address_street_1='" . $this->db->escape($address['address_line_1']) . "', billing_address_street_2='" . $this->db->escape($address['address_line_2']) . "', device_browser='" . $this->db->escape($user_agent) . "', device_ip='" . $this->db->escape($ip) . "', created_at='" . $this->db->escape($transaction['created_at']) . "', is_refunded='" . (int)(!empty($transaction['refunds'])) . "', refunded_at='" . $this->db->escape(!empty($transaction['refunds']) ? $transaction['refunds'][0]['created_at'] : '') . "', tenders='" . $this->db->escape(json_encode($transaction['tenders'])) . "', refunds='" . $this->db->escape(json_encode(!empty($transaction['refunds']) ? $transaction['refunds'] : array())) . "'");
+        if (isset($transaction['card_details'])) {
+			if($cardToken != null){
+			  $transaction['card_details']['id'] = $cardToken;
+			}
+			
+			$this->db->query("INSERT INTO `" . DB_PREFIX . "squareup_transaction` SET transaction_id='" . $this->db->escape($transaction['id']) . "', square_customer_id='" . (!empty($transaction['customer_id']) ? $this->db->escape($transaction['customer_id']) : '') . "', merchant_id='" . $this->db->escape($merchant_id) . "', location_id='" . $this->db->escape($transaction['location_id']) . "', order_id='" . (int)$order_id . "', transaction_type='" . $this->db->escape($transaction['card_details']['status']) . "', transaction_amount='" . (float)$amount . "', transaction_currency='" . $this->db->escape($transaction['amount_money']['currency']) . "', billing_address_city='" . $this->db->escape($address['locality']) . "', billing_address_country='" . $this->db->escape($address['country']) . "', billing_address_postcode='" . $this->db->escape($address['postal_code']) . "', billing_address_province='" . $this->db->escape($address['sublocality']) . "', billing_address_street_1='" . $this->db->escape($address['address_line_1']) . "', billing_address_street_2='" . $this->db->escape($address['address_line_2']) . "', device_browser='" . $this->db->escape($user_agent) . "', device_ip='" . $this->db->escape($ip) . "', created_at='" . $this->db->escape($transaction['created_at']) . "', is_refunded='" . (int)(!empty($transaction['refunds'])) . "', refunded_at='" . $this->db->escape(!empty($transaction['refunds']) ? $transaction['refunds'][0]['created_at'] : '') . "', tenders='" . $this->db->escape(json_encode($transaction['card_details'])) . "', refunds='" . $this->db->escape(json_encode(!empty($transaction['refunds']) ? $transaction['refunds'] : array())) . "'");
+		} else {
+			$this->db->query("INSERT INTO `" . DB_PREFIX . "squareup_transaction` SET transaction_id='" . $this->db->escape($transaction['id']) . "', square_customer_id='" . (!empty($transaction['customer_id']) ? $this->db->escape($transaction['customer_id']) : '') . "', merchant_id='" . $this->db->escape($merchant_id) . "', location_id='" . $this->db->escape($transaction['location_id']) . "', order_id='" . (int)$order_id . "', transaction_type='" . $this->db->escape($transaction['status']) . "', transaction_amount='" . (float)$amount . "', transaction_currency='" . $this->db->escape($transaction['amount_money']['currency']) . "', billing_address_city='" . $this->db->escape($address['locality']) . "', billing_address_country='" . $this->db->escape($address['country']) . "', billing_address_postcode='" . $this->db->escape($address['postal_code']) . "', billing_address_province='" . $this->db->escape($address['sublocality']) . "', billing_address_street_1='" . $this->db->escape($address['address_line_1']) . "', billing_address_street_2='" . $this->db->escape($address['address_line_2']) . "', device_browser='" . $this->db->escape($user_agent) . "', device_ip='" . $this->db->escape($ip) . "', created_at='" . $this->db->escape($transaction['created_at']) . "', is_refunded='" . (int)(!empty($transaction['refunds'])) . "', refunded_at='" . $this->db->escape(!empty($transaction['refunds']) ? $transaction['refunds'][0]['created_at'] : '') . "', tenders='" . $this->db->escape(json_encode($transaction['buy_now_pay_later_details'])) . "', refunds='" . $this->db->escape(json_encode(!empty($transaction['refunds']) ? $transaction['refunds'] : array())) . "'");
+		}
     }
 
     public function tokenExpiredEmail() {
@@ -411,7 +419,7 @@ class ModelExtensionPaymentSquareup extends Model {
             return true;
         }
 
-        $time = (int)$this->config->get('squareup_cron_started_at');
+        $time = (int)$this->config->get('squareup_cron_standard_started_at');
 
         $this->load->config('vendor/isenselabs/squareup/cron');
 
@@ -427,7 +435,7 @@ class ModelExtensionPaymentSquareup extends Model {
             return true;
         }
 
-        $time = (int)$this->config->get('squareup_cron_started_at');
+        $time = (int)$this->config->get('squareup_cron_inventory_started_at');
 
         $this->load->config('vendor/isenselabs/squareup/cron');
 
@@ -451,11 +459,26 @@ class ModelExtensionPaymentSquareup extends Model {
     }
 
     public function setBeginCronFlags($flag) {
+        $now = time();
+
         $this->editSquareSetting(array(
             'squareup_cron_is_running' => '1',
-            'squareup_cron_started_at' => time(),
+            'squareup_cron_started_at' => $now,
             'squareup_cron_started_type' => $flag
         ));
+
+        switch ($flag) {
+            case self::CRON_STARTED_FLAG_STANDARD:
+                $this->editSquareSetting(array(
+                    'squareup_cron_standard_started_at' => $now,
+                ));
+                break;
+            case self::CRON_STARTED_FLAG_INVENTORY:
+                $this->editSquareSetting(array(
+                    'squareup_cron_inventory_started_at' => $now,
+                ));
+                break;
+        }
     }
 
     public function setEndCronFlags($flag) {
@@ -580,6 +603,10 @@ class ModelExtensionPaymentSquareup extends Model {
 
             $order_info = $this->model_checkout_order->getOrder($recurring['order_id']);
 
+            if($order_info === false){
+              continue;
+            }
+
             $billing_address = array(
                 'first_name' => $order_info['payment_firstname'],
                 'last_name' => $order_info['payment_lastname'],
@@ -608,7 +635,7 @@ class ModelExtensionPaymentSquareup extends Model {
 
             $square_order_id = null;
 
-            if ($price > 0) {
+            if ($price >= 0) {
                 // If the Square order throws an error, ignore it and submit the transaction with no items
 
                 try {
@@ -623,16 +650,22 @@ class ModelExtensionPaymentSquareup extends Model {
                     'note' => sprintf($this->language->get('text_order_id'), $order_info['order_id']),
                     'idempotency_key' => uniqid(),
                     'amount_money' => array(
-                        'amount' => $this->squareup_api->lowestDenomination($price * $recurring['product_quantity'], $location_currency),
+                        'amount' => $this->squareup_api->lowestDenomination($price , $location_currency),
                         'currency' => $location_currency
                     ),
                     'billing_address' => $billing_address,
                     'buyer_email_address' => $order_info['email'],
                     'delay_capture' => false,
-                    'customer_id' => $transaction_tenders[0]['customer_id'],
-                    'customer_card_id' => $transaction_tenders[0]['card_details']['card']['id'],
                     'integration_id' => vendor\isenselabs\Squareup::SQUARE_INTEGRATION_ID
                 );
+
+                //Check if Card is saved on file.
+                $card_saved_on_file = false;
+                if(!empty($transaction_tenders['id']) && !empty($recurring['square_customer_id'])){
+                  $transaction['source_id'] = $transaction_tenders['id'];
+                  $transaction['customer_id'] = $recurring['square_customer_id'];
+                   $card_saved_on_file = true;
+                 }
 
                 if (!is_null($square_order_id)) {
                     $transaction['order_id'] = $square_order_id;
@@ -643,7 +676,8 @@ class ModelExtensionPaymentSquareup extends Model {
                     'order_id' => $recurring['order_id'],
                     'order_recurring_id' => $recurring['order_recurring_id'],
                     'billing_address' => $billing_address,
-                    'transaction' => $transaction
+                    'transaction' => $transaction,
+                    'card_saved_on_file' => $card_saved_on_file
                 );
             } else {
                 throw new \Exception($this->language->get('error_price_invalid_negative'));

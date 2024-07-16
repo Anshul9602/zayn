@@ -2,13 +2,14 @@
 
 <style>
     .location-card{
-    background-color:white;
-        width: 300px;
-    position: absolute;
-    text-align: center;
-    left: 50%;
-    margin-left: -175px;
-    margin-top: 50px;
+        background-color: white;
+    width: 400px;
+    text-align: left;
+    border: thin solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+   margin-top:30px;
     }
     .location-card{
         display:none;
@@ -22,10 +23,10 @@
    
 <div class="row">
     <div class="col-sm-12 text-center"> <h2>Store Directory</h2> 
-<hr />
+<br />
 </div>
 <div class="row" style="width:100%">
-    <div class="col-sm-4 offset-sm-4 text-center">
+    <div class="col-10 offset-1 col-sm-4 offset-sm-4 text-center">
        <select name="country_id" id="input-country" class="form-control">
           <option value=""> --- Please Select --- </option>
         <?php foreach ($bannerstop as $bs) {?>
@@ -40,13 +41,19 @@
 <div class="row">
   <?php foreach ($bannerstop as $bs) {?>
     <div class="<?php echo $bs['title'];?> location-card">
-        <?php 
+       <?php 
         $bs['link'] = explode('/',$bs['link']);
         ?>
 
-        <h3><?php echo $bs['link'][0];?></h3>
-        <p class="text-center"><?php echo $bs['link'][1];?>
-     <br />    <?php echo $bs['link'][2];?>
+        <h4><?php echo $bs['link'][0];?></h4>
+       
+       <p style="margin-top:10px">
+     <b>Location:   <?php echo $bs['link'][3];?></b>    <br />
+       <b>Address: </b> <?php echo $bs['link'][1];?>
+      
+     <br />  <b>Phone Number: </b>  <?php echo $bs['link'][2];?>
+   
+     <br />  <b>Time: </b>  <?php echo $bs['link'][4];?>
     </p>
     </div>
     <?php }?>
@@ -70,7 +77,32 @@ $(document).ready(function(){
             }
         })
     })
+    
 })
+$(document).ready(function() {
+    // Remove duplicates
+    var seen = {};
+    $('select option').each(function() {
+        var txt = $(this).text();
+        if (seen[txt]) {
+            $(this).remove();
+        } else {
+            seen[txt] = true;
+        }
+    });
+
+    // Sort remaining options
+    var options = $('select option');
+    options.sort(function(a, b) {
+        var textA = $(a).text().toUpperCase(); // case-insensitive comparison
+        var textB = $(b).text().toUpperCase(); // case-insensitive comparison
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
+
+    $('select').empty().append(options);
+});
+
+
 </script>
 
 

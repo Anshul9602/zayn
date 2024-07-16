@@ -7,10 +7,18 @@ class ControllerExtensionPaymentSquareup extends Controller {
     public function index() {
         $this->loadLibrary('vendor/isenselabs/squareup');
 
+        $this->load->model('localisation/country');
+
         $data = $this->imodule_language_payment;
 
         $data['action'] = $this->url->link($this->imodule_route_payment . '/checkout', '', $this->getUrlSsl());
-        $data['squareup_js_api'] = Squareup::PAYMENT_FORM_URL;
+        $data['save_card_action'] = $this->url->link($this->imodule_route_payment . '/saveCard', '', $this->getUrlSsl());
+        $data['getTotals'] = $this->url->link($this->imodule_route_payment . '/getTotals', '', $this->getUrlSsl());
+        $data['squareup_js_api'] = 'https://web.squarecdn.com/v1/square.js';
+
+        if($this->config->get('squareup_key_type') == 'sandbox'){
+          $data['squareup_js_api'] = 'https://sandbox.web.squarecdn.com/v1/square.js';
+        }
 
         if (version_compare(VERSION, '2.0.0.0', '<') && !empty($this->session->data['guest']) && !empty($this->session->data['guest']['payment']['postcode'])) {
             $data['payment_zip'] = htmlentities($this->session->data['guest']['payment']['postcode'], ENT_QUOTES, 'UTF-8');
@@ -25,6 +33,10 @@ class ControllerExtensionPaymentSquareup extends Controller {
         }
 
         $data['app_id'] = $this->config->get('squareup_client_id');
+        $data['squareup_apple_pay_status']	= $this->config->get('squareup_apple_pay_status');
+        $data['squareup_google_pay_status']	= $this->config->get('squareup_google_pay_status');
+        $data['squareup_after_pay_status']	= $this->config->get('squareup_after_pay_status');
+        $data['squareup_gift_card_status']	= $this->config->get('squareup_gift_card_status');
 
         $data['location_id'] = $this->config->get('squareup_location_id');
 
@@ -59,6 +71,7 @@ class ControllerExtensionPaymentSquareup extends Controller {
                 $data['cards'][] = array(
                     'id' => $card['squareup_token_id'],
                     'selected' => $selected,
+                    'token' => $card['token'],
                     'text' => sprintf($this->language->get('text_card_ends_in'), $card['brand'], $card['ends_in'])
                 );
             }
@@ -71,6 +84,8 @@ class ControllerExtensionPaymentSquareup extends Controller {
 
         $location_currency = $this->squareup_api->getLocationCurrency(null);
 
+        $data['amount'] = 0;
+
         if (is_null($location_currency)) {
             $data['error_currency'] = $this->language->get('error_currency_invalid');
         } else {
@@ -81,11 +96,88 @@ class ControllerExtensionPaymentSquareup extends Controller {
 
                 $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 
-                $amount = $this->currency->format($this->currency->convert($order_info['total'], $this->config->get('config_currency'), $location_currency), $location_currency, 1, true);
+                $amount = $this->currency->format($this->currency->convert($order_info['total'], $this->config->get('config_currency'), $location_currency), $location_currency, 1, false);
+
+                $dec_place = $this->currency->getDecimalPlace($location_currency);
+                $amount_formatted = number_format($amount, (int)$dec_place, $this->language->get('decimal_point'), $this->language->get('thousand_point'));
+
+                $data['amount'] = $amount_formatted;
+                $data['amount_new'] = str_replace( ',', '', $amount_formatted );
+                $data['currency'] = $location_currency;
 
                 $data['warning_currency'] = sprintf($this->language->get('warning_currency_converted'), $location_currency, $rate, $amount);
+            } else{
+              $rate = round($this->currency->getValue($location_currency) / $this->currency->getValue($this->session->data['currency']), 8);
+
+              $this->load->model('checkout/order');
+
+              $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+
+              $dec_place = $this->currency->getDecimalPlace($location_currency);
+
+              $amount = round($this->currency->convert($order_info['total'], $this->config->get('config_currency'), $location_currency), (int)$dec_place);
+
+              $amount_formatted = number_format($amount, (int)$dec_place, $this->language->get('decimal_point'), $this->language->get('thousand_point'));
+
+              $data['amount'] = $amount_formatted;
+			  $data['amount_new'] = str_replace( ',', '', $amount_formatted );
+              $data['currency'] = $location_currency;
+
             }
         }
+		
+		// Totals
+		$this->load->model('extension/extension');
+
+		$totals = array();
+		$taxes = $this->cart->getTaxes();
+		$total = 0;
+		
+		// Because __call can not keep var references so we put them into an array. 			
+		$total_data = array(
+			'totals' => &$totals,
+			'taxes'  => &$taxes,
+			'total'  => &$total
+		);
+		
+		// Display prices
+		if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+			$sort_order = array();
+
+			$results = $this->model_extension_extension->getExtensions('total');
+
+			foreach ($results as $key => $value) {
+				$sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
+			}
+
+			array_multisort($sort_order, SORT_ASC, $results);
+
+			foreach ($results as $result) {
+				if ($this->config->get($result['code'] . '_status')) {
+					$this->load->model('extension/total/' . $result['code']);
+					
+					// We have to put the totals in an array so that they pass by reference.
+					$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+				}
+			}
+
+			$sort_order = array();
+
+			foreach ($totals as $key => $value) {
+				$sort_order[$key] = $value['sort_order'];
+			}
+
+			array_multisort($sort_order, SORT_ASC, $totals);
+		}
+
+		$data['totals'] = array();
+
+		foreach ($totals as $total) {
+			$data['totals'][] = array(
+				'title' => $total['title'],
+				'text'  => $this->currency->format($total['value'], $this->session->data['currency'])
+			);
+		}
 
         // Workaround:
         // There is an "unset($this->session->data['shipping_address']);" at the beginning of ControllerCheckoutConfirm::index()
@@ -97,13 +189,119 @@ class ControllerExtensionPaymentSquareup extends Controller {
             $this->session->data['shipping_address'] = $this->model_account_address->getAddress($this->customer->getAddressId());
         }
 
+        // Data for the customer verification check
+        $billing_country_info = $this->model_localisation_country->getCountry($this->session->data['payment_address']['country_id']);
+
+        $data['customer_family_name'] = $this->session->data['payment_address']['lastname'] ? $this->session->data['payment_address']['lastname'] : "";
+        $data['customer_given_name'] = $this->session->data['payment_address']['firstname'] ? $this->session->data['payment_address']['firstname'] : "";
+        $data['customer_email'] = (isset($this->session->data['customer']) && $this->session->data['customer']['email']) ? $this->session->data['customer']['email'] : "";
+        $data['customer_country'] = $billing_country_info['iso_code_2'] ? $billing_country_info['iso_code_2'] : "";
+        $data['customer_city'] = $this->session->data['payment_address']['city'] ? $this->session->data['payment_address']['city'] : "";
+        $data['customer_address'] = json_encode([$this->session->data['payment_address']['address_1'] . ' ' . $this->session->data['payment_address']['address_2']]);
+        $data['customer_postal_code'] = $this->session->data['payment_address']['postcode'] ? $this->session->data['payment_address']['postcode'] : "" ;
+        $data['customer_phone'] = (isset($this->session->data['customer']) && $this->session->data['customer']['telephone']) ? $this->session->data['customer']['telephone'] : "";
+
         return $this->loadView($this->imodule_route_payment, $data);
+    }
+
+    public function saveCard(){
+      $this->loadCreditCardModel();
+      $this->load->model('checkout/order');
+      $this->load->model('localisation/country');
+	  $inputPost = json_decode(file_get_contents('php://input'), true);
+
+      $this->imodule_model_payment->setExceptionHandler();
+
+      $this->loadLibrary('vendor/isenselabs/squareup');
+
+      $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+
+      $shipping_country_info = $this->model_localisation_country->getCountry($order_info['shipping_country_id']);
+
+      $billing_country_info = $this->model_localisation_country->getCountry($order_info['payment_country_id']);
+
+      if (!empty($billing_country_info)) {
+          $billing_address = array(
+              'first_name' => $order_info['payment_firstname'],
+              'last_name' => $order_info['payment_lastname'],
+              'address_line_1' => $order_info['payment_address_1'],
+              'address_line_2' => $order_info['payment_address_2'],
+              'locality' => $order_info['payment_city'],
+              'sublocality' => $order_info['payment_zone'],
+              'postal_code' => $order_info['payment_postcode'],
+              'country' => $billing_country_info['iso_code_2'],
+              'organization' => $order_info['payment_company']
+          );
+      } else {
+          $billing_address = array();
+      }
+
+      $json = array();
+
+      try {
+
+          if($this->cart->hasRecurringProducts() && !$this->customer->isLogged()){
+            throw new \Squareup\Exception\Api($this->registry, "You need to login to complete an order with a recurring payment.");
+          }
+
+          // Ensure we have registered the customer with Square
+          $square_customer = $this->imodule_model_credit_card->getCustomer($this->customer->getId());
+
+          if (!$square_customer && $this->customer->isLogged()) {
+              $square_customer = $this->squareup_api->addLoggedInCustomer();
+
+              $this->imodule_model_credit_card->addCustomer($square_customer);
+          }
+
+          // Save the card only if we have paid without a digital wallet...
+          if (empty($inputPost['squareup_digital_wallet_type']) || $inputPost['squareup_digital_wallet_type'] == 'NONE') {
+              // check if user is logged in and wanted to save this card
+              if ($this->customer->isLogged() && isset($inputPost['squareup_save_card'])) {
+                  // Save the card
+                  $card_data = array(
+                      'card_nonce' => $inputPost['squareup_nonce'],
+                      'billing_address' => $billing_address,
+                      'cardholder_name' => $order_info['payment_firstname'] . ' ' . $order_info['payment_lastname']
+                  );
+
+                  $square_card = $this->squareup_api->addCard($square_customer['square_customer_id'], $card_data);
+
+                  if (!$this->imodule_model_credit_card->cardExists($this->customer->getId(), $square_card)) {
+                      $this->imodule_model_credit_card->addCard($this->customer->getId(), $square_card);
+                  }
+
+                  $json = ["card_id" => $square_card['id']];
+              }
+          }
+        } catch (vendor\isenselabs\Squareup\Exception\Api $e) {
+            if ($e->isCurlError()) {
+                $json['error'] = $this->language->get('text_token_issue_customer_error');
+            } else if ($e->isAccessTokenRevoked()) {
+                // Send reminder e-mail to store admin to refresh the token
+                $this->imodule_model_payment->tokenRevokedEmail();
+
+                $json['error'] = $this->language->get('text_token_issue_customer_error');
+            } else if ($e->isAccessTokenExpired()) {
+                // Send reminder e-mail to store admin to refresh the token
+                $this->imodule_model_payment->tokenExpiredEmail();
+
+                $json['error'] = $this->language->get('text_token_issue_customer_error');
+            } else {
+                $json['error'] = $e->getMessage();
+            }
+        } catch (\Exception $e) {
+            $json['error'] = $e->getMessage();
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
     }
 
     public function checkout() {
         $this->loadCreditCardModel();
         $this->load->model('checkout/order');
         $this->load->model('localisation/country');
+		$inputPost = json_decode(file_get_contents('php://input'), true);
 
         $this->imodule_model_payment->setExceptionHandler();
 
@@ -150,6 +348,11 @@ class ControllerExtensionPaymentSquareup extends Controller {
         $json = array();
 
         try {
+
+            if($this->cart->hasRecurringProducts() && !$this->customer->isLogged()){
+              throw new \Squareup\Exception\Api($this->registry, "You need to login to complete an order with a recurring payment.");
+            }
+
             // Ensure we have registered the customer with Square
             $square_customer = $this->imodule_model_credit_card->getCustomer($this->customer->getId());
 
@@ -163,35 +366,24 @@ class ControllerExtensionPaymentSquareup extends Controller {
             $square_card_id = null;
 
             // Save the card only if we have paid without a digital wallet...
-            if (empty($this->request->post['squareup_digital_wallet_type']) || $this->request->post['squareup_digital_wallet_type'] == 'NONE') {
+            if (empty($inputPost['squareup_digital_wallet_type']) || $inputPost['squareup_digital_wallet_type'] == 'NONE') {
                 // check if user is logged in and wanted to save this card
-                if ($this->customer->isLogged() && !empty($this->request->post['squareup_select_card'])) {
-                    $card_verified = $this->imodule_model_credit_card->verifyCardCustomer($this->request->post['squareup_select_card'], $this->customer->getId());
+                if ($this->customer->isLogged() && !empty($inputPost['squareup_select_card'])) {
+                    $card_verified = $this->imodule_model_credit_card->verifyCardCustomer($inputPost['squareup_select_card'], $this->customer->getId());
 
                     if (!$card_verified) {
                         throw new vendor\isenselabs\Squareup\Exception\Api($this->registry, $this->language->get('error_card_invalid'));
                     }
 
-                    $card = $this->imodule_model_credit_card->getCard($this->request->post['squareup_select_card']);
+                    $card = $this->imodule_model_credit_card->getCard($inputPost['squareup_select_card']);
 
                     $use_saved = true;
                     $square_card_id = $card['token'];
-                } else if ($this->customer->isLogged() && isset($this->request->post['squareup_save_card'])) {
-                    // Save the card
-                    $card_data = array(
-                        'card_nonce' => $this->request->post['squareup_nonce'],
-                        'billing_address' => $billing_address,
-                        'cardholder_name' => $order_info['payment_firstname'] . ' ' . $order_info['payment_lastname']
-                    );
-
-                    $square_card = $this->squareup_api->addCard($square_customer['square_customer_id'], $card_data);
-
-                    if (!$this->imodule_model_credit_card->cardExists($this->customer->getId(), $square_card)) {
-                        $this->imodule_model_credit_card->addCard($this->customer->getId(), $square_card);
-                    }
-
+                }
+                if ($this->customer->isLogged() && isset($inputPost['squareup_save_card']) && strlen($inputPost['squareup_save_card']) > 10) {
+                    // If we enter here, we should have called this->saveCard from the front end, recieved the new card id and verified it and then called the checkout
                     $use_saved = true;
-                    $square_card_id = $square_card['id'];
+                    $square_card_id = $inputPost['squareup_save_card'];
                 }
             }
 
@@ -278,8 +470,9 @@ class ControllerExtensionPaymentSquareup extends Controller {
                 ),
                 'billing_address' => $billing_address,
                 'buyer_email_address' => $order_info['email'],
-                'delay_capture' => method_exists($this->cart, 'hasRecurringProducts') && !$this->cart->hasRecurringProducts() && $this->config->get('squareup_delay_capture'),
-                'integration_id' => Squareup::SQUARE_INTEGRATION_ID
+                'autocomplete' => method_exists($this->cart, 'hasRecurringProducts') && !(!$this->cart->hasRecurringProducts() && $this->config->get('squareup_delay_capture')),
+                'location_id' => $this->config->get('squareup_location_id'),
+				'integration_id' => Squareup::SQUARE_INTEGRATION_ID
             );
 
             if (!is_null($square_order_id)) {
@@ -291,13 +484,15 @@ class ControllerExtensionPaymentSquareup extends Controller {
             }
 
             if ($use_saved) {
-                $transaction_data['customer_card_id'] = $square_card_id;
+                $transaction_data['source_id'] = $square_card_id;
                 $transaction_data['customer_id'] = $square_customer['square_customer_id'];
 
+                $transaction_data['verification_token'] = $inputPost['squareup_buyer_verification_token'];
                 $square_token_id = $this->imodule_model_credit_card->getTokenIdByCustomerAndToken($this->customer->getId(), $square_card_id);
                 $this->imodule_model_credit_card->updateDefaultCustomerToken($this->customer->getId(), $square_token_id);
             } else {
-                $transaction_data['card_nonce'] = $this->request->post['squareup_nonce'];
+                $transaction_data['source_id'] = $inputPost['squareup_nonce'];
+                $transaction_data['verification_token'] = $inputPost['squareup_buyer_verification_token'];
 
                 if (!$this->customer->isLogged() && $this->config->get('squareup_guest') && !empty($this->session->data['guest']['firstname']) && !empty($this->session->data['guest']['lastname']) && !empty($this->session->data['guest']['email'])) {
                     $guest_customer = $this->squareup_api->addCustomer($this->session->data['guest']['firstname'], $this->session->data['guest']['lastname'], $this->session->data['guest']['email']);
@@ -320,13 +515,28 @@ class ControllerExtensionPaymentSquareup extends Controller {
                 $ip = '';
             }
 
-            $this->imodule_model_payment->addTransaction($transaction, $this->config->get('squareup_merchant_id'), $billing_address, $this->session->data['order_id'], $user_agent, $ip);
-
-            if (!empty($transaction['tenders'][0]['card_details']['status'])) {
-                $transaction_status = strtolower($transaction['tenders'][0]['card_details']['status']);
-            } else {
-                $transaction_status = '';
+            if ($use_saved) {
+              $this->imodule_model_payment->addTransaction($transaction, $this->config->get('squareup_merchant_id'), $billing_address, $this->session->data['order_id'], $user_agent, $ip, $square_card_id);
+            }else{
+              $this->imodule_model_payment->addTransaction($transaction, $this->config->get('squareup_merchant_id'), $billing_address, $this->session->data['order_id'], $user_agent, $ip);
             }
+
+            if (isset($transaction['card_details'])) {
+				if (!empty($transaction['card_details']['status'])) {
+					$transaction_status = strtolower($transaction['card_details']['status']);
+				} else {
+					$transaction_status = '';
+				}
+			} else {
+				if (!empty($transaction['status'])) {
+					if ($transaction['status'] == 'COMPLETED') {
+						$transaction['status'] = 'CAPTURED';
+					}
+					$transaction_status = strtolower($transaction['status']);
+				} else {
+					$transaction_status = '';
+				}
+			}
 
             $this->session->data['squareup_is_capture'] = $transaction_status == 'captured';
 
@@ -429,6 +639,28 @@ class ControllerExtensionPaymentSquareup extends Controller {
         }
     }
 
+    public function deleteSquareCatalog(){
+
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+        
+        $this->load->library('squareup');
+        
+        do {
+            $cursor = isset($result['cursor']) ? $result['cursor'] : '';
+            $types = array('ITEM');
+
+            $result = $this->squareup_api->listCatalog($cursor, $types);
+
+            if (isset($result['objects']) && is_array($result['objects'])) {
+                $ids = array_column($result['objects'], 'id');
+                $this->squareup_api->batchDeleteCatalog(["object_ids" => $ids]);
+            }
+        } while (isset($result['cursor']));
+
+        exit;
+    }
     public function cron() {
         $this->imodule_model_payment->setDetailedExceptionHandler();
 
@@ -606,15 +838,18 @@ class ControllerExtensionPaymentSquareup extends Controller {
             }
 
             try {
+                if (!$payment['card_saved_on_file']) {
+                   throw new \Squareup\Exception\Api($this->registry, "The payment with orderID:" . $payment['order_id']. " has no card saved on file. For recurring payments to work, the buyer must re-subscribe for this order by saving the credit card on file.");
+                }
                 if (!$payment['is_free']) {
                     $transaction = $this->squareup_api->addTransaction($payment['transaction']);
 
-                    $transaction_status = !empty($transaction['tenders'][0]['card_details']['status']) ?
-                        strtolower($transaction['tenders'][0]['card_details']['status']) : '';
+                    $transaction_status = !empty($transaction['card_details']['status']) ?
+                        strtolower($transaction['card_details']['status']) : '';
 
-                    $target_currency = $transaction['tenders'][0]['amount_money']['currency'];
+                    $target_currency = $transaction['amount_money']['currency'];
 
-                    $amount = $this->squareup_api->standardDenomination($transaction['tenders'][0]['amount_money']['amount'], $target_currency);
+                    $amount = $this->squareup_api->standardDenomination($transaction['amount_money']['amount'], $target_currency);
 
                     $this->imodule_model_payment->addTransaction($transaction, $this->config->get('squareup_merchant_id'), $payment['billing_address'], $payment['order_id'], "CRON JOB", "127.0.0.1");
 
@@ -694,7 +929,7 @@ class ControllerExtensionPaymentSquareup extends Controller {
 
             $new_transaction = $this->squareup_api->getTransaction($expiring_authorized_transaction['location_id'], $expiring_authorized_transaction['transaction_id']);
 
-            $status = $new_transaction['tenders'][0]['card_details']['status'];
+            $status = $new_transaction['card_details']['status'];
             $refunds = !empty($new_transaction['refunds']) ? $new_transaction['refunds'] : array();
 
             $this->imodule_model_payment->updateTransaction($expiring_authorized_transaction['squareup_transaction_id'], $status, $refunds);
@@ -761,7 +996,7 @@ class ControllerExtensionPaymentSquareup extends Controller {
 
         $data = json_decode($payload, true);
 
-        if ($data['event_type'] == 'INVENTORY_UPDATED') {
+        if ($data['type'] == 'inventory.count.updated') {
             if ($this->config->get('squareup_inventory_sync') != 'none') {
                 $this->loadLibrary('vendor/isenselabs/squareup');
 
@@ -798,5 +1033,80 @@ class ControllerExtensionPaymentSquareup extends Controller {
         }
 
         return true;
+    }
+	
+	public function getTotals (){
+		$this->loadLibrary('vendor/isenselabs/squareup');
+		$location_currency = $this->squareup_api->getLocationCurrency(null);
+		$data = array();
+		$this->load->model('extension/extension');
+
+		$totals = array();
+		$taxes = $this->cart->getTaxes();
+		$total = 0;
+		
+		// Because __call can not keep var references so we put them into an array. 			
+		$total_data = array(
+			'totals' => &$totals,
+			'taxes'  => &$taxes,
+			'total'  => &$total
+		);
+		
+		// Display prices
+		if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+			$sort_order = array();
+
+			$results = $this->model_extension_extension->getExtensions('total');
+
+			foreach ($results as $key => $value) {
+				$sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
+			}
+
+			array_multisort($sort_order, SORT_ASC, $results);
+
+			foreach ($results as $result) {
+				if ($this->config->get($result['code'] . '_status')) {
+					$this->load->model('extension/total/' . $result['code']);
+					
+					// We have to put the totals in an array so that they pass by reference.
+					$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+				}
+			}
+
+			$sort_order = array();
+
+			foreach ($totals as $key => $value) {
+				$sort_order[$key] = $value['sort_order'];
+			}
+
+			array_multisort($sort_order, SORT_ASC, $totals);
+		}
+
+		$data['totals'] = array();
+
+		foreach ($totals as $total) {
+			if ($total['code'] !='total') {
+				$dec_place = $this->currency->getDecimalPlace($location_currency);
+
+				$amount = round($this->currency->convert($total['value'], $this->session->data['currency'], $location_currency), (int)$dec_place);
+
+				$amount_formatted = number_format($amount, (int)$dec_place, $this->language->get('decimal_point'), $this->language->get('thousand_point'));
+				$data['totals'][] = array(
+					'title' => $total['title'],
+					'text'  => $amount_formatted
+				);
+			}
+		}
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($data));
+	}
+	
+	public function setJS(&$route, &$data, &$template) {
+		if($this->config->get('squareup_key_type') == 'sandbox'){
+			$squareup_js_api = '<script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>';
+        } else {
+			$squareup_js_api = '<script src="https://web.squarecdn.com/v1/square.js"></script>';
+		}
+		$template = str_replace('</head>', $squareup_js_api . '</head>', $template);
     }
 }

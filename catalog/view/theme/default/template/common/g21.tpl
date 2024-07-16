@@ -11,11 +11,6 @@
 .mob{
 display: none;
 }
-
-.slote div{
-cursor: pointer;
-}
-
   @media screen and (max-width:650px) {
     .mob-padding {
       padding: 0px 20px;

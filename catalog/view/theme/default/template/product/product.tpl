@@ -13,6 +13,16 @@ if (isset($draft) && is_string($draft)) {
 
 ?>
 <style>
+   .btn-find-store{
+      color:#423c9e;
+    font-size: 15px;
+    line-height: 1;
+    padding: 14px 30px;
+    display: inline-block;
+    border-radius: 50px;
+    border:thin solid #423c9e;
+    margin-top: 38px;
+   }
    @media (max-width:650px) {
       .font_mob{
          font-size: 20px !important;
@@ -290,6 +300,9 @@ if (isset($draft) && is_string($draft)) {
 
                <h3 class="product_font"style="text-transform: capitalize; color:#000; font-size:28px; margin-top:25px">
                   <?php echo $heading_title; ?>
+                  <a style="float:right; margin-top:0px; padding:12px; " class="btn btn-find-store" onclick="wishlist.add(' <?php echo $product_id; ?> ');">
+                        <li class="fa fa-heart-o"></li>
+                  </a>
                </h3>
                <?php if ($review_status) { ?>
                <div class="rating">
@@ -508,17 +521,13 @@ if (isset($draft) && is_string($draft)) {
                <div style="padding:0px;" id="content" class="row">
                   <div style=" min-width:160px;" id="addb" class="col-sm-7">
                      <a id="button-cart" style="width: 100%;" class="btn btn-hero">ADD TO CART</a>
-                     <!--<button type="button" data-toggle="tooltip"
-                        title="<?php echo $button_wishlist; ?>"
-                        onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>-->
                   </div>
                   <div class="col-sm-5">
-
-                     <a class="btn btn-hero" onclick="wishlist.add(' <?php echo $product_id; ?> ');">
-                        <li class="fa fa-heart"></li>
-                     </a>
+                  <a class="btn btn-find-store" style="" href="https://zaynjewels.com/index.php?route=common/locations">Find A Store</a>
+                    
                   </div>
                </div>
+              
                <?php
                   } else { ?>
                <div style="padding:0px;" class="row">

@@ -226,16 +226,16 @@
                                         <li>
                                             <a href="index.php?route=common/jewelry">Jewelry</a>
                                             <ul class="dropdown">
-                                                <li><a href="index.php?route=product/category&path=79_80" style="padding: 20px 20px 10px 20px;">Rings</a></li>
-                                                <li><a href="index.php?route=product/category&path=79_82">Earrings</a>
+                                                <li><a href="index.php?route=product/categorynew&path=79_80" style="padding: 20px 20px 10px 20px;">Rings</a></li>
+                                                <li><a href="index.php?route=product/categorynew&path=79_82">Earrings</a>
                                                 </li>
-                                                <li><a href="index.php?route=product/category&path=79_83">Bangles</a>
+                                                <li><a href="index.php?route=product/categorynew&path=79_83">Bangles</a>
                                                 </li>
-                                                <li><a href="index.php?route=product/category&path=79_85">Pendants</a>
+                                                <li><a href="index.php?route=product/categorynew&path=79_85">Pendants</a>
                                                 </li>
-                                                <li><a href="index.php?route=product/category&path=79_84">Bracelets</a>
+                                                <li><a href="index.php?route=product/categorynew&path=79_84">Bracelets</a>
                                                 </li>
-                                                <li><a href="index.php?route=product/category&path=79_86">Necklaces</a>
+                                                <li><a href="index.php?route=product/categorynew&path=79_86">Necklaces</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -426,12 +426,12 @@
                                 <li class="menu-item-has-children">
                                     <a href="index.php?route=common/collection">Collections</a>
                                     <ul class="dropdown">
-                                    <li><a href="index.php?route=product/category&path=99">Tennis Connection</a></li>
-                                                <li><a href="index.php?route=product/category&path=95">Zayn Lite</a>
+                                    <li><a href="index.php?route=product/categorynew&path=99">Tennis Connection</a></li>
+                                                <li><a href="index.php?route=product/categorynew&path=95">Zayn Lite</a>
                                                 </li>
-                                                <li><a href="index.php?route=product/category&path=106">Cross Collection</a>
+                                                <li><a href="index.php?route=product/categorynew&path=106">Cross Collection</a>
                                                 </li>
-                                                <li><a href="index.php?route=product/category&path=107">Hoops Collection</a>
+                                                <li><a href="index.php?route=product/categorynew&path=107">Hoops Collection</a>
                                                 </li>
                                                 </ul>
                                 </li>
@@ -529,7 +529,7 @@
 
         <div class="subbox">
             <div style="margin-bottom:20px; position:relative;" class="col-sm-12 text-center">
-                <p style="color: #333; font-size: 18px;">
+                <p style="color: #333; font-size: 14px;">
                     Be the first to hear from us
                     <br />
                     New Launches | Sales | Surprises

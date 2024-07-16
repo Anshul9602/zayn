@@ -622,6 +622,9 @@ class ControllerProductCategory extends Controller
 				'href' => $this->url->link('product/category', $url)
 			);
 
+			$data['action'] = str_replace('&amp;', '&', $this->url->link('product/category', 'path=' . $this->request->get['path'] . $url));
+
+
 			$this->document->setTitle($this->language->get('text_error'));
 
 			$data['heading_title'] = $this->language->get('text_error');
