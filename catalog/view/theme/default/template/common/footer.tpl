@@ -212,6 +212,73 @@
     </div>
 
 </footer>
+
+
+<script>
+// wishlist product
+
+
+const allProductBtns = document.querySelectorAll(".wishlist_link");
+
+const wishzayn = [];
+
+allProductBtns.forEach((btn, index) => {
+btn.addEventListener("click", (e) => { 
+	console.log("click");
+	
+	// alert(`You clicked on Product ${index + 1}`);
+const productId = e.target.getAttribute("btnid");
+const productname = e.target.getAttribute("btnname");
+const productprice = e.target.getAttribute("btnprice");
+const productsprice = e.target.getAttribute("btnsprice");
+const productimg = e.target.getAttribute("btnimg");
+const producturl = e.target.getAttribute("btnhref");
+const productpercent = e.target.getAttribute("btnpercent");
+if (productprice == null || productId == null || productimg == null || producturl == null || productname == null || productsprice == null) {} else {
+console.log("click");
+myobj = {
+"productid": productId,
+"productprice": productprice,
+"productsprice": productsprice,
+"productname": productname,
+"producturl": producturl,
+"productimg": productimg,
+"productpercent": productpercent
+}
+console.log(myobj);
+const wishlistLocal = localStorage.getItem("wishzayn");
+if (wishlistLocal) {  console.log("wishlist do exist in localStorage");
+const wishlistFromLocalStorage = JSON.parse(wishlistLocal);
+const isProductIdExist = wishlistFromLocalStorage.find((item) => item.productid === productId);
+
+if (! isProductIdExist) {
+wishlistFromLocalStorage.push(myobj);
+localStorage.setItem("wishzayn", JSON.stringify(wishlistFromLocalStorage));
+alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
+window.location.reload();
+}else{
+	alert("Item present in wishlist");
+}
+}
+else {  console.log("Wishlist doesn't exist in localStorage");
+wishzayn.push(myobj);
+localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
+
+alert("Item present in wishlist");
+}
+
+
+}
+});
+});
+
+
+// total in wishlist
+const product11 = JSON.parse(localStorage.getItem("wishzayn"));
+	</script>
+
+
+
 <!-- footer area end -->
 <!-- Modernizer JS -->
 <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>

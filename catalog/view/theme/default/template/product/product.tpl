@@ -300,7 +300,7 @@ if (isset($draft) && is_string($draft)) {
 
                <h3 class="product_font"style="text-transform: capitalize; color:#000; font-size:28px; margin-top:25px">
                   <?php echo $heading_title; ?>
-                  <a style="float:right; margin-top:0px; padding:12px; " class="btn btn-find-store" onclick="wishlist.add(' <?php echo $product_id; ?> ');">
+                  <a style="float:right; margin-top:0px; padding:12px; " class="btn btn-find-store" onclick="wishlist.add(' <?php echo $product_id; ?> ');" btnid="{{ product_id }}" btnname="{{ heading_title }}" btnimg="{{ thumb }}" btnhref="{{ href1 }}" btnprice="{{ price }}"  btnsprice="{{ special }}" btnpercent="{{ percent1 }}">
                         <li class="fa fa-heart-o"></li>
                   </a>
                </h3>
