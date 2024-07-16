@@ -318,6 +318,9 @@
                                         <li>
                                             <a href="<?php echo $wishlist; ?>">
                                                 <i class="pe-7s-like"></i>
+                                                <div id="wish_count" class="notification">
+                                                    0
+                                                </div>
                                             </a>
                                         </li>
                                         <li>

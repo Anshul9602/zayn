@@ -73,7 +73,11 @@ class ControllerCommonHeader extends Controller
 		$data['text_all'] = $this->language->get('text_all');
 
 		$data['home'] = $this->url->link('common/home');
-		$data['wishlist'] = $this->url->link('account/wishlist', '', true);
+		if ($this->customer->isLogged()) {
+			$data['wishlist'] = $this->url->link('account/wishlist', '', true);
+		} else {
+			$data['wishlist'] = $this->url->link('account/wishlist_guest', '', true);
+		}
 		$data['logged'] = $this->customer->isLogged();
 		$data['account'] = $this->url->link('account/account', '', true);
 		$data['register'] = $this->url->link('account/register', '', true);

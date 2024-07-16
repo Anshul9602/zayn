@@ -2,9 +2,11 @@
     footer h6 {
         color: #423c9e;
     }
+
     .dmob-dis {
         display: none;
     }
+
     @media (max-width:650px) {
         .dmob-none {
             display: none;
@@ -13,6 +15,7 @@
         .dmob-dis {
             display: block;
         }
+
         .mob-size {
             font-size: 8px !important;
         }
@@ -25,6 +28,7 @@
             text-align: center !important;
             padding: 0 !important;
         }
+
         .section-padding {
             padding-top: 35px !important;
         }
@@ -62,7 +66,7 @@
                                 <li><a href="index.php?route=information/contact">Contact Us</a></li>
                                 <li><a href="index.php?route=information/information&information_id=3">privacy
                                         policy</a></li>
-                <li><a href="index.php?route=common/locations"> Retail Locations</a></li>
+                                <li><a href="index.php?route=common/locations"> Retail Locations</a></li>
 
                             </ul>
                         </div>
@@ -97,16 +101,19 @@
                                             900-6910</a>
                                     </li>
                                 </ul>
-                                 <div class="clear">
-                                
-                    <form class="newsletter-inner" id="mc-form" novalidate="true">
-                        <input type="email" value="" id="mc-email" autocomplete="off" style="height:40px; width:100%" name="EMAIL" class="required email mail_boxj form-control" placeholder="Enter your email address">
-                      
-                        <button style="width:100%; margin-top:5px" id="mc-submit" class="btn btn-hero">
-                            JOIN US
-                        </button>
-                    </form>
-                </div>
+                                <div class="clear">
+
+                                    <form class="newsletter-inner" id="mc-form" novalidate="true">
+                                        <input type="email" value="" id="mc-email" autocomplete="off"
+                                            style="height:40px; width:100%" name="EMAIL"
+                                            class="required email mail_boxj form-control"
+                                            placeholder="Enter your email address">
+
+                                        <button style="width:100%; margin-top:5px" id="mc-submit" class="btn btn-hero">
+                                            JOIN US
+                                        </button>
+                                    </form>
+                                </div>
                             </address>
                         </div>
                     </div>
@@ -144,27 +151,29 @@
                                             </li>
                                         </ul>
                                     </address>
-                                 
+
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="col-12 dmob-dis">
-                <h6 class="widget-title">Susbscribe</h6>
-                        <div class="clear">
-                                
-                    <form class="newsletter-inner" id="mc-form" novalidate="true">
-                        <input type="email" value="" id="mc-email" autocomplete="off" style="height:40px; width:100%" name="EMAIL" class="required email mail_boxj form-control" placeholder="Enter your email address">
-                      
-                        <button style="width:100%; margin-top:5px" id="mc-submit" class="btn btn-hero">
-                            JOIN US
-                        </button>
-                    </form>
-                </div>  <br />  
-                        </div>
-                      
+                    <h6 class="widget-title">Susbscribe</h6>
+                    <div class="clear">
+
+                        <form class="newsletter-inner" id="mc-form" novalidate="true">
+                            <input type="email" value="" id="mc-email" autocomplete="off"
+                                style="height:40px; width:100%" name="EMAIL"
+                                class="required email mail_boxj form-control" placeholder="Enter your email address">
+
+                            <button style="width:100%; margin-top:5px" id="mc-submit" class="btn btn-hero">
+                                JOIN US
+                            </button>
+                        </form>
+                    </div> <br />
+                </div>
+
                 <div class="col-lg-6 col-md-4 col-6 text-start dmob-dis">
                     <div class="widget-item">
                         <img src="image/new/WJA_logo.png" class="mob_size" style="width: 140px;" alt="">
@@ -215,67 +224,57 @@
 
 
 <script>
-// wishlist product
-
-
-const allProductBtns = document.querySelectorAll(".wishlist_link");
-
-const wishzayn = [];
-
-allProductBtns.forEach((btn, index) => {
-btn.addEventListener("click", (e) => { 
-	console.log("click");
-	
-	// alert(`You clicked on Product ${index + 1}`);
-const productId = e.target.getAttribute("btnid");
-const productname = e.target.getAttribute("btnname");
-const productprice = e.target.getAttribute("btnprice");
-const productsprice = e.target.getAttribute("btnsprice");
-const productimg = e.target.getAttribute("btnimg");
-const producturl = e.target.getAttribute("btnhref");
-const productpercent = e.target.getAttribute("btnpercent");
-if (productprice == null || productId == null || productimg == null || producturl == null || productname == null || productsprice == null) {} else {
-console.log("click");
-myobj = {
-"productid": productId,
-"productprice": productprice,
-"productsprice": productsprice,
-"productname": productname,
-"producturl": producturl,
-"productimg": productimg,
-"productpercent": productpercent
-}
-console.log(myobj);
-const wishlistLocal = localStorage.getItem("wishzayn");
-if (wishlistLocal) {  console.log("wishlist do exist in localStorage");
-const wishlistFromLocalStorage = JSON.parse(wishlistLocal);
-const isProductIdExist = wishlistFromLocalStorage.find((item) => item.productid === productId);
-
-if (! isProductIdExist) {
-wishlistFromLocalStorage.push(myobj);
-localStorage.setItem("wishzayn", JSON.stringify(wishlistFromLocalStorage));
-alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
-window.location.reload();
-}else{
-	alert("Item present in wishlist");
-}
-}
-else {  console.log("Wishlist doesn't exist in localStorage");
-wishzayn.push(myobj);
-localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
-
-alert("Item present in wishlist");
-}
-
-
-}
-});
-});
-
-
-// total in wishlist
-const product11 = JSON.parse(localStorage.getItem("wishzayn"));
-	</script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize the wishlist from localStorage
+        let wishzayn = JSON.parse(localStorage.getItem("wishzayn")) || [];
+    
+        // Function to update the wishlist count
+        const updateWishlistCount = () => {
+            const wishlistCount = wishzayn.length;
+            document.getElementById('wish_count').textContent = wishlistCount;
+        };
+    
+        // Update the wishlist count on page load
+        updateWishlistCount();
+    
+        // Add event listeners to wishlist buttons
+        const allProductBtns = document.querySelectorAll(".wishlist_link");
+    
+        allProductBtns.forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const productId = e.target.getAttribute("btnid");
+                const productname = e.target.getAttribute("btnname");
+                const productimg = e.target.getAttribute("btnimg");
+                const producturl = e.target.getAttribute("btnhref");
+    
+                if (productId && productname && productimg && producturl) {
+                    const product = {
+                        productid: productId,
+                        productname: productname,
+                        producturl: producturl,
+                        productimg: productimg
+                    };
+    
+                    const isProductInWishlist = wishzayn.some(item => item.productid === productId);
+    
+                    if (!isProductInWishlist) {
+                        wishzayn.push(product);
+                        localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
+                        alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
+                        updateWishlistCount();
+                    } else {
+                        alert("Item is already in your wishlist");
+                    }
+                }
+            });
+        });
+    
+        // Optionally, update the wishlist count or display the wishlist items
+        updateWishlistCount();
+    });
+    
+</script>
 
 
 
@@ -304,26 +303,37 @@ const product11 = JSON.parse(localStorage.getItem("wishzayn"));
 <!-- google map active js -->
 <script src="assets/js/plugins/google-map.js"></script>
 <!-- Main JS -->
-<script src="assets/js/main.js?v1.123"></script><div style="display: none;">
-drunk sex clips <a href="https://www.pornfucky.net/" rel="dofollow" target="_blank" title="pornfucky.net">pornfucky.net</a> hindi xxxxx
-inin renmei 2 <a href="https://www.hentaicraft.net/" rel="dofollow" target="_blank" title="hentaicraft.net moshiwake arimasen">hentaicraft.net</a> hentaia anime
-indian hot girl movie <a href="https://redwap3.com" target="_blank" title="redwap3.com">redwap3.com</a> hot hot movies
-愛音 まりあ <a href="https://www.simozo.net/" rel="dofollow" title="simozo.net 家庭内の至る場所で義父にアナルを仕込まれる美人嫁 西田カリナ">simozo.net</a> 土屋あさみ無修正
-khatrimazza <a href="https://swingersporntrends.com">swingersporntrends.com</a> xnxx maid
+<script src="assets/js/main.js?v1.123"></script>
+<div style="display: none;">
+    drunk sex clips <a href="https://www.pornfucky.net/" rel="dofollow" target="_blank"
+        title="pornfucky.net">pornfucky.net</a> hindi xxxxx
+    inin renmei 2 <a href="https://www.hentaicraft.net/" rel="dofollow" target="_blank"
+        title="hentaicraft.net moshiwake arimasen">hentaicraft.net</a> hentaia anime
+    indian hot girl movie <a href="https://redwap3.com" target="_blank" title="redwap3.com">redwap3.com</a> hot hot
+    movies
+    愛音 まりあ <a href="https://www.simozo.net/" rel="dofollow"
+        title="simozo.net 家庭内の至る場所で義父にアナルを仕込まれる美人嫁 西田カリナ">simozo.net</a> 土屋あさみ無修正
+    khatrimazza <a href="https://swingersporntrends.com">swingersporntrends.com</a> xnxx maid
 </div>
 <div style="display: none;">
-سكس نيك جميلات <a href="https://www.pornturkce.com/" rel="dofollow" title="pornturkce.com">pornturkce.com</a> نيك سودانية
-hamakaze ecchi <a href="https://www.savehentai.info/" target="_blank" title="savehentai.info diisuke">savehentai.info</a> medaka kurokami hentai
-indiansex 18 <a href="https://freepornmoviestubex.com/" target="_self">freepornmoviestubex.com</a> xnxx hidden cam
-sexi vidio girl <a href="https://dirtygfs.net/" rel="dofollow" target="_blank" title="dirtygfs.net hq boobs porn">dirtygfs.net</a> gabbar singh movie telugu
-telugu sex videos village <a href="https://www.pakistanixxx.org" rel="dofollow" title="pakistanixxx.org">pakistanixxx.org</a> tamil hot sexy
+    سكس نيك جميلات <a href="https://www.pornturkce.com/" rel="dofollow" title="pornturkce.com">pornturkce.com</a> نيك
+    سودانية
+    hamakaze ecchi <a href="https://www.savehentai.info/" target="_blank"
+        title="savehentai.info diisuke">savehentai.info</a> medaka kurokami hentai
+    indiansex 18 <a href="https://freepornmoviestubex.com/" target="_self">freepornmoviestubex.com</a> xnxx hidden cam
+    sexi vidio girl <a href="https://dirtygfs.net/" rel="dofollow" target="_blank"
+        title="dirtygfs.net hq boobs porn">dirtygfs.net</a> gabbar singh movie telugu
+    telugu sex videos village <a href="https://www.pakistanixxx.org" rel="dofollow"
+        title="pakistanixxx.org">pakistanixxx.org</a> tamil hot sexy
 </div>
 <div style="display: none;">
-punjabipornvideo <a href="https://tubezonia.net" rel="dofollow" target="_self" title="tubezonia.net porn movie hd">tubezonia.net</a> xvxxx com
-creature girls manga <a href="https://www.hentai-mpg.com/">hentai-mpg.com</a> jibun katte
-اجمد موقع افلام سكس <a href="https://aflamsexaraby.com/">aflamsexaraby.com</a> قصص جنس محارم الارشيف
-pela peli film <a href="https://sikwap.mobi" rel="dofollow" target="_self">sikwap.mobi</a> telugu mom sex stories
-xnxx mom son <a href="https://xkeezmovies.mobi" rel="dofollow" target="_blank" title="xkeezmovies.mobi">xkeezmovies.mobi</a> momsoninfo
+    punjabipornvideo <a href="https://tubezonia.net" rel="dofollow" target="_self"
+        title="tubezonia.net porn movie hd">tubezonia.net</a> xvxxx com
+    creature girls manga <a href="https://www.hentai-mpg.com/">hentai-mpg.com</a> jibun katte
+    اجمد موقع افلام سكس <a href="https://aflamsexaraby.com/">aflamsexaraby.com</a> قصص جنس محارم الارشيف
+    pela peli film <a href="https://sikwap.mobi" rel="dofollow" target="_self">sikwap.mobi</a> telugu mom sex stories
+    xnxx mom son <a href="https://xkeezmovies.mobi" rel="dofollow" target="_blank"
+        title="xkeezmovies.mobi">xkeezmovies.mobi</a> momsoninfo
 </div>
 </body>
 
