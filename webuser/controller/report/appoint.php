@@ -202,8 +202,8 @@ class ControllerReportAppoint extends Controller
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
 			// Retrieve the form data
 
-// print_r($_POST);
-// die();
+			// print_r($_POST);
+			// die();
 
 			$data['id'] = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
 			$data['name'] = isset($this->request->post['name']) ? $this->request->post['name'] : '';
@@ -237,13 +237,13 @@ class ControllerReportAppoint extends Controller
 			// Replace the following code with your actual database update logic
 			$this->load->model('report/consulting');
 
-			
+
 			$this->model_report_consulting->deleteEvent($Id);
 			//     echo "<pre>";
 			//    print_r($requestData);
 			//    echo "</pre>";
 			//    die();
-			
+
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 
@@ -287,19 +287,21 @@ class ControllerReportAppoint extends Controller
 	}
 	protected function SendEmail($requestData)
 	{
-
 		// $response = array();
 		// echo "<pre>";
 		// print_r($requestData);
 		// echo "</pre>";
+		$appoint_event = $this->model_report_consulting->getAllEventData();
+		// print_r($appoint_event[0]['name']);
+		// die();
 		if ($requestData) {
 
 			$mail = new Mail();
 			$mail->protocol = $this->config->get('config_mail_protocol');
 			$mail->parameter = $this->config->get('config_mail_parameter');
 			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
-			$mail->smtp_username = $this->config->get('config_mail_smtp_username');
-			$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+			$mail->smtp_username = 'info@zaynjewels.com';
+			$mail->smtp_password = 'qjoiaxyxowiosggs'; // Use environment variables for sensitive information
 			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
 			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
@@ -307,33 +309,111 @@ class ControllerReportAppoint extends Controller
 
 			$mail->setTo($requestData[0]['user_email']);
 
-			$mail->setFrom($this->config->get('config_email'));
+			$mail->setFrom('info@zaynjewels.com');
 			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
 			$mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
 
+			$message = "<!DOCTYPE html>
+        <html lang=\"en\">
+        <head>
+            <meta charset=\"UTF-8\">
+            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+            <title>Zayn Jewels Email</title>
+            <style>
+                body {
+                    font-family: 'Arial', sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f2f2f2;
+                }
+                .container {
+                    width: 100%;
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: #fff;
+                    border-radius: 8px;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                    overflow: hidden;
+                }
+                .header {
+                    border-bottom:#101175 thin solid;
+                    color: #fff;
+                    padding: 20px;
+                    text-align: center;
+                }
+                .header img {
+                    max-width: 150px;
+                }
+                .content {
+                    padding: 30px;
+                    text-align: left;
+                    color: #333;
+                }
+                .content h2 {
+                    color: #101175;
+                    margin-bottom: 20px;
+                }
+                .details p {
+                    margin: 8px 0;
+                }
+                .details strong {
+                    color: #101175;
+                }
+                .footer {
+                    border-top:#101175 thin solid;
+                    color: #101175;
+                    padding: 20px;
+                    text-align: center;
+                    font-size: 14px;
+                }
+                .footer p {
+                    margin: 5px 0;
+                }
+                a {
+                    color: #101175;
+                    text-decoration: none;
+                }
+                a:hover {
+                    text-decoration: underline;
+                }
+            </style>
+        </head>
+        <body>
+            <div class=\"container\">
+                <!-- Header -->
+                <div class=\"header\">
+                    <img src=\"https://zaynjewels.com/image/catalog/New%20Project%20(27).png\" alt=\"Zayn Jewels\">
+                </div>
+        
+                <!-- Content -->
+                <div class=\"content\">
+                    <h2>Appointment Confirmation</h2>
+                    <p>Dear " . $requestData[0]['userName'] . ",</p>
+                    <p>Your appointment has been scheduled with Zayn Jewels at the " . $appoint_event[0]['name'] . "</p>
+                    <div class=\"details\">
+                        <p><strong>Date:</strong> " . $requestData[0]['selected_date'] . "</p>
+                        <p><strong>Time:</strong> " . $requestData[0]['selected_time'] . "</p>
+                        <p><strong>Time Zone:</strong> " . $requestData[0]['current_timezone'] . "</p>
+                        <p><strong>Subject:</strong> " . $requestData[0]['meetingTitle'] . "</p>
+                        <p><strong>Message:</strong> " . $requestData[0]['usermessage'] . "</p>
+                        <p><strong>Email:</strong> " . $requestData[0]['user_email'] . "</p>
+                    </div>
+                    <p>We look forward to seeing you.</p>
+                    <p>Kind Regards,</p>
+                    <p><strong>-Zayn Jewels Team-</strong></p>
+                </div>
+        
+                <!-- Footer -->
+                <div class=\"footer\">
+                    <p>CONTACT US:</p>
+                    <p>CALL: +1 949-900-6910</p>
+                    <p>EMAIL: <a href=\"mailto:info@zaynjewels.com\">INFO@ZAYNJEWELS.COM</a></p>
+                </div>
+            </div>
+        </body>
+        </html>";
 
-			$message .= "Hello " . $requestData[0]['userName'] . " ,\n\n";
-
-			$message .= "Your appointment has been confirmed with Zayn Jewels. \n\n";
-
-			$message .= "Full Name- " . $requestData[0]['userName'] . "\n\n";
-			$message .= "Date- " . $requestData[0]['selected_date'] . "\n\n";
-			$message .= "Time- " . $requestData[0]['selected_time'] . "\n\n";
-			$message .= "Time Zone- " . $requestData[0]['current_timezone'] . "\n\n";
-			$message .= "Subject- " . $requestData[0]['meetingTitle'] . "\n\n";
-			$message .= "Message- " . $requestData[0]['usermessage'] . "\n\n";
-			$message .= "Email- " . $requestData[0]['user_email'] . "\n\n";
-			$message .= "\n\n";
-			$message .= "Look forward to meeting with you. \n\n";
-
-			$message .= "Best ,\n\n";
-
-			$message .= "-Team Zayn Jewels\n\n";
-			$message .= "Note : You can reschedule your appointment anytime by clicking here https://zaynjewels.com/index.php?route=common/consulting \n\n";
-
-
-
-			$mail->setText($message);
+			$mail->setHtml($message);
 			$mail->send();
 		} else {
 			$response['error'] = 'Validation failed';
@@ -361,7 +441,7 @@ class ControllerReportAppoint extends Controller
 
 			$mail->setTo($requestData[0]['user_email']);
 
-			$mail->setFrom($this->config->get('config_email'));
+			$mail->setFrom('info@zaynjewels.com');
 			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
 			$mail->setSubject("Cancel your appointment from Zayn Jewels");
 
@@ -377,13 +457,9 @@ class ControllerReportAppoint extends Controller
 			$message .= "\n\n";
 
 
-			$message .= "Best ,\n\n";
+			$message .= "Best Regards,\n\n";
 
 			$message .= "-Team Zayn Jewels\n\n";
-			$message .= "Note : You can reschedule your appointment anytime by clicking here https://zaynjewels.com/index.php?route=common/consulting \n\n";
-
-
-
 			$mail->setText($message);
 			$mail->send();
 		} else {
