@@ -330,6 +330,8 @@ class ControllerProductProduct extends Controller
 				$data['price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				$data['customer_id'] = $this->customer->getId();
 			} else {
+
+				$data['wish_price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				$data['price'] = false;
 				$data['customer_id'] = 0;
 			}
@@ -337,6 +339,7 @@ class ControllerProductProduct extends Controller
 			if ((float)$product_info['special']) {
 				$data['special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 			} else {
+				$data['wish_special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				$data['special'] = false;
 			}
 
@@ -502,7 +505,13 @@ class ControllerProductProduct extends Controller
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-			
+			if (isset($this->session->data['wishlist_items'])) {
+				$data['wishlist_items1'] = $this->session->data['wishlist_items'];
+			} else {
+				$data['wishlist_items1'] = array();
+			}
+
+
 			$this->response->setOutput($this->load->view('product/product', $data));
 		} else {
 			$url = '';

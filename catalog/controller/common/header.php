@@ -1,6 +1,7 @@
 <?php
 class ControllerCommonHeader extends Controller
 {
+
 	public function index()
 	{
 		// Analytics
@@ -160,40 +161,7 @@ class ControllerCommonHeader extends Controller
 			}
 		}
 
-		/*new-category left and right
-		$data['categories_left'] = array();
-
-		$categories_left = $this->model_catalog_category->getCategories(59);
-
-		foreach ($categories_left as $category) {
-			if ($category['top']) {
-				// Level 2
-				$children_data = array();
-
-				$children = $this->model_catalog_category->getCategory($category['category_id']);
-
-				foreach ($children as $child) {
-					$filter_data = array(
-						'filter_category_id'  => $child['category_id'],
-						'filter_sub_category' => true
-					);
-
-					$children_data[] = array(
-						'name'  => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-						'href'  => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id'])
-					);
-				}
-
-				// Level 1
-				$data['categories_left'][] = array(
-					'name'     => $category['name'],
-					'children' => $children_data,
-					'column'   => $category['column'] ? $category['column'] : 1,
-					'href'     => $this->url->link('product/category', 'path=' . $category['category_id'])
-				);
-			}
-		}
-
+		
 		/*end*/
 		$totals = array();
 		$taxes = $this->cart->getTaxes();
@@ -237,7 +205,54 @@ class ControllerCommonHeader extends Controller
 		} else {
 			$data['text_customer_name'] = $this->language->get('text_account');
 		}
+		if (isset($this->session->data['wishlist_items'])) {
+			$data['wishlist_items1'] = $this->session->data['wishlist_items'];
+		} else {
+			$data['wishlist_items1'] = array();
+		}
+
+// echo "<pre>"; print_r($data['wishlist_items1']);
+// echo "</pre>";
 
 		return $this->load->view('common/header', $data);
 	}
+
+	public function setWishlistItems() {
+		$this->load->language('common/header');
+	
+		$json = array();
+	
+		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+			// Retrieve and decode the JSON data from the POST request
+			$rawPostData = file_get_contents('php://input');
+			$postData = json_decode($rawPostData, true);
+	
+			// Debug: Log the received raw POST data and decoded data
+			error_log('Raw POST Data: ' . $rawPostData);
+			error_log('Decoded POST Data: ' . print_r($postData, true));
+	
+			if (isset($postData['wishlist'])) {
+				$wishlist = $postData['wishlist'];
+	
+				// Debug: Log the wishlist data
+				error_log('Wishlist Data: ' . print_r($wishlist, true));
+	
+				if (!empty($wishlist)) {
+					// Store wishlist items in a session variable
+					$this->session->data['wishlist_items'] = $wishlist;
+					$json['success'] = 'Wishlist items stored in session.';
+				} else {
+					$json['error'] = 'No wishlist items found.';
+				}
+			} else {
+				$json['error'] = 'Wishlist key not found in POST data.';
+			}
+		} else {
+			$json['error'] = 'Invalid request method.';
+		}
+	
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
 }

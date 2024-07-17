@@ -247,13 +247,17 @@
                 const productname = e.target.getAttribute("btnname");
                 const productimg = e.target.getAttribute("btnimg");
                 const producturl = e.target.getAttribute("btnhref");
+                const productprice = e.target.getAttribute("btnprice");
+                const productsprice = e.target.getAttribute("btnsprice");
     
-                if (productId && productname && productimg && producturl) {
+                if (productId && productname && productimg && producturl && productprice && productsprice) {
                     const product = {
                         productid: productId,
                         productname: productname,
                         producturl: producturl,
-                        productimg: productimg
+                        productimg: productimg,
+                        productprice: productprice,
+                        productsprice: productsprice
                     };
     
                     const isProductInWishlist = wishzayn.some(item => item.productid === productId);
@@ -262,7 +266,9 @@
                         wishzayn.push(product);
                         localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
                         alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
+                        
                         updateWishlistCount();
+                        location.reload();
                     } else {
                         alert("Item is already in your wishlist");
                     }
@@ -272,8 +278,33 @@
     
         // Optionally, update the wishlist count or display the wishlist items
         updateWishlistCount();
+
+        // data get
+
+        const wishlistItems = localStorage.getItem('wishzayn');
+         console.log(wishlistItems, "wishlist items");
+        if (wishlistItems) {
+            fetch('index.php?route=common/header/setWishlistItems', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ wishlist: wishlistItems })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Wishlist items sent to server:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+
     });
     
+    
+
 </script>
 
 

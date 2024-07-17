@@ -1,6 +1,7 @@
 <?php
 class ControllerProductCategory extends Controller
 {
+	
 	public function index()
 	{
 		$this->load->language('product/category');
@@ -10,6 +11,13 @@ class ControllerProductCategory extends Controller
 		$this->load->model('catalog/product');
 
 		$this->load->model('tool/image');
+
+		// if (isset($this->session->data['wishlist_items'])) {
+        //     $data['wishlist_items1'] = $this->session->data['wishlist_items'];
+        // } else {
+        //     $data['wishlist_items1'] = array();
+        // }
+		// print_r ($data['wishlist_items1'] , "wish data");
 
 		if (isset($this->request->get['filter']) && trim($this->request->get['filter']) != "") {
 

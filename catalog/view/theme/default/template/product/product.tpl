@@ -307,10 +307,11 @@ if (isset($draft) && is_string($draft)) {
 
                <h3 class="product_font" style="text-transform: capitalize; color:#000; font-size:28px; margin-top:25px">
                   <?php echo $heading_title; ?>
-                  
+
                </h3>
                <div class="row">
-                  <div class="col-md-10"><?php if ($review_status) { ?>
+                  <div class="col-md-10">
+                     <?php if ($review_status) { ?>
                      <div class="rating">
                         <p>
                            <?php for ($i = 1; $i <= 5; $i++) { ?>
@@ -342,7 +343,7 @@ if (isset($draft) && is_string($draft)) {
                            </a>
                         </p>
                         <?php if (!$cad) { ?>
-                       
+
                         <!-- AddThis Button BEGIN -->
                         <div class="addthis_toolbox addthis_default_style" data-url="<?php echo $share; ?>"><a
                               class="addthis_button_facebook_like" fb:like:layout="button_count"></a> <a
@@ -355,17 +356,40 @@ if (isset($draft) && is_string($draft)) {
                               } ?>
                      </div>
                      <?php
-                        } ?></div>
-                  <div class="col-md-2">
-                     <a style="float:right;  padding:12px;    margin-top: 10px;" class="btn btn-find-store wishlist_link" 
-         btnid="<?php echo $product_id; ?>" 
-         btnname="<?php echo $heading_title; ?>" 
-         btnimg="<?php echo $thumb; ?>" 
-         btnhref="<?php echo $href1; ?>" >
-         <li class="fa fa-heart-o"></li>
-      </a>
+                        } ?>
                   </div>
-                 
+
+                  <?php                 
+                        $wishlist_items1_array = json_decode($wishlist_items1, true);
+                                 
+                                    $product_in_wishlist = 0;
+                                    foreach ($wishlist_items1_array as $item) {
+                                  
+                                        if ($item['productid'] == $product_id) {
+                                            $product_in_wishlist = 1;
+                                            break;
+                                        }
+                                    }
+                                  
+                                    ?>
+                  <div class="col-md-2">
+                     <?php if ($product_in_wishlist) { ?>
+
+                     <a style="float:right;  padding:12px;    margin-top: 10px;" class="btn btn-find-store "><i class="fa fa-heart"></i> </a>
+                     <?php } else { ?>
+                     <a style="float:right;  padding:12px;    margin-top: 10px;"
+                        class="btn btn-find-store wishlist_link" btnid="<?php echo $product_id; ?>"
+                        btnname="<?php echo $heading_title; ?>" btnimg="<?php echo $thumb; ?>"
+                        btnhref="<?php echo $href1; ?>" btnprice="<?php echo $wish_price; ?>"
+                        btnsprice="<?php echo $wish_special; ?>">
+
+                        <i class="fa fa-heart-o"></i>
+
+                     </a>
+                     <?php } ?>
+
+                  </div>
+
                </div>
                <hr style="    margin-top: 0px;">
                <h3 id="p_pr" style="  color:#a38129; font-size:22px;">

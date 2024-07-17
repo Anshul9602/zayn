@@ -45,7 +45,7 @@ $('.custom-control label').click(function() {
                                 <img class="sec-img" src="${item.thumb}" alt="product">
                                 </a>
                              </figure>
-                             <div class="product-caption">
+                             <div class="product-caption 1">
                                 <h6 class="product-name">
                                    <a href="${item.href}">
                                    ${item.name}
