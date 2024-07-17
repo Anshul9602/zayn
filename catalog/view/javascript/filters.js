@@ -39,11 +39,23 @@ $('.custom-control label').click(function() {
   
               return `<div class="col-md-4 col-sm-6 col-6 p_box">
                           <div class="product-item">
-                             <figure class="product-thumb">
+                             <figure class="product-thumb" style="    position: relative;">
                                 <a href="${item.href}">
                                 <img class="pri-img" src="${item.thumb}" alt="product">
                                 <img class="sec-img" src="${item.thumb}" alt="product">
                                 </a>
+                               
+                     <a style="position: absolute;right: 10px; padding: 12px; top: 10px;" 
+   class="btn btn-find-store wishlist_link" 
+   btnid="${item.product_id}"
+   btnname="${item.name}" 
+   btnimg="${item.thumb}"
+   btnhref="${item.href}" 
+   btnprice="${item.wish_price}"
+   btnsprice="${item.wish_special}">
+   <i class="fa fa-heart-o"></i>
+</a>
+                    
                              </figure>
                              <div class="product-caption 1">
                                 <h6 class="product-name">

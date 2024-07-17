@@ -193,12 +193,14 @@ class ControllerProductCategorynew extends Controller
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
+					$wish_price =  $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 					$price = false;
 				}
 
 				if ((float)$result['special']) {
 					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
+					$wish_special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 					$special = false;
 				}
 
@@ -262,6 +264,8 @@ class ControllerProductCategorynew extends Controller
 					'model'       => $result['model'],
 					'option'		=> $options,
 					'price'       => $price,
+					'wish_price'       => $wish_price,
+					'wish_special'     => $wish_special,
 					'special'     => $special,
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
@@ -279,6 +283,11 @@ class ControllerProductCategorynew extends Controller
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
+			if (isset($this->session->data['wishlist_items'])) {
+				$data['wishlist_items1'] = $this->session->data['wishlist_items'];
+			} else {
+				$data['wishlist_items1'] = null;
+			}
 
 			$this->response->setOutput($this->load->view('product/categorynew', $data));
 		} else {

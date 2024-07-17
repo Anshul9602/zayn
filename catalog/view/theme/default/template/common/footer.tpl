@@ -243,12 +243,14 @@
         allProductBtns.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
-                const productId = e.target.getAttribute("btnid");
-                const productname = e.target.getAttribute("btnname");
-                const productimg = e.target.getAttribute("btnimg");
-                const producturl = e.target.getAttribute("btnhref");
-                const productprice = e.target.getAttribute("btnprice");
-                const productsprice = e.target.getAttribute("btnsprice");
+                console.log("Button clicked");
+    
+                const productId = btn.getAttribute("btnid");
+                const productname = btn.getAttribute("btnname");
+                const productimg = btn.getAttribute("btnimg");
+                const producturl = btn.getAttribute("btnhref");
+                const productprice = btn.getAttribute("btnprice");
+                const productsprice = btn.getAttribute("btnsprice");
     
                 if (productId && productname && productimg && producturl && productprice && productsprice) {
                     const product = {
@@ -266,7 +268,7 @@
                         wishzayn.push(product);
                         localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
                         alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
-                        
+    
                         updateWishlistCount();
                         location.reload();
                     } else {
@@ -276,13 +278,9 @@
             });
         });
     
-        // Optionally, update the wishlist count or display the wishlist items
-        updateWishlistCount();
-
-        // data get
-
+        // Send wishlist data to the server
         const wishlistItems = localStorage.getItem('wishzayn');
-         console.log(wishlistItems, "wishlist items");
+        console.log(wishlistItems, "wishlist items");
         if (wishlistItems) {
             fetch('index.php?route=common/header/setWishlistItems', {
                 method: 'POST',
@@ -299,11 +297,9 @@
                 console.error('Error:', error);
             });
         }
-
-
     });
     
-    
+
 
 </script>
 
