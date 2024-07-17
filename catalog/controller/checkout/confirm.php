@@ -5,7 +5,6 @@ class ControllerCheckoutConfirm extends Controller
 	{
 		$redirect = '';
 
-
 		if ($this->cart->hasShipping()) {
 			// Validate if shipping address has been set.
 			if (!isset($this->session->data['shipping_address'])) {
