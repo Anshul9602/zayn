@@ -178,13 +178,13 @@ class ControllerReportWishCatalog extends Controller
 			//   die();
 			// Perform the status update in the database based on $orderId
 			// Replace the following code with your actual database update logic
-			$this->load->model('report/wish_catalog');
+			$this->load->model('report/wishcat');
 			$this->model_report_wishcat->updateStatus($Id);
 			$requestData = $this->model_report_wishcat->getcatalogDataById($Id);
 
 			// echo json_encode($requestData); 
 
-			$this->SendEmail($requestData);
+			// $this->SendEmail($requestData);
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 
@@ -207,7 +207,7 @@ class ControllerReportWishCatalog extends Controller
 			//   die();
 			// Perform the status update in the database based on $orderId
 			// Replace the following code with your actual database update logic
-			$this->load->model('report/wish_catalog');
+			$this->load->model('report/wishcat');
 
 			$requestData = $this->model_report_wishcat->getcatalogDataById($Id);
 			$this->model_report_wishcat->delete($Id);
@@ -215,7 +215,7 @@ class ControllerReportWishCatalog extends Controller
 			//    print_r($requestData);
 			//    echo "</pre>";
 			//    die();
-			$this->SendEmaild($requestData);
+			// $this->SendEmaild($requestData);
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 

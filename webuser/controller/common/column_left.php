@@ -695,6 +695,22 @@ class ControllerCommonColumnLeft extends Controller
 					'children' => $report_appoint
 				);
 			}
+			$report_wish_catalog = array();
+
+			if ($this->user->hasPermission('access', 'report/wish_catalog')) {
+				$report_wish_catalog[] = array(
+					'name'	   => $this->language->get('Wishlist_Catalog_list'),
+					'href'     => $this->url->link('report/wish_catalog', 'token=' . $this->session->data['token'], true)
+					
+				);
+			}
+			if ($report_wish_catalog) {
+				$report[] = array(
+					'name'	   => 'Wishlist Catalog list',
+					'href'     => '',
+					'children' => $report_wish_catalog
+				);
+			}
 
 			$report_sale = array();
 
@@ -927,6 +943,7 @@ class ControllerCommonColumnLeft extends Controller
 				$data['other_status'] = 0;
 			}
 			$data['appointh']=$this->url->link('report/appoint', 'token=' . $this->session->data['token'], true);
+			$data['wish_catalog']=$this->url->link('report/wish_catalog', 'token=' . $this->session->data['token'], true);
 		// echo $data['appointh'];
 			return $this->load->view('common/column_left', $data);
 		}
