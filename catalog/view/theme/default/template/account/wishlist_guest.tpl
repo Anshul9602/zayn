@@ -261,7 +261,7 @@ display: block;
         let result = "";
     
         for (let i = 0; i < product.length; i++) {
-            var card = `<div class="col-md-3 col-sm-6 mt-3 pl-2">
+            var card = `<div class="col-md-2 col-sm-6 mt-3 pl-2">
         
             <div class=" p-card-holder">
                 <div class="product-card">

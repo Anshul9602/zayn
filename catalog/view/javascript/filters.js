@@ -178,7 +178,7 @@ $(document).on('click', '.wishlist_link1', function() {
                    alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
 
                    updateWishlistCount();
-                   location.reload();
+                  
                } else {
                    alert("Item is already in your wishlist");
                }
