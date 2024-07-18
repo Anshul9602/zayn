@@ -10,7 +10,7 @@ class ModelAccountWishcat extends Model {
         // Insert data into the database
         $this->db->query("
             INSERT INTO `" . DB_PREFIX . "catalog_req`
-            (`name`, `comapny_name`, `pdf`, `product_data`, `status`)
+            (`name`, `company_name`, `pdf`, `product_data`, `status`)
             VALUES ('$name', '$company_name', '$pdf', '$product_data', '0')
         ");
     }

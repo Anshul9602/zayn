@@ -70,6 +70,13 @@
    .p_box:hover .option-tab {
    opacity: 1;
    }
+.product-thumb:hover .wishlist_link1{
+   display:block;
+}
+.wishlist_link1{
+   display:none;
+}
+
 </style>
 <main>
    <!-- breadcrumb area start -->

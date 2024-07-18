@@ -47,9 +47,9 @@ function generatePage(filteredData) {
         <img class="sec-img" src="${item.thumb}" alt="product">
       </a>
 ${item.in_wishlist ? `
-                                    <a style="position: absolute;right: 10px; padding: 12px; top: 10px;" class="btn btn-find-store"><i class="fa fa-heart"></i> </a>
+                                    <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store"><i class="fa fa-heart"></i> </a>
                                     ` : `
-                                    <a style="position: absolute;right: 10px; padding: 12px; top: 10px;" class="btn btn-find-store wishlist_link1"
+                                    <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store wishlist_link1"
                                         btnid="${item.product_id}" btnname="${item.name}" btnimg="${item.thumb}" btnhref="${item.href}"
                                         btnprice="${item.wish_price}" btnsprice="${item.wish_special}">
                                         <i class="fa fa-heart-o"></i>
