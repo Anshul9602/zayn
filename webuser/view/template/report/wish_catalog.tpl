@@ -186,7 +186,7 @@
                       <?php if ($order['status'] == 0) { ?>
                         <button id="primary_button_<?php echo $order['id']; ?>" class="btn btn-primary btn-pen">Pending</button>
                       <?php } elseif ($order['status'] == 1) { ?>
-                        <button id="success_button_<?php echo $order['id']; ?>" class="btn btn-success btn-app">Approve</button>
+                        <button id="success_button_<?php echo $order['id']; ?>" class="btn btn-success ">Approve</button>
                       <?php } ?>
 
                       <span>
