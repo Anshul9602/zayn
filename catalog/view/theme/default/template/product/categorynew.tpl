@@ -142,24 +142,8 @@
             </div>
             <!-- sidebar area end -->
             <!-- shop main wrapper start -->
-            <?php                 
-            if($wishlist_items1 == null){
-               $product_in_wishlist = 0;
-            }else{
-               $wishlist_items1_array = json_decode($wishlist_items1, true);
-                                 
-               $product_in_wishlist = 0;
-               foreach ($wishlist_items1_array as $item) {
-             
-                   if ($item['productid'] == $product_id) {
-                       $product_in_wishlist = 1;
-                       break;
-                   }
-               }
-            }
-                       
-                                  
-                                    ?>
+       
+                                    
             <div class="col-lg-9 order-1 order-lg-2">
                <div class="shop-product-wrapper">
                   <div id="data-container" class="shop-product-wrap grid-view row mbn-30">

@@ -165,7 +165,11 @@ class ControllerProductCategorynew extends Controller
 				}
 			
 				$results = $this->model_catalog_product->getProductsKey($key, $key2, $filter_data);
-		
+				if (isset($this->session->data['wishlist_items'])) {
+					$wishlist_items1 = $this->session->data['wishlist_items'];
+				} else {
+					$wishlist_items1 = null;
+				}
 
 			foreach ($results as $result) {
 				if ($result['image']) {
@@ -253,7 +257,20 @@ class ControllerProductCategorynew extends Controller
 				foreach ($this->model_catalog_product->getProductFilters($result['product_id']) as $filters) {
 					$filter_ids[]=$filters[0];
 				}
-
+				if($wishlist_items1 == null){
+					$product_in_wishlist = false;
+				 }else{
+					$wishlist_items1_array = json_decode($wishlist_items1, true);
+									  
+					$product_in_wishlist = false;
+					foreach ($wishlist_items1_array as $item) {
+				  
+						if ($item['productid'] == $result['product_id']) {
+							$product_in_wishlist = true;
+							break;
+						}
+					}
+				 }
 				
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
@@ -266,6 +283,7 @@ class ControllerProductCategorynew extends Controller
 					'price'       => $price,
 					'wish_price'       => $wish_price,
 					'wish_special'     => $wish_special,
+					'in_wishlist'    => $product_in_wishlist,
 					'special'     => $special,
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
@@ -283,11 +301,7 @@ class ControllerProductCategorynew extends Controller
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-			if (isset($this->session->data['wishlist_items'])) {
-				$data['wishlist_items1'] = $this->session->data['wishlist_items'];
-			} else {
-				$data['wishlist_items1'] = null;
-			}
+		
 
 			$this->response->setOutput($this->load->view('product/categorynew', $data));
 		} else {
