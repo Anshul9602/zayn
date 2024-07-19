@@ -1,12 +1,13 @@
 <?php
 require '../vendor/autoload.php';
 
-	use Dompdf\Dompdf;
-	use Dompdf\Options;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 class ControllerReportWishCatalog extends Controller
 {
 
-	
+
 	public function index()
 	{
 		$this->load->language('report/wish_catalog');
@@ -79,7 +80,7 @@ class ControllerReportWishCatalog extends Controller
 
 		$this->load->model('report/wishcat');
 		$data['appoint'] = $this->model_report_wishcat->getAllCatalogData();
-		
+
 
 
 		$order_total = $this->model_report_wishcat->getTotalcat();
@@ -116,22 +117,22 @@ class ControllerReportWishCatalog extends Controller
 		$data['groups'] = array();
 
 		$data['groups'][] = array(
-			'text'  => $this->language->get('text_year'),
+			'text' => $this->language->get('text_year'),
 			'value' => 'year',
 		);
 
 		$data['groups'][] = array(
-			'text'  => $this->language->get('text_month'),
+			'text' => $this->language->get('text_month'),
 			'value' => 'month',
 		);
 
 		$data['groups'][] = array(
-			'text'  => $this->language->get('text_week'),
+			'text' => $this->language->get('text_week'),
 			'value' => 'week',
 		);
 
 		$data['groups'][] = array(
-			'text'  => $this->language->get('text_day'),
+			'text' => $this->language->get('text_day'),
 			'value' => 'day',
 		);
 
@@ -179,13 +180,13 @@ class ControllerReportWishCatalog extends Controller
 		// Check if the request is coming from AJAX
 		if ($this->request->server['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && $this->request->server['REQUEST_METHOD'] == 'POST') {
 			// Validate and sanitize the input data (orderId)
-			$Id = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
+			$Id = isset($this->request->post['orderId']) ? (int) $this->request->post['orderId'] : 0;
 			//   echo $Id;
 			//   die();
 			// Perform the status update in the database based on $orderId
 			// Replace the following code with your actual database update logic
 			$this->load->model('report/wishcat');
-			
+
 			$requestData = $this->model_report_wishcat->getcatalogDataById($Id);
 
 			// echo json_encode($requestData); 
@@ -193,11 +194,11 @@ class ControllerReportWishCatalog extends Controller
 			$pdf1 = $this->generatePdf($requestData);
 			// echo $pdf;
 
-if($pdf1 == true) {
-	$pdf = HTTP_SERVER . 'savepdf/wishcatalog-'.$Id.'.pdf';
-}
-$this->model_report_wishcat->updateStatus($Id,$pdf);
-			// die();
+			if ($pdf1 == true) {
+				$pdf = HTTP_SERVER . 'savepdf/wishcatalog-' . $Id . '.pdf';
+			}
+			// $this->model_report_wishcat->updateStatus($Id,$pdf);
+			die();
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 
@@ -209,66 +210,102 @@ $this->model_report_wishcat->updateStatus($Id,$pdf);
 			$this->response->redirect($this->url->link('error/not_found', '', true));
 		}
 	}
-	public function generatePdf($requestData) {
-        // Initialize dompdf
-        $dompdf = new Dompdf();
-        
-        // Fetch wishlist data
-        $wishlist = $requestData;
-		
-$id = $wishlist[0]['id'];
-        // Generate HTML content
-        $html = '<h1>Wishlist</h1>';
-        foreach ($wishlist as $item) {
-            $html .= '<h2>' . htmlspecialchars($item['name']) . ' (' . htmlspecialchars($item['company_name']) . ')</h2>';
-            $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-            $html .= '<thead><tr>';
-            $html .= '<th>Product ID</th>';
-            $html .= '<th>Product Name</th>';
-            $html .= '<th>Product URL</th>';
-            $html .= '<th>Product Image</th>';
-            $html .= '<th>Product Price</th>';
-            $html .= '</tr></thead><tbody>';
-            
-            $productData = json_decode($item['product_data'], true);
-            foreach ($productData as $product) {
-                $html .= '<tr>';
-                $html .= '<td>' . htmlspecialchars($product['productid']) . '</td>';
-                $html .= '<td>' . htmlspecialchars($product['productname']) . '</td>';
-                $html .= '<td><a href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['producturl']) . '</a></td>';
-                $html .= '<td><img src="' . htmlspecialchars($product['productimg']) . '" width="50" height="50"></td>';
-                $html .= '<td>' . htmlspecialchars($product['productprice']) . '</td>';
-                $html .= '</tr>';
-            }
-            
-            $html .= '</tbody></table>';
+	public function generatePdf($requestData)
+{
+    // Initialize dompdf
+    $dompdf = new Dompdf();
+
+    // Fetch wishlist data
+    $wishlist = $requestData;
+
+    $id = $wishlist[0]['id'];
+
+    // Generate HTML content
+    $html = '
+    <html>
+    <head>
+       <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+        <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+        <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+    </head>
+    <body>
+        <div id="content">
+            <div class="page-header">
+                <div class="container">
+				 <h1>Wishlist Catalog</h1><br><br>
+                    <div class="row ">
+                        <img src="https://zaynjewels.com/image/Zayn-Jewels-logo.jpg" alt="" width="60%">
+                    </div>
+                </div>
+            </div>
+        </div>
+       ';
+
+    foreach ($wishlist as $item) {
+      
+
+        $html .= '<div class="container"><div class="row">';
+		$html .= '<h2 class="mt-4 col-12">Name : ' . htmlspecialchars($item['name']) . ' (' . htmlspecialchars($item['company_name']) . ')</h2>';
+		$html .= '<h2 class="mt-2 col-12 pb-3">Company Name : ' . htmlspecialchars($item['company_name']) . '</h2><br><br>';
+        $productData = json_decode($item['product_data'], true);
+        foreach ($productData as $product) {
+            // Use the external image URL directly
+            $imageUrl = htmlspecialchars($product['productimg']);
+            $html .= '
+            <div class="col-md-3 mt-3">
+                <img src="' . $imageUrl . '" width="100%">
+                <div class="content mt-3">
+                    <a href="' . htmlspecialchars($product['producturl']) . '" style="color:#000;">' . htmlspecialchars($product['productname']) . '</a>
+                    <h6 class=" pt-3">Design No : ' . htmlspecialchars($product['productid']) . '</h6>
+                    <h6>Diamond : </h6>
+                    <h6>Size : </h6>
+                    <h6>MSRP : ' . htmlspecialchars($product['productprice']) . '</h6>
+                </div>
+            </div>';
         }
-        
-        // Load HTML content into dompdf
-        $dompdf->loadHtml($html);
-        
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait');
-        
-        // Render the HTML as PDF
-        $dompdf->render();
-       
-            // Save the generated PDF to a file on the server
-            $pdfContent = $dompdf->output();
-            $pdfFilePath = '../savepdf/wishcatalog-'.$id.'.pdf'; // Specify your desired file path
-            $pdf = file_put_contents($pdfFilePath, $pdfContent);
-            // echo "PDF saved to " . $pdfFilePath;
-			// echo $pdf;
-      return true;
-        // Output the generated PDF (1 = download and 0 = preview)
-        // $dompdf->stream("wishlist.pdf", array("Attachment" => 1));
+        $html .= '</div></div>';
     }
+
+    $html .= '</body></html>';
+
+echo $html;
+
+    // Load HTML content into dompdf
+    $dompdf->loadHtml($html);
+
+    // (Optional) Setup the paper size and orientation
+    $dompdf->setPaper('A4', 'portrait');
+
+    // Render the HTML as PDF
+    $dompdf->render();
+
+    // Save the generated PDF to a file on the server
+    $pdfContent = $dompdf->output();
+    $pdfFilePath = '../savepdf/wishcatalog-' . $id . '.pdf'; // Specify your desired file path
+    $pdfSaved = file_put_contents($pdfFilePath, $pdfContent);
+
+    if ($pdfSaved) {
+        // Optionally, return the file path or a success message
+        return $pdfFilePath;
+    } else {
+        // Optionally, return an error message
+        return false;
+    }
+}
+
+
+	public function page1()
+	{
+		// Check if the request is coming from AJAX
+		$this->response->setOutput($this->load->view('report/wish_catalog_page1'));
+	}
 	public function delete()
 	{
 		// Check if the request is coming from AJAX
 		if ($this->request->server['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && $this->request->server['REQUEST_METHOD'] == 'POST') {
 			// Validate and sanitize the input data (orderId)
-			$Id = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
+			$Id = isset($this->request->post['orderId']) ? (int) $this->request->post['orderId'] : 0;
 			//   echo $Id;
 			//   die();
 			// Perform the status update in the database based on $orderId
