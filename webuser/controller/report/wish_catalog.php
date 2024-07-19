@@ -1,6 +1,12 @@
 <?php
+require '../vendor/autoload.php';
+
+	use Dompdf\Dompdf;
+	use Dompdf\Options;
 class ControllerReportWishCatalog extends Controller
 {
+
+	
 	public function index()
 	{
 		$this->load->language('report/wish_catalog');
@@ -179,12 +185,19 @@ class ControllerReportWishCatalog extends Controller
 			// Perform the status update in the database based on $orderId
 			// Replace the following code with your actual database update logic
 			$this->load->model('report/wishcat');
-			$this->model_report_wishcat->updateStatus($Id);
+			
 			$requestData = $this->model_report_wishcat->getcatalogDataById($Id);
 
 			// echo json_encode($requestData); 
 
-			// $this->SendEmail($requestData);
+			$pdf1 = $this->generatePdf($requestData);
+			// echo $pdf;
+
+if($pdf1 == true) {
+	$pdf = HTTP_SERVER . 'savepdf/wishcatalog-'.$Id.'.pdf';
+}
+$this->model_report_wishcat->updateStatus($Id,$pdf);
+			// die();
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 
@@ -196,7 +209,60 @@ class ControllerReportWishCatalog extends Controller
 			$this->response->redirect($this->url->link('error/not_found', '', true));
 		}
 	}
-	
+	public function generatePdf($requestData) {
+        // Initialize dompdf
+        $dompdf = new Dompdf();
+        
+        // Fetch wishlist data
+        $wishlist = $requestData;
+		
+$id = $wishlist[0]['id'];
+        // Generate HTML content
+        $html = '<h1>Wishlist</h1>';
+        foreach ($wishlist as $item) {
+            $html .= '<h2>' . htmlspecialchars($item['name']) . ' (' . htmlspecialchars($item['company_name']) . ')</h2>';
+            $html .= '<table border="1" cellspacing="0" cellpadding="5">';
+            $html .= '<thead><tr>';
+            $html .= '<th>Product ID</th>';
+            $html .= '<th>Product Name</th>';
+            $html .= '<th>Product URL</th>';
+            $html .= '<th>Product Image</th>';
+            $html .= '<th>Product Price</th>';
+            $html .= '</tr></thead><tbody>';
+            
+            $productData = json_decode($item['product_data'], true);
+            foreach ($productData as $product) {
+                $html .= '<tr>';
+                $html .= '<td>' . htmlspecialchars($product['productid']) . '</td>';
+                $html .= '<td>' . htmlspecialchars($product['productname']) . '</td>';
+                $html .= '<td><a href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['producturl']) . '</a></td>';
+                $html .= '<td><img src="' . htmlspecialchars($product['productimg']) . '" width="50" height="50"></td>';
+                $html .= '<td>' . htmlspecialchars($product['productprice']) . '</td>';
+                $html .= '</tr>';
+            }
+            
+            $html .= '</tbody></table>';
+        }
+        
+        // Load HTML content into dompdf
+        $dompdf->loadHtml($html);
+        
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+        
+        // Render the HTML as PDF
+        $dompdf->render();
+       
+            // Save the generated PDF to a file on the server
+            $pdfContent = $dompdf->output();
+            $pdfFilePath = '../savepdf/wishcatalog-'.$id.'.pdf'; // Specify your desired file path
+            $pdf = file_put_contents($pdfFilePath, $pdfContent);
+            // echo "PDF saved to " . $pdfFilePath;
+			// echo $pdf;
+      return true;
+        // Output the generated PDF (1 = download and 0 = preview)
+        // $dompdf->stream("wishlist.pdf", array("Attachment" => 1));
+    }
 	public function delete()
 	{
 		// Check if the request is coming from AJAX

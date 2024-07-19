@@ -13,16 +13,19 @@ class ModelReportWishcat extends Model
 
         return $query->row['total'];
     }
-    public function updateStatus($Id)
-    {
-        // Your database update logic goes here
-        // For example, assuming you have a table named oc_appointments with a status column
-        $this->db->query("
-        UPDATE `" . DB_PREFIX . "catalog_req` 
-        SET `status` = IF(`status` = 1, 0, 1) 
+    public function updateStatus($Id, $pdf)
+{
+    // Ensure the PDF path is properly escaped and quoted
+    $pdf = $this->db->escape($pdf);
+
+    // Update the status and PDF path in the database
+    $this->db->query("
+        UPDATE `" . DB_PREFIX . "catalog_req`
+        SET `status` = IF(`status` = 1, 0, 1), `pdf` = '" . $pdf . "'
         WHERE `id` = '" . (int)$Id . "'
     ");
-    }
+}
+
     public function delete($orderId)
     {
         // Your database deletion logic goes here
