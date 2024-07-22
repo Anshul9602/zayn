@@ -231,25 +231,7 @@ class ControllerReportWishCatalog extends Controller
     <head>
        
        
-        <style>
-            .product-container {
-                display: flex;
-                flex-wrap: wrap;
-            }
-            .product {
-                flex: 0 0 45%;
-                box-sizing: border-box;
-                margin: 1%;
-                border: 1px solid lightgoldenrodyellow;
-            }
-            .product img {
-                width: 100%;
-                border-bottom: 1px solid lightgoldenrodyellow;
-            }
-            .product .content {
-                padding: 10px;
-            }
-        </style>
+        
     </head>
     <body>
         <div id="content">
