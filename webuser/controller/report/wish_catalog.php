@@ -212,8 +212,13 @@ class ControllerReportWishCatalog extends Controller
 	}
 	public function generatePdf($requestData)
 {
-    // Initialize dompdf
-    $dompdf = new Dompdf();
+    // Add Dompdf and options use statements
+
+
+    // Set up Dompdf options
+    $options = new Options();
+    $options->set('isRemoteEnabled', true);
+    $dompdf = new Dompdf($options);
 
     // Fetch wishlist data
     $wishlist = $requestData;
@@ -224,43 +229,76 @@ class ControllerReportWishCatalog extends Controller
     $html = '
     <html>
     <head>
-       <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
-        <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
-        <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+       
+       
+        <style>
+            .product-container {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .product {
+                flex: 0 0 45%;
+                box-sizing: border-box;
+                margin: 1%;
+                border: 1px solid lightgoldenrodyellow;
+            }
+            .product img {
+                width: 100%;
+                border-bottom: 1px solid lightgoldenrodyellow;
+            }
+            .product .content {
+                padding: 10px;
+            }
+        </style>
     </head>
     <body>
         <div id="content">
             <div class="page-header">
                 <div class="container">
-				 <h1>Wishlist Catalog</h1><br><br>
+                    <h1>Wishlist Catalog</h1><br><br>
                     <div class="row ">
-                        <img src="https://zaynjewels.com/image/Zayn-Jewels-logo.jpg" alt="" width="60%">
+                       	<img src="'.HTTP_CATALOG.'image/pag1.jpg" alt="" width="100%">
                     </div>
                 </div>
             </div>
-        </div>
-       ';
+        </div>';
 
     foreach ($wishlist as $item) {
-      
-
-        $html .= '<div class="container"><div class="row">';
-		$html .= '<h2 class="mt-4 col-12">Name : ' . htmlspecialchars($item['name']) . ' (' . htmlspecialchars($item['company_name']) . ')</h2>';
-		$html .= '<h2 class="mt-2 col-12 pb-3">Company Name : ' . htmlspecialchars($item['company_name']) . '</h2><br><br>';
+        $html .= '<div class="container">';
+        $html .= '<h2 class="mt-4">Name : ' . htmlspecialchars($item['name']) . ' (' . htmlspecialchars($item['company_name']) . ')</h2>';
+        $html .= '<h2 class="mt-2 pb-3">Company Name : ' . htmlspecialchars($item['company_name']) . '</h2><br><br>';
         $productData = json_decode($item['product_data'], true);
+        $html .= '<style>
+            .product-container {
+                display: flex;
+                
+            }
+            .product {
+               max-width: 48%;
+			   margin-right:2%;
+			   width: 100%;
+               
+            }
+            .product img {
+                width: 100%;
+                border-bottom: 1px solid lightgoldenrodyellow;
+            }
+            .product .content {
+                padding: 10px;
+            }
+        </style><div class="product-container">';
         foreach ($productData as $product) {
-            // Use the external image URL directly
             $imageUrl = htmlspecialchars($product['productimg']);
             $html .= '
-            <div class="col-md-3 mt-3">
-                <img src="' . $imageUrl . '" width="100%">
-                <div class="content mt-3">
+        
+            <div class="product">
+                <img src="' . $imageUrl . '">
+                <div class="content">
                     <a href="' . htmlspecialchars($product['producturl']) . '" style="color:#000;">' . htmlspecialchars($product['productname']) . '</a>
-                    <h6 class=" pt-3">Design No : ' . htmlspecialchars($product['productid']) . '</h6>
-                    <h6>Diamond : </h6>
-                    <h6>Size : </h6>
-                    <h6>MSRP : ' . htmlspecialchars($product['productprice']) . '</h6>
+                    <h5 class="pt-3" style="margin-bottom: 0.5rem;">Design No : ' . htmlspecialchars($product['productid']) . '</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Diamond : </h5>
+                    <h5 style="margin-bottom: 0.5rem;">Size : </h5>
+                    <h5 style="margin-bottom: 0.5rem;">MSRP : ' . htmlspecialchars($product['productprice']) . '</h5>
                 </div>
             </div>';
         }
@@ -268,8 +306,6 @@ class ControllerReportWishCatalog extends Controller
     }
 
     $html .= '</body></html>';
-
-echo $html;
 
     // Load HTML content into dompdf
     $dompdf->loadHtml($html);
