@@ -211,20 +211,20 @@ class ControllerReportWishCatalog extends Controller
 		}
 	}
 	public function generatePdf($requestData)
-{
-    // Add Dompdf and options use statements
-     // Set up Dompdf options
-    $options = new Options();
-    $options->set('isRemoteEnabled', true);
-    $dompdf = new Dompdf($options);
+	{
+		// Add Dompdf and options use statements
+		// Set up Dompdf options
+		$options = new Options();
+		$options->set('isRemoteEnabled', true);
+		$dompdf = new Dompdf($options);
 
-    // Fetch wishlist data
-    $wishlist = $requestData;
+		// Fetch wishlist data
+		$wishlist = $requestData;
 
-    $id = $wishlist[0]['id'];
+		$id = $wishlist[0]['id'];
 
-    // Generate HTML content for the first page
-    $html = '
+		// Generate HTML content for the first page
+		$html = '
     <html>
     <head>
         <style>
@@ -265,18 +265,18 @@ class ControllerReportWishCatalog extends Controller
         </div>
         <div class="page">';
 
-    $count = 0;
+		$count = 0;
 
-    foreach ($wishlist as $item) {
-        $productData = json_decode($item['product_data'], true);
+		foreach ($wishlist as $item) {
+			$productData = json_decode($item['product_data'], true);
 
-        foreach ($productData as $product) {
-            if ($count % 2 == 0) {
-                $html .= '<div class="product-container">';
-            }
+			foreach ($productData as $product) {
+				if ($count % 2 == 0) {
+					$html .= '<div class="product-container">';
+				}
 
-            $imageUrl = htmlspecialchars($product['productimg']);
-            $html .= '
+				$imageUrl = htmlspecialchars($product['productimg']);
+				$html .= '
             <div class="product">
                 <img src="' . $imageUrl . '">
                 <div class="content">
@@ -288,49 +288,46 @@ class ControllerReportWishCatalog extends Controller
                 </div>
             </div>';
 
-            $count++;
+				$count++;
 
-            if ($count % 2 == 0) {
-                $html .= '</div>';
-            }
+				if ($count % 2 == 0) {
+					$html .= '</div>';
+				}
 
-            if ($count % 4 == 0) {
-                $html .= '</div><div class="page">';
-            }
-        }
-    }
+				if ($count % 4 == 0) {
+					$html .= '</div><div class="page">';
+				}
+			}
+		}
 
-    if ($count % 2 != 0) {
-        $html .= '</div>'; // Close the last product-container div if there's an odd number of products
-    }
+		if ($count % 2 != 0) {
+			$html .= '</div>'; // Close the last product-container div if there's an odd number of products
+		}
 
-    $html .= '</div></body></html>';
+		$html .= '</div></body></html>';
 
-    // Load HTML content into dompdf
-    $dompdf->loadHtml($html);
+		// Load HTML content into dompdf
+		$dompdf->loadHtml($html);
 
-    // (Optional) Setup the paper size and orientation
-    $dompdf->setPaper('A4', 'portrait');
+		// (Optional) Setup the paper size and orientation
+		$dompdf->setPaper('A4', 'portrait');
 
-    // Render the HTML as PDF
-    $dompdf->render();
+		// Render the HTML as PDF
+		$dompdf->render();
 
-    // Save the generated PDF to a file on the server
-    $pdfContent = $dompdf->output();
-    $pdfFilePath = '../savepdf/wishcatalog-' . $id . '.pdf'; // Specify your desired file path
-    $pdfSaved = file_put_contents($pdfFilePath, $pdfContent);
+		// Save the generated PDF to a file on the server
+		$pdfContent = $dompdf->output();
+		$pdfFilePath = '../savepdf/wishcatalog-' . $id . '.pdf'; // Specify your desired file path
+		$pdfSaved = file_put_contents($pdfFilePath, $pdfContent);
 
-    if ($pdfSaved) {
-        // Optionally, return the file path or a success message
-        return $pdfFilePath;
-    } else {
-        // Optionally, return an error message
-        return false;
-    }
-}
-
-	
-	
+		if ($pdfSaved) {
+			// Optionally, return the file path or a success message
+			return $pdfFilePath;
+		} else {
+			// Optionally, return an error message
+			return false;
+		}
+	}
 
 	public function page1()
 	{
