@@ -380,7 +380,12 @@ if (isset($draft) && is_string($draft)) {
                      <a style="float:right;  padding:12px;    margin-top: 10px;"
                         class="btn btn-find-store wishlist_link" btnid="<?php echo $product_id; ?>"
                         btnname="<?php echo $heading_title; ?>" btnimg="<?php echo $thumb; ?>"
-                        btnhref="<?php echo $href1; ?>" btnprice="<?php echo $wish_price; ?>"
+                        btnhref="<?php echo $href1; ?>"
+                        btnstyle="<?php echo $style_no; ?>"
+                        btndesign="<?php echo $design_no; ?>"
+                        btnsize="<?php echo $metal_purity; ?>"
+                         btnprice="<?php echo $wish_price; ?>"
+                         
                         btnsprice="<?php echo $wish_special; ?>">
 
                         <i class="fa fa-heart-o"></i>

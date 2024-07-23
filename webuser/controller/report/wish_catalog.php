@@ -213,9 +213,7 @@ class ControllerReportWishCatalog extends Controller
 	public function generatePdf($requestData)
 {
     // Add Dompdf and options use statements
-
-
-    // Set up Dompdf options
+     // Set up Dompdf options
     $options = new Options();
     $options->set('isRemoteEnabled', true);
     $dompdf = new Dompdf($options);
@@ -225,69 +223,88 @@ class ControllerReportWishCatalog extends Controller
 
     $id = $wishlist[0]['id'];
 
-    // Generate HTML content
+    // Generate HTML content for the first page
     $html = '
     <html>
     <head>
-       
-       
-        
-    </head>
-    <body>
-        <div id="content">
-            <div class="page-header">
-                <div class="container">
-                    <h1>Wishlist Catalog</h1><br><br>
-                    <div class="row ">
-                       	<img src="'.HTTP_CATALOG.'image/pag1.jpg" alt="" width="100%">
-                    </div>
-                </div>
-            </div>
-        </div>';
-
-    foreach ($wishlist as $item) {
-        $html .= '<div class="container">';
-        $html .= '<h2 class="mt-4">Name : ' . htmlspecialchars($item['name']) . ' (' . htmlspecialchars($item['company_name']) . ')</h2>';
-        $html .= '<h2 class="mt-2 pb-3">Company Name : ' . htmlspecialchars($item['company_name']) . '</h2><br><br>';
-        $productData = json_decode($item['product_data'], true);
-        $html .= '<style>
+        <style>
             .product-container {
                 display: flex;
-                
+                flex-wrap: wrap;
+                justify-content: center;
+                page-break-inside: avoid;
             }
             .product {
-               max-width: 48%;
-			   margin-right:2%;
-			   width: 100%;
-               
+                flex: 0 0 48%;
+                margin: 1%;
+                box-sizing: border-box;
+                page-break-inside: avoid;
             }
             .product img {
                 width: 100%;
                 border-bottom: 1px solid lightgoldenrodyellow;
             }
             .product .content {
+                text-align: center;
                 padding: 10px;
             }
-        </style><div class="product-container">';
+            .page {
+                page-break-after: always;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="content">
+            <div class="page-header">
+                <div class="container">
+                    <div class="row">
+                        <img src="' . HTTP_CATALOG . 'image/pag1.jpg" alt="" width="100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page">';
+
+    $count = 0;
+
+    foreach ($wishlist as $item) {
+        $productData = json_decode($item['product_data'], true);
+
         foreach ($productData as $product) {
+            if ($count % 2 == 0) {
+                $html .= '<div class="product-container">';
+            }
+
             $imageUrl = htmlspecialchars($product['productimg']);
             $html .= '
-        
             <div class="product">
                 <img src="' . $imageUrl . '">
                 <div class="content">
                     <a href="' . htmlspecialchars($product['producturl']) . '" style="color:#000;">' . htmlspecialchars($product['productname']) . '</a>
-                    <h5 class="pt-3" style="margin-bottom: 0.5rem;">Design No : ' . htmlspecialchars($product['productid']) . '</h5>
-                    <h5 style="margin-bottom: 0.5rem;">Diamond : </h5>
-                    <h5 style="margin-bottom: 0.5rem;">Size : </h5>
+                    <h5 class="pt-3" style="margin-bottom: 0.5rem;">Design No : ' . htmlspecialchars($product['productstyle']) . '</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Diamond : ' . htmlspecialchars($product['productdesign']) . '</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Size : ' . htmlspecialchars($product['productsize']) . '</h5>
                     <h5 style="margin-bottom: 0.5rem;">MSRP : ' . htmlspecialchars($product['productprice']) . '</h5>
                 </div>
             </div>';
+
+            $count++;
+
+            if ($count % 2 == 0) {
+                $html .= '</div>';
+            }
+
+            if ($count % 4 == 0) {
+                $html .= '</div><div class="page">';
+            }
         }
-        $html .= '</div></div>';
     }
 
-    $html .= '</body></html>';
+    if ($count % 2 != 0) {
+        $html .= '</div>'; // Close the last product-container div if there's an odd number of products
+    }
+
+    $html .= '</div></body></html>';
 
     // Load HTML content into dompdf
     $dompdf->loadHtml($html);
@@ -312,6 +329,8 @@ class ControllerReportWishCatalog extends Controller
     }
 }
 
+	
+	
 
 	public function page1()
 	{

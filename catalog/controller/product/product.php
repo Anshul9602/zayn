@@ -275,9 +275,9 @@ class ControllerProductProduct extends Controller
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];
 
-			$data['style_no'] = $product_info['model'];;
-			$data['metal_purity'] = $product_info['upc'];;
-			$data['design_no'] = $product_info['sku'];;
+			$data['style_no'] = $product_info['model'];
+			$data['metal_purity'] = $product_info['upc'];
+			$data['design_no'] = $product_info['sku'];
 			$data['gold_wt'] = $product_info['isbn'];;
 			$data['stone_wt'] = $product_info['mpn'];;
 

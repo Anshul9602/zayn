@@ -51,7 +51,7 @@ ${item.in_wishlist ? `
                                     ` : `
                                     <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store wishlist_link1"
                                         btnid="${item.product_id}" btnname="${item.name}" btnimg="${item.thumb}" btnhref="${item.href}"
-                                        btnprice="${item.wish_price}" btnsprice="${item.wish_special}">
+                                        btnprice="${item.wish_price}" btnsize="${item.metal_purity}" btndesign="${item.design_no}" btnstyle="${item.style_no}" btnsprice="${item.wish_special}">
                                         <i class="fa fa-heart-o"></i>
                                     </a>
                                     `}
@@ -159,15 +159,21 @@ $(document).on('click', '.wishlist_link1', function() {
            const producturl = btn.getAttribute("btnhref");
            const productprice = btn.getAttribute("btnprice");
            const productsprice = btn.getAttribute("btnsprice");
+           const productstyle = btn.getAttribute("btnstyle");
+           const productdesign = btn.getAttribute("btndesign");
+           const productsize = btn.getAttribute("btnsize");
 
            if (productId && productname && productimg && producturl && productprice && productsprice) {
                const product = {
-                   productid: productId,
-                   productname: productname,
-                   producturl: producturl,
-                   productimg: productimg,
-                   productprice: productprice,
-                   productsprice: productsprice
+                productid: productId,
+                productname: productname,
+                producturl: producturl,
+                productimg: productimg,
+                productprice: productprice,
+                productsprice: productsprice,
+                productstyle: productstyle,
+                productdesign: productdesign,
+                productsize: productsize
                };
 
                const isProductInWishlist = wishzayn.some(item => item.productid === productId);

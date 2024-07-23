@@ -1,50 +1,84 @@
-
 <html>
-    <head>
-       <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
-        <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
-        <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
-    </head>
-    <body>
-        <div id="content">
-            <div class="page-header">
-                <div class="container">
-				
-                    <div class="row ">
-                        <img src="img/pag1.jpg" alt="" width="100%">
-                    </div>
+
+<head>
+    <style>
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            page-break-inside: avoid;
+        }
+
+        .product {
+            max-width: 48%;
+            margin: 1%;
+            box-sizing: border-box;
+            page-break-inside: avoid;
+        }
+
+        .product img {
+            width: 100%;
+            border-bottom: 1px solid lightgoldenrodyellow;
+        }
+
+        .product .content {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .page {
+            page-break-after: always;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <div class="page-header">
+            <div class="container">
+                <div class="row">
+                    <img src="http://localhost/zayn/image/pag1.jpg" alt="" width="100%">
                 </div>
             </div>
         </div>
-       <div class="container"><div class="row mt-5" style="justify-content: space-around;"><h2 class="mt-4 col-12">Name : anshul kumar (dsgvfbx)</h2><h2 class="mt-2 col-12 pb-4">Company Name : dsgvfbx</h2><br><br>
-            <div class="col-md-5">
-                <img src="http://localhost/zayn/image/cache/catalog/products/094710NL18100B01ZZZ%20a-1000x1000.JPG" width="100%">
-                <div class="content mt-3">
-                    <a href="http://localhost/zayn/094710NL18100B01ZZZ" style="color:#000;">Diamond Bar Necklace In 18K Gold</a>
-                    <h6 class=" pt-3">Design No : 1228</h6>
-                    <h6 style="margin: 0;">Diamond : </h6>
-                    <h6 style="margin: 0;">Size : </h6>
-                    <h6 style="margin: 0;">MSRP : $380.0000</h6>
+    </div>
+    <div class="page">
+        <div class="product-container">
+            <div class="product">
+                <img src="http://localhost/zayn/image/cache/catalog/products/0820NL%20White-1000x1000.JPG">
+                <div class="content">
+                    <a href="http://localhost/zayn/082010NL18100B01J32" style="color:#000;">Round Chandelier Drop
+                        Diamond Necklace</a>
+                    <h5 class="pt-3" style="margin-bottom: 0.5rem;">Design No : 082010NL18100B01J32</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Diamond : 082010NL32</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Size : 18K</h5>
+                    <h5 style="margin-bottom: 0.5rem;">MSRP : $690.0000</h5>
                 </div>
             </div>
-            <div class="col-md-5">
-                <img src="http://localhost/zayn/image/cache/catalog/products/034210NL18200B01ZZZ%20a-1000x1000.jpg" width="100%">
-                <div class="content mt-3">
-                    <a href="http://localhost/zayn/034210NL18200B01ZZZ" style="color:#000;">Butterfly Diamond Necklace</a>
-                    <h6 class=" pt-3">Design No : 1294</h6>
-                    <h6>Diamond : </h6>
-                    <h6>Size : </h6>
-                    <h6>MSRP : $325.0000</h6>
+            <div class="product">
+                <img src="http://localhost/zayn/image/cache/catalog/products/002010RG18200B01ZZZ-1000x1000.jpg">
+                <div class="content">
+                    <a href="http://localhost/zayn/002010RG18200B01ZZZ" style="color:#000;">Square Pressure Setting
+                        Diamond Engagement Ring</a>
+                    <h5 class="pt-3" style="margin-bottom: 0.5rem;">Design No : 002010RG18200B01ZZZ</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Diamond : 002010RG01</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Size : 18K</h5>
+                    <h5 style="margin-bottom: 0.5rem;">MSRP : $560.0000</h5>
                 </div>
             </div>
-            <div class="col-md-5">
-                <img src="http://localhost/zayn/image/cache/catalog/products/108510NL18120B01ZZZ%20a-1000x1000.jpg" width="100%">
-                <div class="content mt-3">
-                    <a href="http://localhost/zayn/108510NL18120B01ZZZ" style="color:#000;">Ladybird Diamond &amp; Gold Necklace 18K </a>
-                    <h6 class=" pt-3">Design No : 1177</h6>
-                    <h6>Diamond : </h6>
-                    <h6>Size : </h6>
-                    <h6>MSRP : $1,170.0000</h6>
+        </div>
+        <div class="product-container">
+            <div class="product">
+                <img src="http://localhost/zayn/image/cache/catalog/products/012210RG18100B01ZZZ%20a-1000x1000.jpg">
+                <div class="content">
+                    <a href="http://localhost/zayn/012210RG18100B01ZZZ" style="color:#000;">Diamond Butterfly Ring</a>
+                    <h5 class="pt-3" style="margin-bottom: 0.5rem;">Design No : 012210RG18100B01ZZZ</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Diamond : 012210RG01</h5>
+                    <h5 style="margin-bottom: 0.5rem;">Size : 18K</h5>
+                    <h5 style="margin-bottom: 0.5rem;">MSRP : $790.0000</h5>
                 </div>
-            </div></div></div></body></html>
+            </div>
+        </div>
+</body>
+
+</html>

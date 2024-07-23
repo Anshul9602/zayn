@@ -251,7 +251,10 @@
                 const producturl = btn.getAttribute("btnhref");
                 const productprice = btn.getAttribute("btnprice");
                 const productsprice = btn.getAttribute("btnsprice");
-    
+                const productstyle = btn.getAttribute("btnstyle");
+                const productdesign = btn.getAttribute("btndesign");
+                const productsize = btn.getAttribute("btnsize");
+ 
                 if (productId && productname && productimg && producturl && productprice && productsprice) {
                     const product = {
                         productid: productId,
@@ -259,7 +262,10 @@
                         producturl: producturl,
                         productimg: productimg,
                         productprice: productprice,
-                        productsprice: productsprice
+                        productsprice: productsprice,
+                        productstyle: productstyle,
+                        productdesign: productdesign,
+                        productsize: productsize
                     };
     
                     const isProductInWishlist = wishzayn.some(item => item.productid === productId);

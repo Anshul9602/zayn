@@ -213,7 +213,9 @@ class ControllerProductCategorynew extends Controller
 				} else {
 					$tax = false;
 				}
-
+				$style_no = $result['model'];
+				$metal_purity = $result['upc'];
+				$design_no = $result['sku'];
 				if ($this->config->get('config_review_status')) {
 					$rating = (int)$result['rating'];
 				} else {
@@ -285,6 +287,9 @@ class ControllerProductCategorynew extends Controller
 					'wish_special'     => $wish_special,
 					'in_wishlist'    => $product_in_wishlist,
 					'special'     => $special,
+					'style_no'     => $style_no,
+					'metal_purity'     => $metal_purity,
+					'design_no'     => $design_no,
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
