@@ -198,7 +198,7 @@ class ControllerReportWishCatalog extends Controller
 				$pdf = HTTP_SERVER . 'savepdf/wishcatalog-' . $Id . '.pdf';
 			}
 			// $this->model_report_wishcat->updateStatus($Id,$pdf);
-			die();
+			// die();
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 
@@ -329,11 +329,7 @@ class ControllerReportWishCatalog extends Controller
 		}
 	}
 
-	public function page1()
-	{
-		// Check if the request is coming from AJAX
-		$this->response->setOutput($this->load->view('report/wish_catalog_page1'));
-	}
+	
 	public function delete()
 	{
 		// Check if the request is coming from AJAX

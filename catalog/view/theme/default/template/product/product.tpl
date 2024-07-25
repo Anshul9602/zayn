@@ -553,15 +553,10 @@ if (isset($draft) && is_string($draft)) {
                </div>
                <?php
                         } ?>
-
-
-
-
                <?php
                      } ?>
                <?php
                   } ?>
-
                <?php if ($price) { ?>
                <div id="wishlist-msg">
 
@@ -799,7 +794,6 @@ if (isset($draft) && is_string($draft)) {
                } ?>
       </div>
       <br /><br />
-
       <?php
          } ?>
    </div>
@@ -807,8 +801,6 @@ if (isset($draft) && is_string($draft)) {
 </section>
 
 <?php } ?>
-
-
 <?php if ($cad) { ?>
 <div style="max-width:1250px" class="container">
    <div class="row">
