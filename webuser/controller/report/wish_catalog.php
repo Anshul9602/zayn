@@ -197,7 +197,7 @@ class ControllerReportWishCatalog extends Controller
 			if ($pdf1 == true) {
 				$pdf = HTTP_SERVER . 'savepdf/wishcatalog-' . $Id . '.pdf';
 			}
-			// $this->model_report_wishcat->updateStatus($Id,$pdf);
+			$this->model_report_wishcat->updateStatus($Id,$pdf);
 			// die();
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
@@ -328,7 +328,7 @@ class ControllerReportWishCatalog extends Controller
 			return false;
 		}
 	}
-
+ 
 	
 	public function delete()
 	{
