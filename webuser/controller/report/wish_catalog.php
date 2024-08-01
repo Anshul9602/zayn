@@ -195,7 +195,7 @@ class ControllerReportWishCatalog extends Controller
 			// echo $pdf;
 
 			if ($pdf1 == true) {
-				$pdf = HTTP_SERVER . 'savepdf/wishcatalog-' . $Id . '.pdf';
+				$pdf = HTTP_CATALOG . 'savepdf/wishcatalog-' . $Id . '.pdf';
 			}
 			$this->model_report_wishcat->updateStatus($Id,$pdf);
 			// die();
