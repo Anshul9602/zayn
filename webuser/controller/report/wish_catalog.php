@@ -210,6 +210,33 @@ class ControllerReportWishCatalog extends Controller
 			$this->response->redirect($this->url->link('error/not_found', '', true));
 		}
 	}
+	public function updateproduct()
+	{
+		if ($this->request->server['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && $this->request->server['REQUEST_METHOD'] == 'POST') {
+			$Id = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
+			$product_data = ($this->request->post['product_data']);
+	
+
+			
+			$decoded_product_data = html_entity_decode($product_data, ENT_QUOTES, 'UTF-8');
+			// Ensure product_data is properly escaped for SQL query
+		   // Decode JSON string to PHP array
+		//   echo $decoded_product_data;
+		//   die();
+			// Perform the update
+			$this->load->model('report/wishcat');
+			$this->model_report_wishcat->updateproduct($Id, $decoded_product_data);
+	
+			// Send a success response
+			$json['success'] = 'Product updated successfully';
+			$this->response->addHeader('Content-Type: application/json');
+			$this->response->setOutput(json_encode($json));
+		} else {
+			// Handle non-AJAX requests
+			$this->response->redirect($this->url->link('error/not_found', '', true));
+		}
+	}
+	
 	public function generatePdf($requestData)
 	{
 		// Add Dompdf and options use statements

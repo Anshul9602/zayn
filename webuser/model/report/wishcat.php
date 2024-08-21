@@ -25,6 +25,17 @@ class ModelReportWishcat extends Model
         WHERE `id` = '" . (int)$Id . "'
     ");
 }
+public function updateproduct($Id, $product_data)
+{
+    // echo $product_data;
+    // die();
+
+    $this->db->query("
+        UPDATE `" . DB_PREFIX . "catalog_req`
+        SET `product_data` = '" . $product_data . "'
+        WHERE `id` = '" . (int)$Id . "'
+    ");
+}
 
     public function delete($orderId)
     {
