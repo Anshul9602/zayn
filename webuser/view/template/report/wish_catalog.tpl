@@ -183,6 +183,10 @@
                 </td>
                 <td class="text-right">
                   <?php echo $order['pdf']; ?>
+                  <?php 
+                  if ($order['pdf']) { ?>
+                    <a href="<?php echo $order['pdf']; ?>" download="<?php echo $order['pdf']; ?>"><button class="btn" style="width:20%"><i class="fa fa-download"></i> Download</button></a>
+                    <?php } ?>
                 </td>
 
 
