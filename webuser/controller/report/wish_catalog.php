@@ -197,7 +197,7 @@ class ControllerReportWishCatalog extends Controller
 			if ($pdf1 == true) {
 				$pdf = HTTP_CATALOG . 'savepdf/wishcatalog-' . $Id . '.pdf';
 			}
-			$this->model_report_wishcat->updateStatus($Id,$pdf);
+			$this->model_report_wishcat->updateStatus($Id, $pdf);
 			// die();
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
@@ -215,18 +215,18 @@ class ControllerReportWishCatalog extends Controller
 		if ($this->request->server['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && $this->request->server['REQUEST_METHOD'] == 'POST') {
 			$Id = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
 			$product_data = ($this->request->post['product_data']);
-	
 
-			
+
+
 			$decoded_product_data = html_entity_decode($product_data, ENT_QUOTES, 'UTF-8');
 			// Ensure product_data is properly escaped for SQL query
-		   // Decode JSON string to PHP array
-		//   echo $decoded_product_data;
-		//   die();
+			// Decode JSON string to PHP array
+			//   echo $decoded_product_data;
+			//   die();
 			// Perform the update
 			$this->load->model('report/wishcat');
 			$this->model_report_wishcat->updateproduct($Id, $decoded_product_data);
-	
+
 			// Send a success response
 			$json['success'] = 'Product updated successfully';
 			$this->response->addHeader('Content-Type: application/json');
@@ -236,7 +236,7 @@ class ControllerReportWishCatalog extends Controller
 			$this->response->redirect($this->url->link('error/not_found', '', true));
 		}
 	}
-	
+
 	public function generatePdf($requestData)
 	{
 		// Add Dompdf and options use statements
@@ -244,12 +244,12 @@ class ControllerReportWishCatalog extends Controller
 		$options = new Options();
 		$options->set('isRemoteEnabled', true);
 		$dompdf = new Dompdf($options);
-	
+
 		// Fetch wishlist data
 		$wishlist = $requestData;
-	
+
 		$id = $wishlist[0]['id'];
-	
+
 		// Generate HTML content for the first page
 		$html = '
 		<html>
@@ -262,7 +262,7 @@ class ControllerReportWishCatalog extends Controller
 					page-break-inside: avoid;
 				}
 				.product {
-					width: 48%; /* Two products per row */
+					width: 32%; /* Two products per row */
 					margin-bottom: 10px; /* Space between rows */
 					box-sizing: border-box;
 					page-break-inside: avoid;
@@ -274,7 +274,7 @@ class ControllerReportWishCatalog extends Controller
 					border-bottom: 1px solid lightgoldenrodyellow;
 				}
 				.product .content {
-					text-align: center;
+					text-align: justify;
 					padding: 5px;
 					font-size: 12px; /* Reduce font size */
 				}
@@ -293,73 +293,76 @@ class ControllerReportWishCatalog extends Controller
 					</div>
 				</div>
 			</div>
-			<div class="page">';
-	
+			<div class="page">
+			<div class="product-container" style="display:flex;">';
+
 		$count = 0;
-	
+
 		foreach ($wishlist as $item) {
 			$productData = json_decode($item['product_data'], true);
 			$count = 0;
-		
+
 			foreach ($productData as $product) {
 				// Start a new row for every 2 products
-				if ($count % 2 == 0) {
-					$html .= '<div class="product-container">';
-				}
-		
+
+
 				$imageUrl = htmlspecialchars($product['productimg']);
 				$html .= '
 				<div class="product">
 					<img src="' . $imageUrl . '">
 					<div class="content">
 						<a href="' . htmlspecialchars($product['producturl']) . '" style="color:#000;">' . htmlspecialchars($product['productname']) . '</a>
-						<h5 class="pt-3" style="margin-bottom: 0.5rem;">Design No : ' . htmlspecialchars($product['productstyle']) . '</h5>
-						<h5 style="margin-bottom: 0.5rem;">Diamond : ' . htmlspecialchars($product['productdesign']) . '</h5>
-						<h5 style="margin-bottom: 0.5rem;">Size : ' . htmlspecialchars($product['productsize']) . '</h5>
-						<h5 style="margin-bottom: 0.5rem;">MSRP : ' . htmlspecialchars($product['productprice']) . '</h5>
+						<h5 class="pt-3" style="margin-bottom: 0.5rem;    text-align: justify;
+">Design No : ' . htmlspecialchars($product['productstyle']) . '</h5>
+						<h5 style="margin-bottom: 0.5rem;    text-align: justify;
+">Diamond : ' . htmlspecialchars($product['productdesign']) . '</h5>
+						<h5 style="margin-bottom: 0.5rem;    text-align: justify;
+">Size : ' . htmlspecialchars($product['productsize']) . '</h5>
+						<h5 style="margin-bottom: 0.5rem;    text-align: justify;
+">MSRP : ' . htmlspecialchars($product['productprice']) . '</h5>
 					</div>
 				</div>';
-		
+
 				$count++;
-		
+
 				// Close the row after 2 products
-				if ($count % 2 == 0) {
-					$html .= '</div>'; // Close the product-container
-				}
-		
+
+
 				// Add a new page after every 4 products
-				if ($count % 4 == 0) {
-					$html .= '</div><div class="page">';
+				if ($count % 9 == 0) {
+					$html .= '</div></div><div class="page">';
 				}
 			}
-		
+
 			// Ensure the last product-container is closed if there is an odd number of products
-			if ($count % 2 != 0) {
+			if ($count % 3 != 0) {
 				$html .= '</div>'; // Close the last product-container div
 			}
 		}
-		
-	
-		if ($count % 2 != 0) {
+
+
+		if ($count % 3 != 0) {
 			$html .= '</div>'; // Close the last product-container div if there's an odd number of products
 		}
-	
+
 		$html .= '</div></body></html>';
-	
+
+
+
 		// Load HTML content into dompdf
 		$dompdf->loadHtml($html);
-	
+
 		// (Optional) Setup the paper size and orientation
 		$dompdf->setPaper('A4', 'portrait');
-	
+
 		// Render the HTML as PDF
 		$dompdf->render();
-	
+
 		// Save the generated PDF to a file on the server
 		$pdfContent = $dompdf->output();
 		$pdfFilePath = '../savepdf/wishcatalog-' . $id . '.pdf'; // Specify your desired file path
 		$pdfSaved = file_put_contents($pdfFilePath, $pdfContent);
-	
+
 		if ($pdfSaved) {
 			// Optionally, return the file path or a success message
 			return $pdfFilePath;
@@ -368,11 +371,11 @@ class ControllerReportWishCatalog extends Controller
 			return false;
 		}
 	}
-	
-	
 
- 
-	
+
+
+
+
 	public function delete()
 	{
 		// Check if the request is coming from AJAX
