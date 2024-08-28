@@ -30,6 +30,7 @@ class ControllerAccountGeneratePDF extends Controller {
            $response['sql'] =  $this->model_account_wishcat->saveCatData(
                 $inputData['name'],
                 $inputData['company_name'],
+                $inputData['email'],
                 $inputData['pdf'],
                 $wishlistJson
             );

@@ -77,7 +77,7 @@ ${item.in_wishlist ? `
       }).join('');
 
       $('#data-container').html(html);
-     
+
     }
   });
 }
@@ -131,64 +131,68 @@ function FilterByType(data, array) {
     item.filter_id.some(id => array.includes(id))
   );
 }
-$(document).on('click', '.wishlist_link1', function() {
- console.log('test');
 
- let wishzayn = JSON.parse(localStorage.getItem("wishzayn")) || [];
-    
- // Function to update the wishlist count
- const updateWishlistCount = () => {
-     const wishlistCount = wishzayn.length;
-     document.getElementById('wish_count').textContent = wishlistCount;
- };
 
- // Update the wishlist count on page load
- updateWishlistCount();
 
-   // Add event listeners to wishlist buttons
-   const allProductBtns = document.querySelectorAll(".wishlist_link1");
 
-   allProductBtns.forEach((btn) => {
-       btn.addEventListener("click", (e) => {
-           e.preventDefault();
-           console.log("Button clicked");
+$(document).on('click', '.wishlist_link1', function () {
+  //  console.log('test');
 
-           const productId = btn.getAttribute("btnid");
-           const productname = btn.getAttribute("btnname");
-           const productimg = btn.getAttribute("btnimg");
-           const producturl = btn.getAttribute("btnhref");
-           const productprice = btn.getAttribute("btnprice");
-           const productsprice = btn.getAttribute("btnsprice");
-           const productstyle = btn.getAttribute("btnstyle");
-           const productdesign = btn.getAttribute("btndesign");
-           const productsize = btn.getAttribute("btnsize");
+  let wishzayn = JSON.parse(localStorage.getItem("wishzayn")) || [];
 
-           if (productId && productname && productimg && producturl && productprice && productsprice) {
-               const product = {
-                productid: productId,
-                productname: productname,
-                producturl: producturl,
-                productimg: productimg,
-                productprice: productprice,
-                productsprice: productsprice,
-                productstyle: productstyle,
-                productdesign: productdesign,
-                productsize: productsize
-               };
+  // Function to update the wishlist count
+  const updateWishlistCount = () => {
+    const wishlistCount = wishzayn.length;
+    document.getElementById('wish_count').textContent = wishlistCount;
+  };
 
-               const isProductInWishlist = wishzayn.some(item => item.productid === productId);
+  // Update the wishlist count on page load
+  updateWishlistCount();
 
-               if (!isProductInWishlist) {
-                   wishzayn.push(product);
-                   localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
-                   alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
+  // Add event listeners to wishlist buttons
+  const allProductBtns = document.querySelectorAll(".wishlist_link1");
 
-                   updateWishlistCount();
-                  
-               } else {
-                   alert("Item is already in your wishlist");
-               }
-           }
-       });
-   });
+  allProductBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log("Button clicked");
+
+      const productId = btn.getAttribute("btnid");
+      const productname = btn.getAttribute("btnname");
+      const productimg = btn.getAttribute("btnimg");
+      const producturl = btn.getAttribute("btnhref");
+      const productprice = btn.getAttribute("btnprice");
+      const productsprice = btn.getAttribute("btnsprice");
+      const productstyle = btn.getAttribute("btnstyle");
+      const productdesign = btn.getAttribute("btndesign");
+      const productsize = btn.getAttribute("btnsize");
+
+      if (productId && productname && productimg && producturl && productprice && productsprice) {
+        const product = {
+          productid: productId,
+          productname: productname,
+          producturl: producturl,
+          productimg: productimg,
+          productprice: productprice,
+          productsprice: productsprice,
+          productstyle: productstyle,
+          productdesign: productdesign,
+          productsize: productsize
+        };
+
+        const isProductInWishlist = wishzayn.some(item => item.productid === productId);
+
+        if (!isProductInWishlist) {
+          wishzayn.push(product);
+          localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
+          alert("Item add to your wishlist succesfully");
+
+          updateWishlistCount();
+
+        } else {
+          alert("Item is already in your wishlist");
+        }
+      }
+    });
+  });
 });

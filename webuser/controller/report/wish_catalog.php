@@ -199,6 +199,9 @@ class ControllerReportWishCatalog extends Controller
 			}
 			$this->model_report_wishcat->updateStatus($Id, $pdf);
 			// die();
+			$this->SendEmailuser($requestData,$pdf);
+			$this->SendEmail($requestData,$pdf);
+
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 
@@ -226,7 +229,7 @@ class ControllerReportWishCatalog extends Controller
 			// Perform the update
 			$this->load->model('report/wishcat');
 			$this->model_report_wishcat->updateproduct($Id, $decoded_product_data);
-
+			
 			// Send a success response
 			$json['success'] = 'Product updated successfully';
 			$this->response->addHeader('Content-Type: application/json');
@@ -236,133 +239,161 @@ class ControllerReportWishCatalog extends Controller
 			$this->response->redirect($this->url->link('error/not_found', '', true));
 		}
 	}
-
 	public function generatePdf($requestData)
 	{
 		// Add Dompdf and options use statements
+		
 		// Set up Dompdf options
 		$options = new Options();
 		$options->set('isRemoteEnabled', true);
 		$dompdf = new Dompdf($options);
-
+	
 		// Fetch wishlist data
 		$wishlist = $requestData;
-
+	
 		$id = $wishlist[0]['id'];
-
-		// Generate HTML content for the first page
-		$html = '
-		<html>
+	
+		// Initialize HTML content
+		$html = '<!DOCTYPE html>
+		<html lang="en">
 		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Product Catalog</title>
 			<style>
-				.product-container {
-					display: flex !important;
-					flex-wrap: wrap !important;
-					justify-content: space-between;
-					page-break-inside: avoid;
-				}
-				.product {
-					width: 32%; /* Two products per row */
-					margin-bottom: 10px; /* Space between rows */
-					box-sizing: border-box;
-					page-break-inside: avoid;
-				}
-				.product img {
-					width: 100%;
-					max-height: 150px; /* Further reduce the image height */
-					object-fit: contain;
-					border-bottom: 1px solid lightgoldenrodyellow;
-				}
-				.product .content {
-					text-align: justify;
-					padding: 5px;
-					font-size: 12px; /* Reduce font size */
-				}
-				.page {
-					page-break-after: always;
-				}
+				  body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .page {
+            page-break-after: always;
+            position: relative;
+            margin: 0; /* Removed padding-bottom */
+            padding: 0; /* Removed padding-bottom */
+        }
+        .table-container {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-container td {
+            padding: 5px;
+            vertical-align: top;
+            border: none;
+            box-sizing: border-box;
+        }
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            border:none;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow:none;
+        }
+        .product-card img {
+            width: auto;
+            height: auto;
+            max-height: 150px;
+            object-fit: cover;
+        }
+        .product-card .content {
+            padding: 10px;
+            font-size: 12px;
+        }
+        .product-card a {
+            color: #000;
+            text-decoration: none;
+        }
+        .product-card h5 {
+            margin: 5px 0;
+        }
+        .page-header img {
+            width: 100%;
+            display: block; /* Ensure no extra space below the image */
+        }
+        .last-page-img {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .last-page-img img {
+            width: auto;
+            object-fit: contain;
+        }
 			</style>
 		</head>
 		<body>
-			<div id="content">
-				<div class="page-header">
-					<div class="container">
-						<div class="row">
-							<img src="' . HTTP_CATALOG . 'image/pag1.jpg" alt="" width="100%">
-						</div>
-					</div>
-				</div>
+			<div class="page-header">
+				<img src="' . HTTP_CATALOG . 'image/pag1.jpg" alt="Header Image">
 			</div>
 			<div class="page">
-			<div class="product-container" style="display:flex;">';
-
+				<table class="table-container">
+					<tbody>';
+	
 		$count = 0;
-
+		$productsPerRow = 3; // Number of products per row
+		$totalProducts = 0;
+	
 		foreach ($wishlist as $item) {
 			$productData = json_decode($item['product_data'], true);
-			$count = 0;
-
+	
 			foreach ($productData as $product) {
-				// Start a new row for every 2 products
-
-
+				if ($count % $productsPerRow == 0) {
+					if ($count > 0) {
+						$html .= '</tr>';
+					}
+					$html .= '<tr>';
+				}
+	
 				$imageUrl = htmlspecialchars($product['productimg']);
 				$html .= '
-				<div class="product">
-					<img src="' . $imageUrl . '">
-					<div class="content">
-						<a href="' . htmlspecialchars($product['producturl']) . '" style="color:#000;">' . htmlspecialchars($product['productname']) . '</a>
-						<h5 class="pt-3" style="margin-bottom: 0.5rem;    text-align: justify;
-">Design No : ' . htmlspecialchars($product['productstyle']) . '</h5>
-						<h5 style="margin-bottom: 0.5rem;    text-align: justify;
-">Diamond : ' . htmlspecialchars($product['productdesign']) . '</h5>
-						<h5 style="margin-bottom: 0.5rem;    text-align: justify;
-">Size : ' . htmlspecialchars($product['productsize']) . '</h5>
-						<h5 style="margin-bottom: 0.5rem;    text-align: justify;
-">MSRP : ' . htmlspecialchars($product['productprice']) . '</h5>
-					</div>
-				</div>';
-
+					<td>
+						<div class="product-card">
+							<img src="' . $imageUrl . '" alt="' . htmlspecialchars($product['productname']) . '">
+							<div class="content">
+								<a href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
+								<h5>Design No: ' . htmlspecialchars($product['productstyle']) . '</h5>
+								<h5>Diamond: ' . htmlspecialchars($product['productdesign']) . '</h5>
+								<h5>Size: ' . htmlspecialchars($product['productsize']) . '</h5>
+								<h5>MSRP: ' . htmlspecialchars($product['productprice']) . '</h5>
+							</div>
+						</div>
+					</td>';
+	
 				$count++;
-
-				// Close the row after 2 products
-
-
-				// Add a new page after every 4 products
+				$totalProducts++;
+	
+				// Add a new page after every 9 products
 				if ($count % 9 == 0) {
-					$html .= '</div></div><div class="page">';
+					$html .= '</tr></tbody></table></div>';
+					$html .= '<div class="page"><table class="table-container"><tbody>';
 				}
 			}
-
-			// Ensure the last product-container is closed if there is an odd number of products
-			if ($count % 3 != 0) {
-				$html .= '</div>'; // Close the last product-container div
-			}
 		}
-
-
-		if ($count % 3 != 0) {
-			$html .= '</div>'; // Close the last product-container div if there's an odd number of products
+	
+		// Close any remaining tags
+		if ($count % $productsPerRow != 0) {
+			$html .= '</tr>'; // Close the last row if necessary
 		}
-
-		$html .= '</div></body></html>';
-
-
-
+	
+		$html .= '</tbody></table>';
+	
+		// Add the last page image
+		$html .= '</body></html>';
+	
 		// Load HTML content into dompdf
 		$dompdf->loadHtml($html);
-
+	
 		// (Optional) Setup the paper size and orientation
 		$dompdf->setPaper('A4', 'portrait');
-
+	
 		// Render the HTML as PDF
 		$dompdf->render();
-
+	
 		// Save the generated PDF to a file on the server
 		$pdfContent = $dompdf->output();
 		$pdfFilePath = '../savepdf/wishcatalog-' . $id . '.pdf'; // Specify your desired file path
 		$pdfSaved = file_put_contents($pdfFilePath, $pdfContent);
-
+	
 		if ($pdfSaved) {
 			// Optionally, return the file path or a success message
 			return $pdfFilePath;
@@ -371,11 +402,7 @@ class ControllerReportWishCatalog extends Controller
 			return false;
 		}
 	}
-
-
-
-
-
+	
 	public function delete()
 	{
 		// Check if the request is coming from AJAX
@@ -406,145 +433,13 @@ class ControllerReportWishCatalog extends Controller
 			$this->response->redirect($this->url->link('error/not_found', '', true));
 		}
 	}
-	protected function SendEmail($requestData)
+	
+	protected function SendEmailuser($requestData,$pdf)
 	{
-		// $response = array();
 		// echo "<pre>";
 		// print_r($requestData);
 		// echo "</pre>";
-		$appoint_event = $this->model_report_wishcat->getAllEventData();
-		// print_r($appoint_event[0]['name']);
 		// die();
-		if ($requestData) {
-
-			$mail = new Mail();
-			$mail->protocol = $this->config->get('config_mail_protocol');
-			$mail->parameter = $this->config->get('config_mail_parameter');
-			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
-			$mail->smtp_username = 'info@zaynjewels.com';
-			$mail->smtp_password = 'qjoiaxyxowiosggs'; // Use environment variables for sensitive information
-			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
-			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
-
-			// $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
-
-			$mail->setTo($requestData[0]['user_email']);
-
-			$mail->setFrom('info@zaynjewels.com');
-			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
-			$mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
-
-			$message = "<!DOCTYPE html>
-        <html lang=\"en\">
-        <head>
-            <meta charset=\"UTF-8\">
-            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-            <title>Zayn Jewels Email</title>
-            <style>
-                body {
-                    font-family: 'Arial', sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    background-color: #f2f2f2;
-                }
-                .container {
-                    width: 100%;
-                    max-width: 600px;
-                    margin: 0 auto;
-                    background-color: #fff;
-                    border-radius: 8px;
-                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-                    overflow: hidden;
-                }
-                .header {
-                    border-bottom:#101175 thin solid;
-                    color: #fff;
-                    padding: 20px;
-                    text-align: center;
-                }
-                .header img {
-                    max-width: 150px;
-                }
-                .content {
-                    padding: 30px;
-                    text-align: left;
-                    color: #333;
-                }
-                .content h2 {
-                    color: #101175;
-                    margin-bottom: 20px;
-                }
-                .details p {
-                    margin: 8px 0;
-                }
-                .details strong {
-                    color: #101175;
-                }
-                .footer {
-                    border-top:#101175 thin solid;
-                    color: #101175;
-                    padding: 20px;
-                    text-align: center;
-                    font-size: 14px;
-                }
-                .footer p {
-                    margin: 5px 0;
-                }
-                a {
-                    color: #101175;
-                    text-decoration: none;
-                }
-                a:hover {
-                    text-decoration: underline;
-                }
-            </style>
-        </head>
-        <body>
-            <div class=\"container\">
-                <!-- Header -->
-                <div class=\"header\">
-                    <img src=\"https://zaynjewels.com/image/catalog/New%20Project%20(27).png\" alt=\"Zayn Jewels\">
-                </div>
-        
-                <!-- Content -->
-                <div class=\"content\">
-                    <h2>Appointment Confirmation</h2>
-                    <p>Dear " . $requestData[0]['userName'] . ",</p>
-                    <p>Your appointment has been scheduled with Zayn Jewels at the " . $appoint_event[0]['name'] . "</p>
-                    <div class=\"details\">
-                        <p><strong>Date:</strong> " . $requestData[0]['selected_date'] . "</p>
-                        <p><strong>Time:</strong> " . $requestData[0]['selected_time'] . "</p>
-                        <p><strong>Time Zone:</strong> " . $requestData[0]['current_timezone'] . "</p>
-                        <p><strong>Subject:</strong> " . $requestData[0]['meetingTitle'] . "</p>
-                        <p><strong>Message:</strong> " . $requestData[0]['usermessage'] . "</p>
-                        <p><strong>Email:</strong> " . $requestData[0]['user_email'] . "</p>
-                    </div>
-                    <p>We look forward to seeing you.</p>
-                    <p>Kind Regards,</p>
-                    <p><strong>-Zayn Jewels Team-</strong></p>
-                </div>
-        
-                <!-- Footer -->
-                <div class=\"footer\">
-                    <p>CONTACT US:</p>
-                    <p>CALL: +1 949-900-6910</p>
-                    <p>EMAIL: <a href=\"mailto:info@zaynjewels.com\">INFO@ZAYNJEWELS.COM</a></p>
-                </div>
-            </div>
-        </body>
-        </html>";
-
-			$mail->setHtml($message);
-			$mail->send();
-		} else {
-			$response['error'] = 'Validation failed';
-			// You can customize this message
-		}
-
-		return $response;
-	}
-	protected function SendEmaild($requestData)
-	{
 
 
 		if ($requestData) {
@@ -560,27 +455,69 @@ class ControllerReportWishCatalog extends Controller
 
 			// $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
 
-			$mail->setTo($requestData[0]['user_email']);
+			$mail->setTo($requestData[0]['email']);
 
 			$mail->setFrom('info@zaynjewels.com');
 			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
-			$mail->setSubject("Cancel your appointment from Zayn Jewels");
+			$mail->setSubject("Confirmation of your Catalog Request with Zayn Jewels");
 
-			$message .= "Hello " . $requestData[0]['userName'] . " ,\n\n";
-			$message .= "Your appointment has been Cancel with Zayn Jewels. \n\n";
-			$message .= "Full Name- " . $requestData[0]['userName'] . "\n\n";
-			$message .= "Date- " . $requestData[0]['selected_date'] . "\n\n";
-			$message .= "Time- " . $requestData[0]['selected_time'] . "\n\n";
-			$message .= "Time Zone- " . $requestData[0]['current_timezone'] . "\n\n";
-			$message .= "Subject- " . $requestData[0]['meetingTitle'] . "\n\n";
-			$message .= "Message- " . $requestData[0]['usermessage'] . "\n\n";
-			$message .= "Email- " . $requestData[0]['user_email'] . "\n\n";
-			$message .= "\n\n";
+			$message .= "Hello " . $requestData[0]['name'] . " ,\n\n";
+			$message .= "Your Catalog Request with Zayn Jewels. \n\n";
+			$message .= "Company Name- " . $requestData[0]['company_name'] . "\n\n";
+			$message .= "Catalog- " . $pdf. "\n\n";
+			
 
 
 			$message .= "Best Regards,\n\n";
 
 			$message .= "-Team Zayn Jewels\n\n";
+			$mail->setText($message);
+			$mail->send();
+		} else {
+			$response['error'] = 'Validation failed';
+			// You can customize this message
+		}
+
+
+		return $response;
+	}
+	protected function SendEmail($requestData,$pdf)
+	{
+		// echo "<pre>";
+		// print_r($requestData);
+		// echo "</pre>";
+		// die();
+
+
+		if ($requestData) {
+
+			$mail = new Mail();
+			$mail->protocol = $this->config->get('config_mail_protocol');
+			$mail->parameter = $this->config->get('config_mail_parameter');
+			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+			$mail->smtp_username = $this->config->get('config_mail_smtp_username');
+			$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
+			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+
+			// $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
+
+			$mail->setTo("radhika@zaynjewels.com");
+
+			$mail->setFrom('info@zaynjewels.com');
+			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+			$mail->setSubject("Confirmation of your Catalog Request with Zayn Jewels");
+
+			$message .= "Hello  ,\n\n";
+			$message .= "Catalog Request  from Zayn Jewels. \n\n";
+			$message .= " Name- " . $requestData[0]['name'] . "\n\n";
+			$message .= "Company Name- " . $requestData[0]['company_name'] . "\n\n";
+			$message .= "Email- " . $requestData[0]['email'] . "\n\n";
+			$message .= "Catalog- " . $pdf. "\n\n";
+			
+
+
+			
 			$mail->setText($message);
 			$mail->send();
 		} else {

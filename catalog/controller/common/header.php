@@ -75,7 +75,7 @@ class ControllerCommonHeader extends Controller
 
 		$data['home'] = $this->url->link('common/home');
 		if ($this->customer->isLogged()) {
-			$data['wishlist'] = $this->url->link('account/wishlist', '', true);
+			$data['wishlist'] = $this->url->link('account/wishlist_guest', '', true);
 		} else {
 			$data['wishlist'] = $this->url->link('account/wishlist_guest', '', true);
 		}
