@@ -346,19 +346,18 @@ class ControllerReportWishCatalog extends Controller
 	
 				$imageUrl = htmlspecialchars($product['productimg']);
 				$html .= '
-					<td>
-						<div class="product-card">
-							<img src="' . $imageUrl . '" alt="' . htmlspecialchars($product['productname']) . '">
-							<div class="content">
-								<a href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
-								<h5>Design No: ' . htmlspecialchars($product['productstyle']) . '</h5>
-								<h5>Diamond: ' . htmlspecialchars($product['productdesign']) . '</h5>
-								<h5>Size: ' . htmlspecialchars($product['productsize']) . '</h5>
-								<h5>MSRP: ' . htmlspecialchars($product['productprice']) . '</h5>
-							</div>
-						</div>
-					</td>';
-	
+                      <td>
+                          <div class="product-card">
+                              <img src="' . $imageUrl . '" alt="' . htmlspecialchars($product['productname']) . '">
+                              <div class="content">
+                                  <a href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
+                                  <h5>Design No: ' . htmlspecialchars($product['productstyle']) . '</h5>
+                                  <h5>Metal Purity: ' . htmlspecialchars($product['productsize']) . '</h5>
+                                  <h5>Size: US #7.0</h5>
+                                  <h5>MSRP: ' . htmlspecialchars(preg_replace('~\.0+$~', '', str_replace('$', 'USD ', $product['productprice']))) . '</h5>
+                              </div>
+                          </div>
+                      </td>';
 				$count++;
 				$totalProducts++;
 	
