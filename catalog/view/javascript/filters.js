@@ -132,6 +132,57 @@ function FilterByType(data, array) {
   );
 }
 
+//sorting functions
+
+function sortByNameA(data) {
+  return data.sort((a, b) => {
+    const nameA = a.name.trim().toUpperCase(); 
+    const nameB = b.name.trim().toUpperCase(); 
+    if (nameA < nameB) {
+      return -1; // `nameA` comes before `nameB`
+    }
+    if (nameA > nameB) {
+      return 1; // `nameA` comes after `nameB`
+    }
+    return 0; // `nameA` is equal to `nameB`
+  });
+}
+
+
+function sortByNameD(data) {
+  return data.sort((a, b) => {
+    const nameA = a.name.trim().toUpperCase(); 
+    const nameB = b.name.trim().toUpperCase(); 
+
+    if (nameA > nameB) {
+      return -1;
+    }
+    if (nameA < nameB) {
+      return 1; 
+    }
+    return 0; // `nameA` is equal to `nameB`
+  });
+}
+
+
+
+function sortByPriceA(data){
+  return data.sort((a, b) => {
+    const priceA = parseFloat(a.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
+    const priceB = parseFloat(b.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
+
+    return priceA - priceB; // Ascending order
+  });
+}
+
+function sortByPriceD(data){
+  return data.sort((a, b) => {
+    const priceA = parseFloat(a.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
+    const priceB = parseFloat(b.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
+
+    return priceB - priceA; // Descending order
+  });
+}
 
 
 

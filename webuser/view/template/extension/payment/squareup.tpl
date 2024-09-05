@@ -19,7 +19,10 @@
                     <a href="<?php echo $setup_geo_zones; ?>" data-toggle="tooltip" title="<?php echo $button_geo_zones; ?>" class="btn btn-info"><i class="fa fa-globe"></i></a>
                 <?php } ?>
                 <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
-            <h1><?php echo $heading_title; ?></h1>
+            <div style="display: flex;">
+              <h1><?php echo $heading_title; ?></h1>
+              <div data-toggle="tooltip" title="Make sure this value is set in your Square application settings" style="color: #155724;background-color: #d4edda; height: fit-content;margin-left:10px;border: 1px solid #c3e6cb;border-radius: .25rem;padding: .75rem 1.25rem; width: fit-content">Square API Version: 2022-02-16</div>
+            </div>
             <ul class="breadcrumb">
                 <?php foreach ($breadcrumbs as $breadcrumb) { ?>
                 <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -72,6 +75,26 @@
                                     </div>
                                 </legend>
 
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="dropdown_squareup_key_type"><span data-toggle="tooltip" title="Key type">Access key type</span></label>
+                                    <div class="col-sm-10">
+                                        <select name="squareup_key_type" id="dropdown_squareup_key_type" class="form-control">
+                                            <option value="production" <?php if ($squareup_key_type == "production") { ?>selected<?php } ?>>Production mode</option>
+                                            <option value="sandbox" <?php if ($squareup_key_type == "sandbox") { ?>selected<?php } ?>>Sandbox mode</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="sandboxHelp" style="<?php if($squareup_key_type != 'sandbox'){ ?>display:none<?php } ?>">
+                                  <div class="col-sm-2"></div>
+                                  <div class="col-sm-10" style="margin-bottom:20px;padding-left:5px;">
+                                    <div style="color: #0c5460;background-color: #d1ecf1;  border-color: #bee5eb;border: 1px solid transparent;border-radius: .25rem;padding: .75rem 1.25rem;">
+                                      <p>Before clicking Connect make sure you open the Square Sandbox Dashboard and leave it open in the same tab from <a href="https://developer.squareup.com/apps">here</a></p>
+                                      <a href="https://isenselabstasks.s3.amazonaws.com/2021-05/82397046_43e73_square-sandbox-video.mp4">Check this GIF for more info</a>
+                                    </div>
+                                  </div>
+                                </div>
+
                                 <div class="form-group required">
                                     <label class="col-sm-2 control-label" for="input_squareup_client_id">
                                         <span data-toggle="tooltip" title="<?php echo $text_client_id_help; ?>"><?php echo $text_client_id_label; ?></span>
@@ -109,6 +132,15 @@
                                     <div class="col-sm-10">
                                         <input readonly type="text" id="input_squareup_webhook_url_static" name="squareup_webhook_url_static" class="form-control" value="<?php echo $squareup_webhook_url; ?>" />
                                     </div>
+                                </div>
+                                <div id="webhookHelp" style="<?php if($squareup_key_type == 'production'){ ?>display:none<?php } ?>">
+                                  <div class="col-sm-2"></div>
+                                  <div class="col-sm-10" style="margin-bottom:20px;padding-left:5px">
+                                    <div style="color: #0c5460;background-color: #d1ecf1;  border-color: #bee5eb;border: 1px solid transparent;border-radius: .25rem;padding: .75rem 1.25rem;">
+                                      <p>If you want to use webhooks you need to add the webhook from Square's app dashboard manually</p>
+                                      <a href="https://isenselabstasks.s3.amazonaws.com/2021-05/82397046_849f9_square-webhooks-video.mp4">Check this GIF for more info</a>
+                                    </div>
+                                  </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="input_squareup_webhook_signature">
@@ -230,6 +262,44 @@
                                 </div>
 
                                 <hr />
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="dropdown_squareup_apple_pay_status"><span data-toggle="tooltip" data-original-title="<?php echo $text_apple_pay_status_help; ?>"><?php echo $text_apple_pay; ?></span></label>
+                                    <div class="col-sm-10">
+                                        <select id="dropdown_squareup_apple_pay_status" name="squareup_apple_pay_status" class="form-control">
+                                            <option value="1" <?php if ($squareup_apple_pay_status == '1') { ?> selected <?php } ?>><?php echo $text_enabled; ?></option>
+                                            <option value="0" <?php if ($squareup_apple_pay_status == '0') { ?> selected <?php } ?>><?php echo $text_disabled; ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="dropdown_squareup_google_pay_status"><span data-toggle="tooltip" data-original-title="<?php echo $text_google_pay_status_help; ?>"><?php echo $text_google_pay; ?></span></label>
+                                    <div class="col-sm-10">
+                                        <select id="dropdown_squareup_google_pay_status" name="squareup_google_pay_status" class="form-control">
+                                            <option value="1" <?php if ($squareup_google_pay_status == '1') { ?> selected <?php } ?>><?php echo $text_enabled; ?></option>
+                                            <option value="0" <?php if ($squareup_google_pay_status == '0') { ?> selected <?php } ?>><?php echo $text_disabled; ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="dropdown_squareup_after_pay_status"><span data-toggle="tooltip" data-original-title="<?php echo $text_after_pay_status_help; ?>"><?php echo $text_after_pay; ?></span></label>
+                                    <div class="col-sm-10">
+                                        <select id="dropdown_squareup_after_pay_status" name="squareup_after_pay_status" class="form-control">
+                                            <option value="1" <?php if ($squareup_after_pay_status == '1') { ?> selected <?php } ?>><?php echo $text_enabled; ?></option>
+                                            <option value="0" <?php if ($squareup_after_pay_status == '0') { ?> selected <?php } ?>><?php echo $text_disabled; ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="dropdown_squareup_gift_card_status"><span data-toggle="tooltip" data-original-title="<?php echo $text_gift_card_status_help; ?>"><?php echo $text_gift_card; ?></span></label>
+                                    <div class="col-sm-10">
+                                        <select id="dropdown_squareup_gift_card_status" name="squareup_gift_card_status" class="form-control">
+                                            <option value="1" <?php if ($squareup_gift_card_status == '1') { ?> selected <?php } ?>><?php echo $text_enabled; ?></option>
+                                            <option value="0" <?php if ($squareup_gift_card_status == '0') { ?> selected <?php } ?>><?php echo $text_disabled; ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <hr />
                                 <div class="alert alert-info">
                                     <p><i class="fa fa-info-circle"></i> <?php echo $text_inventory_sync_info; ?></p>
                                 </div>
@@ -243,7 +313,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="dropdown_squareup_inventory_sync"><span data-toggle="tooltip" title="<?php echo $text_inventory_sync_help; ?>"><?php echo $text_inventory_sync_label; ?></span></label>
                                     <div class="col-sm-10">
@@ -251,6 +321,21 @@
                                             <option value="inventory_single" <?php if ($squareup_inventory_sync == 'inventory_single') { ?> selected <?php } ?>><?php echo $text_inventory_sync_single; ?></option>
                                             <option value="inventory_all" <?php if ($squareup_inventory_sync == 'inventory_all') { ?> selected <?php } ?>><?php echo $text_inventory_sync_all; ?></option>
                                             <option value="none" <?php if ($squareup_inventory_sync == 'none') { ?> selected <?php } ?>><?php echo $text_disabled; ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <div class="alert alert-info">
+                                    <p><i class="fa fa-info-circle"></i> <?php echo $text_image_sync_info; ?></p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="dropdown_squareup_image_sync"><?php echo $text_image_sync_label; ?></label>
+                                    <div class="col-sm-10">
+                                        <select name="squareup_image_sync" id="dropdown_squareup_image_sync" class="form-control">
+                                            <option value="1" <?php if ($squareup_image_sync == '1') { ?> selected <?php } ?>><?php echo $text_enabled; ?></option>
+                                            <option value="0" <?php if ($squareup_image_sync == '0') { ?> selected <?php } ?>><?php echo $text_disabled; ?></option>
                                         </select>
                                     </div>
                                 </div>
@@ -363,7 +448,7 @@
                                             <?php foreach ($languages as $language) { ?>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><img src="<?php echo $language['image']; ?>" alt="<?php echo $language['name']; ?>" /></span>
-                                                    <input type="text" name="squareup_display_name[<?php echo $language['language_id']; ?>]" value="<?php echo !empty($squareup_display_name[$language['language_id']]) ? $text_payment_method_name_placeholder : ''; ?>" placeholder="<?php echo $text_payment_method_name_placeholder; ?>" class="form-control"/>
+                                                    <input type="text" name="squareup_display_name[<?php echo $language['language_id']; ?>]" value="<?php echo !empty($squareup_display_name[$language['language_id']]) ? $squareup_display_name[$language['language_id']] : $text_payment_method_name_placeholder; ?>" placeholder="<?php echo $text_payment_method_name_placeholder; ?>" class="form-control"/>
                                                 </div>
                                             <?php } ?>
                                         </div>
@@ -508,7 +593,7 @@
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th class="text-left hidden-xs"><?php echo $column_transaction_id; ?></th> 
+                                            <th class="text-left hidden-xs"><?php echo $column_transaction_id; ?></th>
                                             <th class="text-left"><?php echo $column_customer; ?></th>
                                             <th class="text-left hidden-xs"><?php echo $column_order_id; ?></th>
                                             <th class="text-left hidden-xs"><?php echo $column_type; ?></th>
@@ -783,7 +868,8 @@ $(document).ready(function() {
             data : {
                 squareup_client_id: $('#input_squareup_client_id').val(),
                 squareup_client_secret: $('#input_squareup_client_secret').val(),
-                squareup_webhook_signature: $('#input_squareup_webhook_signature').val()
+                squareup_webhook_signature: $('#input_squareup_webhook_signature').val(),
+                squareup_key_type: $('#dropdown_squareup_key_type option:selected').val()
             },
             beforeSend : function() {
                 $('#connect-error').empty();
@@ -872,7 +958,7 @@ $(document).ready(function() {
             }
 
             $('#transactions').html(html);
-            
+
             $('#transactions_pagination').html(data.pagination).find('a[href]').each(function(index,element) {
               $(this).click(function(e) {
                 e.preventDefault();
@@ -990,7 +1076,7 @@ $(document).ready(function() {
 
             transactionRequest('GET', url);
         });
-        
+
         $(modal).modal('show');
     }
 
@@ -1087,7 +1173,7 @@ $(document).ready(function() {
 
                                 // No issues here. Restrict the allowed re-stocks according to the quantity selections from the refund screen
 
-                                var text_summary = 
+                                var text_summary =
                                     "<?php echo $text_itemized_refund_restock_total; ?>"
                                         .replace(/{price_prefix}/, $(amount_input).attr('data-price-prefix'))
                                         .replace(/{price_suffix}/, $(amount_input).attr('data-price-suffix'))
@@ -1223,7 +1309,7 @@ $(document).ready(function() {
                         $('[name^="itemized_refund"]').each(function(index, element) {
                             currentValue += price * parseInt($(element).val());
                         });
-                        
+
                         var max = parseFloat($(element).attr('data-max-allowed').replace(/[^0-9\.\-]/g, ""));
 
                         if (currentValue > max) {
@@ -1326,7 +1412,7 @@ $(document).ready(function() {
         $('#advanced_settings').slideDown();
     });
 
-    <?php if ($error_cron_standard_period) { ?> 
+    <?php if ($error_cron_standard_period) { ?>
         $('#advanced_settings_expand').trigger('click');
     <?php } ?>
 
@@ -1341,7 +1427,7 @@ $(document).ready(function() {
     });
 
     $('#connect-button').click(onConnectClick);
-    
+
     $('#reconnect-button').click(onConnectClick);
 
     $(document).on('click', '*[data-url-transaction-capture]', function() {
@@ -1352,7 +1438,7 @@ $(document).ready(function() {
             $(this).attr('data-confirm-capture')
         );
     });
-        
+
     $(document).on('click', '*[data-url-transaction-void]', function() {
         if ($(this).attr('disabled')) return;
 
@@ -1367,8 +1453,8 @@ $(document).ready(function() {
 
         modalRefund($(this).attr('data-url-transaction-refund'), $(this).attr('data-url-transaction-refund-modal'));
     });
-    
-    $(document).on('click', '#cron_click', function() { 
+
+    $(document).on('click', '#cron_click', function() {
         $('.nav-tabs a[href="#tab-setting"]').tab('show');
 
         $('html, body').animate({
@@ -1431,7 +1517,7 @@ $(document).ready(function() {
         }
     <?php } ?>
 
-    <?php if ($initial_sync_not_performed) { ?> 
+    <?php if ($initial_sync_not_performed) { ?>
         var fetchSyncModalOptions = function(modal) {
             var submitButton = $(modal).find('button[type="button"][form="form-square-checkout"]');
 
@@ -1469,6 +1555,14 @@ $(document).ready(function() {
         var args = typeof forced != 'undefined' ? [true] : [];
 
         $('#form-square-checkout').trigger('submit', args);
+    });
+
+    $( "#dropdown_squareup_key_type" ).change(function() {
+      if($(this).val() === "sandbox"){
+        $("#sandboxHelp").css("display","block");
+      }else{
+        $("#sandboxHelp").css("display","none");
+      }
     });
 
     $('#on-demand-cron').click(function(e) {

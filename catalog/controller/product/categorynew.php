@@ -341,3 +341,4 @@ class ControllerProductCategorynew extends Controller
 		}
 	}
 }
+

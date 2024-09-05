@@ -99,3 +99,4 @@ class ModelReportConsulting extends Model
         return $this->db->getLastId();
     }
 }
+

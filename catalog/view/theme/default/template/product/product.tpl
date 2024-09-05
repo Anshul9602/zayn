@@ -307,11 +307,10 @@ if (isset($draft) && is_string($draft)) {
 
                <h3 class="product_font" style="text-transform: capitalize; color:#000; font-size:28px; margin-top:25px">
                   <?php echo $heading_title; ?>
-
+                  
                </h3>
                <div class="row">
-                  <div class="col-md-10">
-                     <?php if ($review_status) { ?>
+                  <div class="col-md-10"><?php if ($review_status) { ?>
                      <div class="rating">
                         <p>
                            <?php for ($i = 1; $i <= 5; $i++) { ?>
@@ -343,7 +342,7 @@ if (isset($draft) && is_string($draft)) {
                            </a>
                         </p>
                         <?php if (!$cad) { ?>
-
+                       
                         <!-- AddThis Button BEGIN -->
                         <div class="addthis_toolbox addthis_default_style" data-url="<?php echo $share; ?>"><a
                               class="addthis_button_facebook_like" fb:like:layout="button_count"></a> <a
@@ -356,10 +355,9 @@ if (isset($draft) && is_string($draft)) {
                               } ?>
                      </div>
                      <?php
-                        } ?>
-                  </div>
+                        } ?></div>
 
-                  <?php                 
+                        <?php                 
                         $wishlist_items1_array = json_decode($wishlist_items1, true);
                                  
                                     $product_in_wishlist = 0;
@@ -394,7 +392,7 @@ if (isset($draft) && is_string($draft)) {
                      <?php } ?>
 
                   </div>
-
+                 
                </div>
                <hr style="    margin-top: 0px;">
                <h3 id="p_pr" style="  color:#a38129; font-size:22px;">
@@ -553,10 +551,15 @@ if (isset($draft) && is_string($draft)) {
                </div>
                <?php
                         } ?>
+
+
+
+
                <?php
                      } ?>
                <?php
                   } ?>
+
                <?php if ($price) { ?>
                <div id="wishlist-msg">
 
@@ -794,6 +797,7 @@ if (isset($draft) && is_string($draft)) {
                } ?>
       </div>
       <br /><br />
+
       <?php
          } ?>
    </div>
@@ -801,6 +805,8 @@ if (isset($draft) && is_string($draft)) {
 </section>
 
 <?php } ?>
+
+
 <?php if ($cad) { ?>
 <div style="max-width:1250px" class="container">
    <div class="row">

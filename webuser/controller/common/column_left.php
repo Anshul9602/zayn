@@ -695,7 +695,18 @@ class ControllerCommonColumnLeft extends Controller
 					'children' => $report_appoint
 				);
 			}
-			$report_wish_catalog = array();
+
+			$report_sale = array();
+
+			
+			if ($this->user->hasPermission('access', 'report/sale_order')) {
+				$report_sale[] = array(
+					'name'	   => $this->language->get('text_report_sale_order'),
+					'href'     => $this->url->link('report/sale_order', 'token=' . $this->session->data['token'], true),
+					'children' => array()
+				);
+			}
+$report_wish_catalog = array();
 
 			if ($this->user->hasPermission('access', 'report/wish_catalog')) {
 				$report_wish_catalog[] = array(
@@ -711,18 +722,6 @@ class ControllerCommonColumnLeft extends Controller
 					'children' => $report_wish_catalog
 				);
 			}
-
-			$report_sale = array();
-
-			
-			if ($this->user->hasPermission('access', 'report/sale_order')) {
-				$report_sale[] = array(
-					'name'	   => $this->language->get('text_report_sale_order'),
-					'href'     => $this->url->link('report/sale_order', 'token=' . $this->session->data['token'], true),
-					'children' => array()
-				);
-			}
-
 			if ($this->user->hasPermission('access', 'report/sale_tax')) {
 				$report_sale[] = array(
 					'name'	   => $this->language->get('text_report_sale_tax'),
@@ -943,9 +942,9 @@ class ControllerCommonColumnLeft extends Controller
 				$data['other_status'] = 0;
 			}
 			$data['appointh']=$this->url->link('report/appoint', 'token=' . $this->session->data['token'], true);
-			$data['wish_catalog']=$this->url->link('report/wish_catalog', 'token=' . $this->session->data['token'], true);
 		// echo $data['appointh'];
 			return $this->load->view('common/column_left', $data);
 		}
 	}
 }
+

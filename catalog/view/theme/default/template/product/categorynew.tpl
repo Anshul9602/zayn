@@ -14,6 +14,12 @@
    color: #333;
    font-size: 12px;
    }
+   .product-thumb:hover .wishlist_link1{
+   display:block;
+}
+.wishlist_link1{
+   display:none;
+}
    .sub-cate-list ul li {
    color: #333;
    list-style: none;
@@ -70,13 +76,6 @@
    .p_box:hover .option-tab {
    opacity: 1;
    }
-.product-thumb:hover .wishlist_link1{
-   display:block;
-}
-.wishlist_link1{
-   display:none;
-}
-
 </style>
 <main>
    <!-- breadcrumb area start -->
@@ -96,16 +95,13 @@
             </div>
             <div class="col-6 col-sm-3 d-flex justify-content-end">
                <div style="width: 80%; float:left" class="form-group input-group input-group-sm">
-                  <select style="margin-top: 20px;" id="input-sort" class="form-control" onchange="location = this.value;">
-                     <?php foreach ($sorts as $sorts) { ?>
-                     <?php if ($sorts['value'] == $sort . '-' . $order) { ?>
-                     <option value="<?php echo $sorts['href']; ?>" selected="selected"><?php echo $sorts['text']; ?>
-                     </option>
-                     <?php } else { ?>
-                     <option value="<?php echo $sorts['href']; ?>"><?php echo $sorts['text']; ?></option>
-                     <?php } ?>
-                     <?php } ?>
-                  </select>
+               <select style="margin-top: 20px;" id="input-sort" class="form-control sort">
+                                                                        <option value="" selected="selected">SORT</option>
+                                                                        <option value="name_ASC">Name (A - Z)</option>
+                                                                        <option value="name_DESC">Name (Z - A)</option>
+                                                                        <option value="p_ASC">Price (Low &gt; High)</option>
+                                                                      <option value="p_DESC">Price (High &gt; Low)</option>
+                                                               </select>
                </div>
                <div style="width: 20%; padding-left:10%; cursor:pointer;  float:right" class="filter">
                   <li style="margin-top: 30px;" class="fa fa-filter"></li>
@@ -149,8 +145,6 @@
             </div>
             <!-- sidebar area end -->
             <!-- shop main wrapper start -->
-       
-                                    
             <div class="col-lg-9 order-1 order-lg-2">
                <div class="shop-product-wrapper">
                   <div id="data-container" class="shop-product-wrap grid-view row mbn-30">
@@ -212,14 +206,14 @@
    //fetch products and show array
    var temp = <?php print_r(json_encode($products));?>;
    var items = shuffleArray([...temp]);
-  
+   var filteredData = items;
+
     
    $(document).ready(function(){
       generatePage(items);
      
       $('input[type="checkbox"]').change(function() {
-         var filteredData = items;
-
+       
          debouncedGetFilters(function(filters) {
           
             //filter by gemstone
@@ -245,9 +239,28 @@
             }
             
             generatePage(filteredData);
-   
+
         });
       })
+
+      $("#input-sort").change(function(){
+               if($("#input-sort").val()=="name_ASC"){
+                  filteredData = sortByNameA(filteredData);
+                  console.log(filteredData);
+               }
+               if($("#input-sort").val()=="name_DESC"){
+                  filteredData = sortByNameD(filteredData);
+               }
+               if($("#input-sort").val()=="p_ASC"){
+                  filteredData = sortByPriceA(filteredData);
+               }
+               if($("#input-sort").val()=="p_DESC"){
+                  filteredData = sortByPriceD(filteredData);
+               }
+               generatePage(filteredData);
+
+            })
+      
       
    })
 

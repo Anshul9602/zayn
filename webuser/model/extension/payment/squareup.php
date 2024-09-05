@@ -243,10 +243,20 @@ class ModelExtensionPaymentSquareup extends Model {
 
         if ($result['is_merchant_transaction'] && !in_array($transaction['transaction_type'], array('VOIDED', 'FAILED')) && !$this->isTransactionFullyRefunded($transaction)) {
             // Fetch the transaction and check for changes
-            $updated_transaction = $this->squareup_api->getTransaction($transaction['location_id'], $transaction['transaction_id']);
 
-            $updated_status = $updated_transaction['tenders'][0]['card_details']['status'];
-            $updated_refunds = !empty($updated_transaction['refunds']) ? $updated_transaction['refunds'] : array();
+            //The old transaction_ids are not working for the new Payments API so we need to pass the old transaction tenders id
+            if(is_array(json_decode($transaction['tenders'])) && isset(json_decode($transaction['tenders'])[0]->id)){
+              $updated_transaction = $this->squareup_api->getTransaction($transaction['location_id'], json_decode($transaction['tenders'])[0]->id);
+            }else{
+              $updated_transaction = $this->squareup_api->getTransaction($transaction['location_id'], $transaction['transaction_id']);
+            }
+
+            $updated_status = $updated_transaction['card_details']['status'];
+            $updated_refunds_ids = !empty($updated_transaction['refund_ids']) ? $updated_transaction['refund_ids'] : array();
+            $updated_refunds = array();
+            foreach($updated_refunds_ids as $refund){
+              $updated_refunds[] = $this->squareup_api->getRefund($refund);
+            }
 
             $result['type'] = $updated_status;
             $result['text'] = $this->language->get('entry_status_' . strtolower($result['type']));
@@ -289,9 +299,9 @@ class ModelExtensionPaymentSquareup extends Model {
             }
 
             $result['amount_refunded'] = $this->currency->format(
-                $this->squareup_api->standardDenomination($refunded_amount, $transaction['transaction_currency']),
-                $transaction['transaction_currency']
-            );
+				$this->squareup_api->standardDenomination($refunded_amount, $transaction['transaction_currency']),
+				$transaction['transaction_currency']
+			);
 
             if ($refunded_amount == $this->squareup_api->lowestDenomination($transaction['transaction_amount'], $transaction['transaction_currency'])) {
                 $result['text'] = $this->language->get('text_fully_refunded');
@@ -424,6 +434,7 @@ class ModelExtensionPaymentSquareup extends Model {
          `present_at_all_locations` tinyint(1),
          `present_at_location_ids` TEXT,
          `absent_at_location_ids` TEXT,
+         `image_id` varchar(24),
          PRIMARY KEY (`type`, `square_id`),
          UNIQUE KEY `square_id` (`square_id`),
          INDEX `square_id_version` (`square_id`, `version`)
@@ -601,10 +612,12 @@ class ModelExtensionPaymentSquareup extends Model {
     public function alterTables() {
         $squareup_transaction_columns = $this->db->query("SHOW COLUMNS FROM `" . DB_PREFIX . "squareup_transaction`");
         $squareup_customer_columns = $this->db->query("SHOW COLUMNS FROM `" . DB_PREFIX . "squareup_customer`");
+        $squareup_catalog_columns = $this->db->query("SHOW COLUMNS FROM `" . DB_PREFIX . "squareup_catalog`");
 
         $found_transaction_id = false;
         $found_transaction_square_customer_id = false;
         $found_customer_squareup_token_id = false;
+        $found_image_id = false;
 
         foreach ($squareup_transaction_columns->rows as $column) {
             if ($column['Field'] == 'transaction_id' && strtolower($column['Type']) == 'char(40)') {
@@ -622,6 +635,12 @@ class ModelExtensionPaymentSquareup extends Model {
             }
         }
 
+        foreach ($squareup_catalog_columns->rows as $column) {
+            if ($column['Field'] == 'image_id') {
+                $found_image_id = true;
+            }
+        }
+
         if (!$found_transaction_id) {
             $this->db->query("ALTER TABLE `" . DB_PREFIX . "squareup_transaction` MODIFY transaction_id varchar(255) NOT NULL");
         }
@@ -632,6 +651,10 @@ class ModelExtensionPaymentSquareup extends Model {
 
         if (!$found_customer_squareup_token_id) {
             $this->db->query("ALTER TABLE `" . DB_PREFIX . "squareup_customer` ADD COLUMN squareup_token_id int(11) unsigned NOT NULL");
+        }
+
+        if(!$found_image_id){
+          $this->db->query("ALTER TABLE `" . DB_PREFIX . "squareup_catalog` ADD COLUMN image_id varchar(32)");
         }
     }
 

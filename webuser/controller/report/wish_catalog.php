@@ -350,11 +350,11 @@ class ControllerReportWishCatalog extends Controller
                           <div class="product-card">
                               <img src="' . $imageUrl . '" alt="' . htmlspecialchars($product['productname']) . '">
                               <div class="content">
-                                  <a href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
-                                  <h5>Design No: ' . htmlspecialchars($product['productstyle']) . '</h5>
-                                  <h5>Metal Purity: ' . htmlspecialchars($product['productsize']) . '</h5>
-                                  <h5>Size: US #7.0</h5>
-                                  <h5>MSRP: ' . htmlspecialchars(preg_replace('~\.0+$~', '', str_replace('$', 'USD ', $product['productprice']))) . '</h5>
+                                  <a style="font-weight:700;" href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
+                                  <h5 style="font-weight:400;">Design No: ' . htmlspecialchars($product['productstyle']) . '</h5>
+                                  <h5 style="font-weight:400;">Diamond: ' . htmlspecialchars($product['productsize']) . '</h5>
+                                  <h5 style="font-weight:400;">Size: 16,17,18 inch </h5>
+                                  <h5 style="font-weight:400;">MSRP: ' . htmlspecialchars(preg_replace('~\.0+$~', '', str_replace('$', 'USD ', $product['productprice']))) . '</h5>
                               </div>
                           </div>
                       </td>';
@@ -528,3 +528,4 @@ class ControllerReportWishCatalog extends Controller
 		return $response;
 	}
 }
+

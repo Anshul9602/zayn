@@ -202,8 +202,8 @@ class ControllerReportAppoint extends Controller
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
 			// Retrieve the form data
 
-			// print_r($_POST);
-			// die();
+// print_r($_POST);
+// die();
 
 			$data['id'] = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
 			$data['name'] = isset($this->request->post['name']) ? $this->request->post['name'] : '';
@@ -237,13 +237,13 @@ class ControllerReportAppoint extends Controller
 			// Replace the following code with your actual database update logic
 			$this->load->model('report/consulting');
 
-
+			
 			$this->model_report_consulting->deleteEvent($Id);
 			//     echo "<pre>";
 			//    print_r($requestData);
 			//    echo "</pre>";
 			//    die();
-
+			
 			// Send a response (e.g., success message)
 			$json['success'] = 'Status updated successfully';
 
@@ -286,34 +286,34 @@ class ControllerReportAppoint extends Controller
 		}
 	}
 	protected function SendEmail($requestData)
-	{
-		// $response = array();
-		// echo "<pre>";
-		// print_r($requestData);
-		// echo "</pre>";
-		$appoint_event = $this->model_report_consulting->getAllEventData();
-		// print_r($appoint_event[0]['name']);
-		// die();
-		if ($requestData) {
+{
+    // $response = array();
+    // echo "<pre>";
+    // print_r($requestData);
+    // echo "</pre>";
+    $appoint_event = $this->model_report_consulting->getAllEventData();
+    // print_r($appoint_event[0]['name']);
+    // die();
+    if ($requestData) {
 
-			$mail = new Mail();
-			$mail->protocol = $this->config->get('config_mail_protocol');
-			$mail->parameter = $this->config->get('config_mail_parameter');
-			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
-			$mail->smtp_username = 'info@zaynjewels.com';
-			$mail->smtp_password = 'qjoiaxyxowiosggs'; // Use environment variables for sensitive information
-			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
-			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+        $mail = new Mail();
+        $mail->protocol = $this->config->get('config_mail_protocol');
+        $mail->parameter = $this->config->get('config_mail_parameter');
+        $mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+        $mail->smtp_username = 'info@zaynjewels.com';
+        $mail->smtp_password = 'qjoiaxyxowiosggs'; // Use environment variables for sensitive information
+        $mail->smtp_port = $this->config->get('config_mail_smtp_port');
+        $mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
-			// $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
+        // $mail->setTo('radhika@zaynjewels.com'); // Adjust recipient email address as needed
 
-			$mail->setTo($requestData[0]['user_email']);
+        $mail->setTo($requestData[0]['user_email']);
 
-			$mail->setFrom('info@zaynjewels.com');
-			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
-			$mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
+        $mail->setFrom('info@zaynjewels.com');
+        $mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+        $mail->setSubject("Confirmation of your appointment booking with Zayn Jewels");
 
-			$message = "<!DOCTYPE html>
+        $message = "<!DOCTYPE html>
         <html lang=\"en\">
         <head>
             <meta charset=\"UTF-8\">
@@ -413,15 +413,15 @@ class ControllerReportAppoint extends Controller
         </body>
         </html>";
 
-			$mail->setHtml($message);
-			$mail->send();
-		} else {
-			$response['error'] = 'Validation failed';
-			// You can customize this message
-		}
+        $mail->setHtml($message);
+        $mail->send();
+    } else {
+        $response['error'] = 'Validation failed';
+        // You can customize this message
+    }
 
-		return $response;
-	}
+    return $response;
+}
 	protected function SendEmaild($requestData)
 	{
 
@@ -457,9 +457,13 @@ class ControllerReportAppoint extends Controller
 			$message .= "\n\n";
 
 
-			$message .= "Best Regards,\n\n";
+			$message .= "Best ,\n\n";
 
 			$message .= "-Team Zayn Jewels\n\n";
+			
+
+
+
 			$mail->setText($message);
 			$mail->send();
 		} else {
@@ -471,3 +475,4 @@ class ControllerReportAppoint extends Controller
 		return $response;
 	}
 }
+

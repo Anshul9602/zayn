@@ -214,7 +214,7 @@ class ControllerCommonConsulting extends Controller
 
 	$message .= "Hello". $userName ." ,\n\n";
 
-	$message .= "Thank you for setting up an appointment with Zayn Jewels. \n\n";
+	$message .= "hank you for setting up an appointment with Zayn Jewels. \n\n";
 	$message .= "Appointment Details:\n\n";
 	$message .= "Name- " . $userName . "\n\n";
 	$message .= "Date- " . $selectedDate . "\n\n";

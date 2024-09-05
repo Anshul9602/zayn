@@ -66,3 +66,4 @@ class ControllerAccountWishListguest extends Controller
 		$this->response->setOutput($this->load->view('account/wishlist_guest', $data));
 	}
 }
+

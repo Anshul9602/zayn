@@ -3,31 +3,32 @@
 assets/css/home.css
 " rel="stylesheet">
 <div class="desk_dis">
-
+  
     <?php foreach ($banner_main as $banner) { ?>
+    
+        <img src="<?php echo $banner['image']; ?>" alt="" class="img-response" style="width:100%;">
 
-    <img src="<?php echo $banner['image']; ?>" alt class="img-response"
-        style="width:100%;">
 
+   
     <?php } ?>
-
+    
 </div>
 <div class="mob_dis">
     <?php foreach ($banner_sub as $banner) { ?>
+   
+        <img src="<?php echo $banner['image']; ?>" alt="" class="img-response" style="width:100%;">
 
-    <img src="<?php echo $banner['image']; ?>" alt class="img-response"
-        style="width:100%;">
-
+    
     <?php } ?>
-
+    
 </div>
+
 
 <section class="section-padding pb-0 " style="padding-top: 60px;">
     <div style="padding: 0 5%;">
         <div class="row ">
 
-            <div class="col-md-6 col-12 mb-md-0 mb-3"
-                style="align-items: center;display: flex;justify-content: center;">
+            <div class="col-md-6 col-12 mb-md-0 mb-3" style="align-items: center;display: flex;justify-content: center;">
                 <div class="serv-name3 text-center">
 
                     <h1 class="text-collection mb-3">Tennis Connection</h1>
@@ -35,18 +36,17 @@ assets/css/home.css
                         <button class="btn btn-primary">VIEW COLLECTION</button>
                     </a>
 
-                </div>
-                <a href
-                    style="width: 100%;overflow:hidden;    background: black;">
 
-                    <img src="image/new/col2.jpg" alt
-                        style="width:100%;opacity: 0.6; transition: transform 8s;"
-                        class="zoom1 serv-img" title />
+                </div>
+                <a href="" style="width: 100%;overflow:hidden;    background: black;">
+
+                    <img src="image/new/col2.jpg" alt="" style="width:100%;opacity: 0.6; transition: transform 8s;"
+                        class="zoom1 serv-img" title="" />
                 </a>
             </div>
-            <div class="col-md-6  col-12 "
-                style="align-items: center;display: flex;justify-content: center;">
+            <div class="col-md-6  col-12 " style="align-items: center;display: flex;justify-content: center;">
                 <div class="serv-name3 text-center">
+
 
                     <h1 class="text-collection mb-3">Zayn Lite</h1>
                     <a href="index.php?route=product/category&path=95">
@@ -54,20 +54,18 @@ assets/css/home.css
                     </a>
 
                 </div>
-                <a href
-                    style="width: 100%;overflow:hidden;    background: black;">
+                <a href="" style="width: 100%;overflow:hidden;    background: black;">
 
-                    <img src="image/new/col1.jpg" alt
-                        style="width:100%;opacity:0.6; transition: transform 8s;"
-                        class="zoom1 serv-img" title />
+                    <img src="image/new/col1.jpg" alt="" style="width:100%;opacity:0.6; transition: transform 8s;"
+                        class="zoom1 serv-img" title="" />
                 </a>
             </div>
+          
 
         </div>
-        <br /><br />
+<br /><br />
         <div class="row">
-            <div class="col-md-6 col-12 mb-md-0 mb-3"
-                style="align-items: center;display: flex;justify-content: center;">
+        <div class="col-md-6 col-12 mb-md-0 mb-3" style="align-items: center;display: flex;justify-content: center;">
                 <div class="serv-name3 text-center">
 
                     <h1 class="text-collection mb-3">Cross Collection</h1>
@@ -75,18 +73,17 @@ assets/css/home.css
                         <button class="btn btn-primary">VIEW COLLECTION</button>
                     </a>
 
-                </div>
-                <a href
-                    style="width: 100%;overflow:hidden;    background: black;">
 
-                    <img src="image/new/col_cross.jpg" alt
-                        style="width:100%;opacity: 0.6; transition: transform 8s;"
-                        class="zoom1 serv-img" title />
+                </div>
+                <a href="" style="width: 100%;overflow:hidden;    background: black;">
+
+                    <img src="image/new/col_cross.jpg" alt="" style="width:100%;opacity: 0.6; transition: transform 8s;"
+                        class="zoom1 serv-img" title="" />
                 </a>
             </div>
-            <div class="col-md-6  col-12 "
-                style="align-items: center;display: flex;justify-content: center;">
+            <div class="col-md-6  col-12 " style="align-items: center;display: flex;justify-content: center;">
                 <div class="serv-name3 text-center">
+
 
                     <h1 class="text-collection mb-3">Hoops Collection</h1>
                     <a href="index.php?route=product/category&path=107">
@@ -94,25 +91,16 @@ assets/css/home.css
                     </a>
 
                 </div>
-                <a href
-                    style="width: 100%;overflow:hidden;    background: black;">
+                <a href="" style="width: 100%;overflow:hidden;    background: black;">
 
-                    <img src="image/new/col-hoops.jpg" alt
-                        style="width:100%;opacity:0.6; transition: transform 8s;"
-                        class="zoom1 serv-img" title />
+                    <img src="image/new/col-hoops.jpg" alt="" style="width:100%;opacity:0.6; transition: transform 8s;"
+                        class="zoom1 serv-img" title="" />
                 </a>
             </div>
         </div>
-<<<<<<< HEAD
         
     </div>
 <br>
-=======
-
-    </div>
-    <br>
-
->>>>>>> 80bab49ae7b790677f377e3bbdc42874aa712bbf
 </section>
 
 <?php echo $footer; ?>

@@ -242,13 +242,6 @@
 
 
                               </figure>
-                              <a style="float:right;  padding:12px;    margin-top: 10px;" class="btn btn-find-store wishlist_link" 
-                              btnid="<?php echo $product['product_id'] ?>" 
-                              btnname="<?php echo $product['name']; ?>" 
-                              btnimg="<?php echo $product['thumb']; ?>" 
-                              btnhref="<?php echo $product['href']; ?>" >
-                              <li class="fa fa-heart-o"></li>
-                           </a>
                               <div class="product-caption">
                                  <h6 class="product-name">
                                     <a href="<?php echo $product['href']; ?>">

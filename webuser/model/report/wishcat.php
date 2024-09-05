@@ -60,3 +60,4 @@ public function updateproduct($Id, $product_data)
 
     
 }
+

