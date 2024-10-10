@@ -38,7 +38,21 @@ function generatePage(filteredData) {
             })
             .join(' ');
         }
+        var ringSizeValue = '';
 
+        if (item.option && item.option.length > 0) {
+          // Find the "RING SIZE" option
+          var ringSizeOption = item.option.find(function (option) {
+            return option.name === "RING SIZE";
+          });
+        
+          // Extract the product_option_value.name if the "RING SIZE" option exists
+          if (ringSizeOption && ringSizeOption.product_option_value.length > 0) {
+            ringSizeValue = ringSizeOption.product_option_value[0].name; // Assuming only one value for "RING SIZE"
+          }
+        }else{
+          ringSizeValue="-";
+        }
         return `<div class="col-md-4 col-sm-6 col-6 p_box">
   <div class="product-item">
     <figure class="product-thumb" style="    position: relative;">
@@ -50,8 +64,8 @@ ${item.in_wishlist ? `
                                     <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store"><i class="fa fa-heart"></i> </a>
                                     ` : `
                                     <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store wishlist_link1"
-                                        btnid="${item.product_id}" btnname="${item.name}" btnimg="${item.thumb}" btnhref="${item.href}"
-                                        btnprice="${item.wish_price}" btnsize="${item.metal_purity}" btndesign="${item.design_no}" btnstyle="${item.style_no}" btnsprice="${item.wish_special}">
+                                        btnid="${item.product_id}" btnname="${item.name}" btnimg="${item.thumb}" btnhref="${item.href}" 
+                                        btnprice="${item.wish_price}"  btnsize1="${ringSizeValue}"  btnsize="${item.metal_purity}" btndesign="${item.design_no}" btnstyle="${item.style_no}" btnsprice="${item.wish_special}"btnwet="">
                                         <i class="fa fa-heart-o"></i>
                                     </a>
                                     `}

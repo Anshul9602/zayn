@@ -240,6 +240,7 @@ class ControllerProductCategorynew extends Controller
 								'price'                   => $opt_price,
 								'price_prefix'            => $option_value['price_prefix']
 							);
+
 						}
 					}
 
@@ -306,7 +307,12 @@ class ControllerProductCategorynew extends Controller
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-		
+
+
+		// echo "<pre>";
+		// print_r($data);
+		// echo "</pre>";
+		// die();
 
 			$this->response->setOutput($this->load->view('product/categorynew', $data));
 		} else {
