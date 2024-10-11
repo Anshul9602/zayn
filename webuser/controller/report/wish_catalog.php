@@ -355,7 +355,7 @@ class ControllerReportWishCatalog extends Controller
                                   <a style="font-weight:700;" href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
                                   <h5 style="font-weight:400;">Design No: ' . htmlspecialchars($product['productstyle']) . '</h5>
                                   <h5 style="font-weight:400;">Metal Purity: ' . htmlspecialchars($product['productsize']) . '</h5>
-                                  <h5 style="font-weight:400;">Total Carat Weight: ' . htmlspecialchars($product['productsize']) . '</h5>
+                                  <h5 style="font-weight:400;">Total Carat Weight: ' . htmlspecialchars($product['productwet']) . '</h5>
                                   <h5 style="font-weight:400;">Size: ' . htmlspecialchars($product['productsize1']) . '</h5>
                                   <h5 style="font-weight:400;">Price: ' . htmlspecialchars(preg_replace('~\.0+$~', '', str_replace('$', 'USD ', $product['productprice']))) . '</h5>
                               </div>

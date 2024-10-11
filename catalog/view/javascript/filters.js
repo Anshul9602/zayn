@@ -65,7 +65,7 @@ ${item.in_wishlist ? `
                                     ` : `
                                     <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store wishlist_link1"
                                         btnid="${item.product_id}" btnname="${item.name}" btnimg="${item.thumb}" btnhref="${item.href}" 
-                                        btnprice="${item.wish_price}"  btnsize1="${ringSizeValue}"  btnsize="${item.metal_purity}" btndesign="${item.design_no}" btnstyle="${item.style_no}" btnsprice="${item.wish_special}"btnwet="">
+                                        btnprice="${item.wish_price}"  btnsiz="${ringSizeValue}"  btnsize="${item.metal_purity}" btndesign="${item.design_no}" btnstyle="${item.style_no}" btnsprice="${item.wish_special}"btnwet="${item.wet}">
                                         <i class="fa fa-heart-o"></i>
                                     </a>
                                     `}
@@ -221,7 +221,7 @@ $(document).on('click', '.wishlist_link1', function () {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       console.log("Button clicked");
-
+      
       const productId = btn.getAttribute("btnid");
       const productname = btn.getAttribute("btnname");
       const productimg = btn.getAttribute("btnimg");
@@ -231,7 +231,9 @@ $(document).on('click', '.wishlist_link1', function () {
       const productstyle = btn.getAttribute("btnstyle");
       const productdesign = btn.getAttribute("btndesign");
       const productsize = btn.getAttribute("btnsize");
-
+      const productsize1 = btn.getAttribute("btnsiz");
+      const productwet = btn.getAttribute("btnwet");
+     
       if (productId && productname && productimg && producturl && productprice && productsprice) {
         const product = {
           productid: productId,
@@ -242,7 +244,9 @@ $(document).on('click', '.wishlist_link1', function () {
           productsprice: productsprice,
           productstyle: productstyle,
           productdesign: productdesign,
-          productsize: productsize
+          productsize: productsize,
+          productsize1: productsize1,
+          productwet: productwet
         };
 
         const isProductInWishlist = wishzayn.some(item => item.productid === productId);

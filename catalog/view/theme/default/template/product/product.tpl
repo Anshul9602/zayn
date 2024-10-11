@@ -12,6 +12,7 @@ if (isset($draft) && is_string($draft)) {
 }
 
 ?>
+
 <style>
    .btn-find-store {
       color: #423c9e;
@@ -383,6 +384,8 @@ if (isset($draft) && is_string($draft)) {
                         btndesign="<?php echo $design_no; ?>"
                         btnsize="<?php echo $metal_purity; ?>"
                          btnprice="<?php echo $wish_price; ?>"
+                         btnsiz="<?php echo $product_size1; ?>"
+                         btnwet="<?php echo $wet; ?>"
                          
                         btnsprice="<?php echo $wish_special; ?>">
 

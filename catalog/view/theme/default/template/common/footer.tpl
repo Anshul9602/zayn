@@ -227,24 +227,24 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Initialize the wishlist from localStorage
         let wishzayn = JSON.parse(localStorage.getItem("wishzayn")) || [];
-    
+
         // Function to update the wishlist count
         const updateWishlistCount = () => {
             const wishlistCount = wishzayn.length;
             document.getElementById('wish_count').textContent = wishlistCount;
         };
-    
+
         // Update the wishlist count on page load
         updateWishlistCount();
-    
+
         // Add event listeners to wishlist buttons
         const allProductBtns = document.querySelectorAll(".wishlist_link");
-    
+
         allProductBtns.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
                 console.log("Button clicked");
-    
+
                 const productId = btn.getAttribute("btnid");
                 const productname = btn.getAttribute("btnname");
                 const productimg = btn.getAttribute("btnimg");
@@ -254,10 +254,10 @@
                 const productstyle = btn.getAttribute("btnstyle");
                 const productdesign = btn.getAttribute("btndesign");
                 const productsize = btn.getAttribute("btnsize");
-                const productsize1 = btn.getAttribute("btnsize1");
+                const productsize1 = btn.getAttribute("btnsiz");
                 const productwet = btn.getAttribute("btnwet");
- 
-                if (productId && productname && productimg && producturl && productprice && productsprice) {
+
+                if (productId && productname && productimg && producturl && productprice && productsprice && productsize1) {
                     const product = {
                         productid: productId,
                         productname: productname,
@@ -271,14 +271,16 @@
                         productsize1: productsize1,
                         productwet: productwet
                     };
-    
+
                     const isProductInWishlist = wishzayn.some(item => item.productid === productId);
-    
+
+                    console.log(product);
+
                     if (!isProductInWishlist) {
                         wishzayn.push(product);
                         localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
                         alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
-    
+
                         updateWishlistCount();
                         location.reload();
                     } else {
@@ -287,7 +289,7 @@
                 }
             });
         });
-    
+
         // Send wishlist data to the server
         const wishlistItems = localStorage.getItem('wishzayn');
         console.log(wishlistItems, "wishlist items");
@@ -299,16 +301,16 @@
                 },
                 body: JSON.stringify({ wishlist: wishlistItems })
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Wishlist items sent to server:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Wishlist items sent to server:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
     });
-    
+
 
 
 </script>
