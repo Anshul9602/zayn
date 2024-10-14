@@ -45,13 +45,22 @@ function generatePage(filteredData) {
           var ringSizeOption = item.option.find(function (option) {
             return option.name === "RING SIZE";
           });
-        
+          var ringSizeOption1 = item.option.find(function (option) {
+            return option.name === "Bangle Size";
+          });
+          var ringSizeOption2 = item.option.find(function (option) {
+            return option.name === "Bracelet Size";
+          });
+          var ringSizeOption3 = item.option.find(function (option) {
+            return option.name === "Necklace Size";
+          });
+
           // Extract the product_option_value.name if the "RING SIZE" option exists
-          if (ringSizeOption && ringSizeOption.product_option_value.length > 0) {
+          if (ringSizeOption || ringSizeOption1 || ringSizeOption2 || ringSizeOption3 && ringSizeOption.product_option_value.length > 0) {
             ringSizeValue = ringSizeOption.product_option_value[0].name; // Assuming only one value for "RING SIZE"
           }
-        }else{
-          ringSizeValue="-";
+        } else {
+          ringSizeValue = "-";
         }
         return `<div class="col-md-4 col-sm-6 col-6 p_box">
   <div class="product-item">
@@ -150,8 +159,8 @@ function FilterByType(data, array) {
 
 function sortByNameA(data) {
   return data.sort((a, b) => {
-    const nameA = a.name.trim().toUpperCase(); 
-    const nameB = b.name.trim().toUpperCase(); 
+    const nameA = a.name.trim().toUpperCase();
+    const nameB = b.name.trim().toUpperCase();
     if (nameA < nameB) {
       return -1; // `nameA` comes before `nameB`
     }
@@ -165,14 +174,14 @@ function sortByNameA(data) {
 
 function sortByNameD(data) {
   return data.sort((a, b) => {
-    const nameA = a.name.trim().toUpperCase(); 
-    const nameB = b.name.trim().toUpperCase(); 
+    const nameA = a.name.trim().toUpperCase();
+    const nameB = b.name.trim().toUpperCase();
 
     if (nameA > nameB) {
       return -1;
     }
     if (nameA < nameB) {
-      return 1; 
+      return 1;
     }
     return 0; // `nameA` is equal to `nameB`
   });
@@ -180,7 +189,7 @@ function sortByNameD(data) {
 
 
 
-function sortByPriceA(data){
+function sortByPriceA(data) {
   return data.sort((a, b) => {
     const priceA = parseFloat(a.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
     const priceB = parseFloat(b.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
@@ -189,7 +198,7 @@ function sortByPriceA(data){
   });
 }
 
-function sortByPriceD(data){
+function sortByPriceD(data) {
   return data.sort((a, b) => {
     const priceA = parseFloat(a.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
     const priceB = parseFloat(b.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
@@ -221,7 +230,7 @@ $(document).on('click', '.wishlist_link1', function () {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       console.log("Button clicked");
-      
+
       const productId = btn.getAttribute("btnid");
       const productname = btn.getAttribute("btnname");
       const productimg = btn.getAttribute("btnimg");
@@ -233,7 +242,7 @@ $(document).on('click', '.wishlist_link1', function () {
       const productsize = btn.getAttribute("btnsize");
       const productsize1 = btn.getAttribute("btnsiz");
       const productwet = btn.getAttribute("btnwet");
-     
+
       if (productId && productname && productimg && producturl && productprice && productsprice) {
         const product = {
           productid: productId,
