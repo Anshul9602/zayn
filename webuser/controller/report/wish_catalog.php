@@ -349,10 +349,10 @@ class ControllerReportWishCatalog extends Controller
 				$imageUrl = htmlspecialchars($product['productimg']);
 				$html .= '
                       <td>
-                          <div class="product-card">
+                          <div class="product-card" style="margin-top:20px;">
                               <img src="' . $imageUrl . '" alt="' . htmlspecialchars($product['productname']) . '">
                               <div class="content">
-                                  <a style="font-weight:700;" href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
+                                  <a style="font-weight:700;height:50px;" href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
                                   <h5 style="font-weight:400;">Design No: ' . htmlspecialchars($product['productstyle']) . '</h5>
                                   <h5 style="font-weight:400;">Metal Purity: ' . htmlspecialchars($product['productsize']) . '</h5>
                                   <h5 style="font-weight:400;">Total Carat Weight: ' . htmlspecialchars($product['productwet']) . '</h5>
