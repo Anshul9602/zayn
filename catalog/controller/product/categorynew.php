@@ -319,7 +319,7 @@ class ControllerProductCategorynew extends Controller
 
 
 		// echo "<pre>";
-		// print_r($data);
+		// print_r($data['products']);
 		// echo "</pre>";
 		// die();
 

@@ -280,7 +280,6 @@
                         wishzayn.push(product);
                         localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
                         alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
-
                         updateWishlistCount();
                         location.reload();
                     } else {

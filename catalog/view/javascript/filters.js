@@ -38,30 +38,38 @@ function generatePage(filteredData) {
             })
             .join(' ');
         }
-        var ringSizeValue = '';
+  var ringSizeValue = '';
 
         if (item.option && item.option.length > 0) {
-          // Find the "RING SIZE" option
+          // Find the different size options
           var ringSizeOption = item.option.find(function (option) {
-            return option.name === "RING SIZE";
+              return option.name === "RING SIZE";
           });
           var ringSizeOption1 = item.option.find(function (option) {
-            return option.name === "Bangle Size";
+              return option.name === "Bangle Size";
           });
           var ringSizeOption2 = item.option.find(function (option) {
-            return option.name === "Bracelet Size";
+              return option.name === "Bracelet Size";
           });
           var ringSizeOption3 = item.option.find(function (option) {
-            return option.name === "Necklace Size";
+              return option.name === "Necklace Size";
           });
-
-          // Extract the product_option_value.name if the "RING SIZE" option exists
-          if (ringSizeOption || ringSizeOption1 || ringSizeOption2 || ringSizeOption3 && ringSizeOption.product_option_value.length > 0) {
-            ringSizeValue = ringSizeOption.product_option_value[0].name; // Assuming only one value for "RING SIZE"
+      
+          // Extract the product_option_value.name for the first found option
+          if (ringSizeOption && ringSizeOption.product_option_value.length > 0) {
+              ringSizeValue = ringSizeOption.product_option_value[0].name;
+          } else if (ringSizeOption1 && ringSizeOption1.product_option_value.length > 0) {
+              ringSizeValue = ringSizeOption1.product_option_value[0].name;
+          } else if (ringSizeOption2 && ringSizeOption2.product_option_value.length > 0) {
+              ringSizeValue = ringSizeOption2.product_option_value[0].name;
+          } else if (ringSizeOption3 && ringSizeOption3.product_option_value.length > 0) {
+              ringSizeValue = ringSizeOption3.product_option_value[0].name;
+          } else {
+              ringSizeValue = "-";
           }
-        } else {
+      } else {
           ringSizeValue = "-";
-        }
+      }
         return `<div class="col-md-4 col-sm-6 col-6 p_box">
   <div class="product-item">
     <figure class="product-thumb" style="    position: relative;">
@@ -72,9 +80,9 @@ function generatePage(filteredData) {
 ${item.in_wishlist ? `
                                     <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store"><i class="fa fa-heart"></i> </a>
                                     ` : `
-                                    <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store wishlist_link1"
+                                  <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store wishlist_link1"
                                         btnid="${item.product_id}" btnname="${item.name}" btnimg="${item.thumb}" btnhref="${item.href}" 
-                                        btnprice="${item.wish_price}"  btnsiz="${ringSizeValue}"  btnsize="${item.metal_purity}" btndesign="${item.design_no}" btnstyle="${item.style_no}" btnsprice="${item.wish_special}"btnwet="${item.wet}">
+                                        btnprice="${item.wish_price}"  btnsiz="${ringSizeValue}"  btnsize="${item.metal_purity}" btndesign="${item.design_no}" btnstyle="${item.style_no}" btnsprice="${item.wish_special}" btnwet="${item.wet}">
                                         <i class="fa fa-heart-o"></i>
                                     </a>
                                     `}
@@ -159,8 +167,8 @@ function FilterByType(data, array) {
 
 function sortByNameA(data) {
   return data.sort((a, b) => {
-    const nameA = a.name.trim().toUpperCase();
-    const nameB = b.name.trim().toUpperCase();
+    const nameA = a.name.trim().toUpperCase(); 
+    const nameB = b.name.trim().toUpperCase(); 
     if (nameA < nameB) {
       return -1; // `nameA` comes before `nameB`
     }
@@ -174,14 +182,14 @@ function sortByNameA(data) {
 
 function sortByNameD(data) {
   return data.sort((a, b) => {
-    const nameA = a.name.trim().toUpperCase();
-    const nameB = b.name.trim().toUpperCase();
+    const nameA = a.name.trim().toUpperCase(); 
+    const nameB = b.name.trim().toUpperCase(); 
 
     if (nameA > nameB) {
       return -1;
     }
     if (nameA < nameB) {
-      return 1;
+      return 1; 
     }
     return 0; // `nameA` is equal to `nameB`
   });
@@ -189,7 +197,7 @@ function sortByNameD(data) {
 
 
 
-function sortByPriceA(data) {
+function sortByPriceA(data){
   return data.sort((a, b) => {
     const priceA = parseFloat(a.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
     const priceB = parseFloat(b.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
@@ -198,19 +206,9 @@ function sortByPriceA(data) {
   });
 }
 
-function sortByPriceD(data) {
-  return data.sort((a, b) => {
-    const priceA = parseFloat(a.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
-    const priceB = parseFloat(b.wish_price.replace(/[^0-9.-]+/g, "")); // Convert price to a float number
 
-    return priceB - priceA; // Descending order
-  });
-}
-
-
-
-$(document).on('click', '.wishlist_link1', function () {
-  //  console.log('test');
+$(document).on('click', '.wishlist_link1', function (e) {
+  e.preventDefault();
 
   let wishzayn = JSON.parse(localStorage.getItem("wishzayn")) || [];
 
@@ -223,54 +221,43 @@ $(document).on('click', '.wishlist_link1', function () {
   // Update the wishlist count on page load
   updateWishlistCount();
 
-  // Add event listeners to wishlist buttons
-  const allProductBtns = document.querySelectorAll(".wishlist_link1");
+  // Get product details from the button
+  const productId = $(this).attr("btnid");
+  const productname = $(this).attr("btnname");
+  const productimg = $(this).attr("btnimg");
+  const producturl = $(this).attr("btnhref");
+  const productprice = $(this).attr("btnprice");
+  const productsprice = $(this).attr("btnsprice");
+  const productstyle = $(this).attr("btnstyle");
+  const productdesign = $(this).attr("btndesign");
+  const productsize = $(this).attr("btnsize");
+  const productsize1 = $(this).attr("btnsiz");
+  const productwet = $(this).attr("btnwet");
 
-  allProductBtns.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      console.log("Button clicked");
+  if (productId && productname && productimg && producturl && productprice && productsprice) {
+    const product = {
+      productid: productId,
+      productname: productname,
+      producturl: producturl,
+      productimg: productimg,
+      productprice: productprice,
+      productsprice: productsprice,
+      productstyle: productstyle,
+      productdesign: productdesign,
+      productsize: productsize,
+      productsize1: productsize1,
+      productwet: productwet
+    };
 
-      const productId = btn.getAttribute("btnid");
-      const productname = btn.getAttribute("btnname");
-      const productimg = btn.getAttribute("btnimg");
-      const producturl = btn.getAttribute("btnhref");
-      const productprice = btn.getAttribute("btnprice");
-      const productsprice = btn.getAttribute("btnsprice");
-      const productstyle = btn.getAttribute("btnstyle");
-      const productdesign = btn.getAttribute("btndesign");
-      const productsize = btn.getAttribute("btnsize");
-      const productsize1 = btn.getAttribute("btnsiz");
-      const productwet = btn.getAttribute("btnwet");
+    const isProductInWishlist = wishzayn.some(item => item.productid === productId);
 
-      if (productId && productname && productimg && producturl && productprice && productsprice) {
-        const product = {
-          productid: productId,
-          productname: productname,
-          producturl: producturl,
-          productimg: productimg,
-          productprice: productprice,
-          productsprice: productsprice,
-          productstyle: productstyle,
-          productdesign: productdesign,
-          productsize: productsize,
-          productsize1: productsize1,
-          productwet: productwet
-        };
-
-        const isProductInWishlist = wishzayn.some(item => item.productid === productId);
-
-        if (!isProductInWishlist) {
-          wishzayn.push(product);
-          localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
-          alert("Item add to your wishlist succesfully");
-
-          updateWishlistCount();
-
-        } else {
-          alert("Item is already in your wishlist");
-        }
-      }
-    });
-  });
+    if (!isProductInWishlist) {
+      wishzayn.push(product);
+      localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
+      alert("Item added to your wishlist successfully");
+      updateWishlistCount();
+    } else {
+      alert("Item is already in your wishlist");
+    }
+  }
 });

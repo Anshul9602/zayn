@@ -350,7 +350,7 @@ class ControllerReportWishCatalog extends Controller
 				$html .= '
                       <td>
                           <div class="product-card" style="margin-top:20px;">
-                              <img src="' . $imageUrl . '" alt="' . htmlspecialchars($product['productname']) . '">
+                              <img style="padding-left:10px;" src="' . $imageUrl . '" alt="' . htmlspecialchars($product['productname']) . '">
                               <div class="content">
                                   <a style="font-weight:700;height:50px;" href="' . htmlspecialchars($product['producturl']) . '">' . htmlspecialchars($product['productname']) . '</a>
                                   <h5 style="font-weight:400;">Design No: ' . htmlspecialchars($product['productstyle']) . '</h5>
