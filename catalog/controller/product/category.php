@@ -304,7 +304,14 @@ class ControllerProductCategory extends Controller
 				}
 
 				//additional images
-
+				$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($result['product_id']);
+				foreach ($data['attribute_groups'] as $attr) {
+					if ($attr['name'] == 'Stone details') {
+						foreach ($attr['attribute'] as $attribute) {
+							$wet = $attribute['text'];
+						}
+					}
+				}
 				$pid = $result['product_id'];
 
 				$data['images'][$pid] = array();
@@ -322,12 +329,14 @@ class ControllerProductCategory extends Controller
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
+					$wish_price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 					$price = false;
 				}
 
 				if ((float)$result['special']) {
 					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
+					$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 					$special = false;
 				}
 
@@ -346,6 +355,19 @@ class ControllerProductCategory extends Controller
 				$options = array();
 
 				foreach ($this->model_catalog_product->getProductOptions($result['product_id']) as $option) {
+
+					if ($option['name'] == 'RING SIZE') {
+						$product_size1 = $option['product_option_value'][0]['name'];
+					}else if($option['name'] == 'Bangle Size'){
+						$product_size1= $option['product_option_value'][0]['name'];
+					}else if($option['name'] == 'Bracelet Size'){
+						$product_size1 = $option['product_option_value'][0]['name'];
+					}else if($option['name'] == 'Necklace Size'){
+						$product_size1 = $option['product_option_value'][0]['name'];
+					}else{
+						$product_size1 = '';
+					}
+
 					$product_option_value_data = array();
 
 					foreach ($option['product_option_value'] as $option_value) {
@@ -369,18 +391,37 @@ class ControllerProductCategory extends Controller
 						'product_option_value' => $product_option_value_data,
 						'option_id'            => $option['option_id'],
 						'name'                 => $option['name'],
+						'product_size1'     => $product_size1,
 						'type'                 => $option['type'],
 						'value'                => $option['value'],
 						'required'             => $option['required']
 
 					);
 				}
-
-
+				if (isset($this->session->data['wishlist_items'])) {
+					$wishlist_items1 = $this->session->data['wishlist_items'];
+				} else {
+					$wishlist_items1 = null;
+				}
+// print_r($wishlist_items1);
+// die();
 				$filter_ids = $this->model_catalog_product->getProductFilters($result['product_id']);
 
 
-
+				if($wishlist_items1 == null){
+					$product_in_wishlist = false;
+				 }else{
+					$wishlist_items1_array = json_decode($wishlist_items1, true);
+									  
+					$product_in_wishlist = false;
+					foreach ($wishlist_items1_array as $item) {
+				  
+						if ($item['productid'] == $result['product_id']) {
+							$product_in_wishlist = true;
+							break;
+						}
+					}
+				 }
 
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
@@ -390,8 +431,14 @@ class ControllerProductCategory extends Controller
 					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
 					'model'       => $result['model'],
 					'option'		=> $options,
+					'wet' => $wet,
 					'price'       => $price,
+					'in_wishlist'    => $product_in_wishlist,
+					'wish_price'       => $wish_price,
+					'wish_sprice'       => $wish_sprice,
 					'special'     => $special,
+					'style_no' => $result['model'],
+			'metal_purity' => $result['upc'],
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],

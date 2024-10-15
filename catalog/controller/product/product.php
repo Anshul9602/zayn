@@ -275,8 +275,8 @@ class ControllerProductProduct extends Controller
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];
 
-			$data['style_no'] = $product_info['model'];;
-			$data['metal_purity'] = $product_info['upc'];;
+			$data['style_no'] = $product_info['model'];
+			$data['metal_purity'] = $product_info['upc'];
 			$data['design_no'] = $product_info['sku'];;
 			$data['gold_wt'] = $product_info['isbn'];;
 			$data['stone_wt'] = $product_info['mpn'];;
@@ -371,6 +371,8 @@ class ControllerProductProduct extends Controller
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
 				}else if($option['name'] == 'Necklace Size'){
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
+				}else{
+					$data['product_size1'] = '';
 				}
 				$product_option_value_data = array();
 

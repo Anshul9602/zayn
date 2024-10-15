@@ -85,6 +85,12 @@
    .p_box:hover .option-tab {
       opacity: 1;
    }
+   .product-thumb:hover .wishlist_link2 {
+      display: block;
+  }
+  .wishlist_link2 {
+   display: none;
+}
 </style>
 
 <main>
@@ -226,6 +232,10 @@
 
 
                      <?php $k = 0;
+
+
+
+
                      foreach ($products as $product) {
                      ?>
 
@@ -239,7 +249,28 @@
 
                                     <img class="sec-img" src="<?php print_r($images[$product['product_id']]['popup']); ?>" alt="product">
                                  </a>
+                                 <?php if ($product['in_wishlist']) { ?>
 
+                                    <a style="position: absolute;right: 5px; padding: 12px; top: 5px;"class="btn btn-find-store "><i class="fa fa-heart"></i> </a>
+                                    <?php } else { ?>
+                                    <a style="position: absolute;right: 5px; padding: 12px; top: 5px;"
+                                       class="btn btn-find-store wishlist_link2" btnid="<?php echo $product['product_id']; ?>"
+                                       btnname="<?php echo $product['name']; ?>" btnimg="<?php echo $product['thumb']; ?>"
+                                       btnhref="<?php echo $product['href']; ?>"
+                                       btnstyle="<?php echo $product['model']; ?>"
+                                       btndesign="<?php echo $design_no; ?>"
+                                       btnsize="<?php echo $product['metal_purity']; ?>"
+                                        btnprice="<?php echo $product['wish_price']; ?>"
+                                        btnsiz="<?php echo $options['product_size1']; ?>"
+                                        btnwet="<?php echo $product['wet']; ?>"
+                                        
+                                       btnsprice="<?php echo $product['wish_sprice']; ?>">
+               
+                                       <i class="fa fa-heart-o"></i>
+               
+                                    </a>
+                                    <?php } ?>
+               
 
                               </figure>
                               <div class="product-caption">
@@ -410,6 +441,62 @@
      location = 'index.php?route=product/category&path=' + path + '&filter=' + filter.join(',');
    });
    //
+
+   $(document).on('click', '.wishlist_link2', function (e) {
+      e.preventDefault();
+    console.log("Click");
+      let wishzayn = JSON.parse(localStorage.getItem("wishzayn")) || [];
+    
+      // Function to update the wishlist count
+      const updateWishlistCount = () => {
+        const wishlistCount = wishzayn.length;
+        document.getElementById('wish_count').textContent = wishlistCount;
+      };
+    
+      // Update the wishlist count on page load
+      updateWishlistCount();
+    
+      // Get product details from the button
+      const productId = $(this).attr("btnid");
+      const productname = $(this).attr("btnname");
+      const productimg = $(this).attr("btnimg");
+      const producturl = $(this).attr("btnhref");
+      const productprice = $(this).attr("btnprice");
+      const productsprice = $(this).attr("btnsprice");
+      const productstyle = $(this).attr("btnstyle");
+      const productdesign = $(this).attr("btndesign");
+      const productsize = $(this).attr("btnsize");
+      const productsize1 = $(this).attr("btnsiz");
+      const productwet = $(this).attr("btnwet");
+    
+      if (productId && productname && productimg && producturl && productprice && productsprice) {
+        const product = {
+          productid: productId,
+          productname: productname,
+          producturl: producturl,
+          productimg: productimg,
+          productprice: productprice,
+          productsprice: productsprice,
+          productstyle: productstyle,
+          productdesign: productdesign,
+          productsize: productsize,
+          productsize1: productsize1,
+          productwet: productwet
+        };
+    console.log(product);
+        const isProductInWishlist = wishzayn.some(item => item.productid === productId);
+    
+        if (!isProductInWishlist) {
+          wishzayn.push(product);
+          localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
+          alert("Item added to your wishlist successfully");
+          updateWishlistCount();
+        } else {
+          alert("Item is already in your wishlist");
+        }
+      }
+    });
+
  </script>
 
 
