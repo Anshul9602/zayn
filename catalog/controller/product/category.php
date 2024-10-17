@@ -404,8 +404,8 @@ class ControllerProductCategory extends Controller
 				} else {
 					$wishlist_items1 = null;
 				}
-// print_r($wishlist_items1);
-// die();
+                // print_r($wishlist_items1);
+                // die();
 				$filter_ids = $this->model_catalog_product->getProductFilters($result['product_id']);
 
 
@@ -440,7 +440,7 @@ class ControllerProductCategory extends Controller
 					'wish_sprice'       => $wish_sprice,
 					'special'     => $special,
 					'style_no' => $result['model'],
-			'metal_purity' => $result['upc'],
+			        'metal_purity' => $result['upc'],
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
@@ -467,13 +467,6 @@ class ControllerProductCategory extends Controller
 				}
 			}
 		
-
-
-
-
-
-
-
 			if (isset($_GET['filter']) && trim($_GET['filter']) != "") {
 				$x = (ceil(sizeof($data['products']) / 16));
 				if (!isset($_GET['page']) || $_GET['page'] == '1') {
