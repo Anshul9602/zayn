@@ -355,7 +355,8 @@ class ControllerProductCategory extends Controller
 				$options = array();
 
 				foreach ($this->model_catalog_product->getProductOptions($result['product_id']) as $option) {
-
+					
+					
 					if ($option['name'] == 'RING SIZE') {
 						$product_size1 = $option['product_option_value'][0]['name'];
 					}else if($option['name'] == 'Bangle Size'){
@@ -432,6 +433,7 @@ class ControllerProductCategory extends Controller
 					'model'       => $result['model'],
 					'option'		=> $options,
 					'wet' => $wet,
+					'product_size1'     => $product_size1,
 					'price'       => $price,
 					'in_wishlist'    => $product_in_wishlist,
 					'wish_price'       => $wish_price,
@@ -444,6 +446,7 @@ class ControllerProductCategory extends Controller
 					'rating'      => $result['rating'],
 					'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url)
 				);
+
 			}
 
 			if(isset($filter_by_group)){

@@ -234,6 +234,7 @@
                      <?php $k = 0;
 
 
+                
 
 
                      foreach ($products as $product) {
@@ -261,7 +262,7 @@
                                        btndesign="<?php echo $design_no; ?>"
                                        btnsize="<?php echo $product['metal_purity']; ?>"
                                         btnprice="<?php echo $product['wish_price']; ?>"
-                                        btnsiz="<?php echo $options['product_size1']; ?>"
+                                        btnsiz="<?php echo $product['product_size1']; ?>"
                                         btnwet="<?php echo $product['wet']; ?>"
                                         
                                        btnsprice="<?php echo $product['wish_sprice']; ?>">
