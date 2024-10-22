@@ -250,6 +250,12 @@
                                                 </li>
                                                 <li><a href="index.php?route=product/category&path=107">Hoops Collection</a>
                                                 </li>
+                                                <li><a href="index.php?route=product/category&path=107">Hoops Collection</a>
+                                                </li>
+                                                <li><a href="index.php?route=product/category&path=109">Stackable Rings</a>
+                                                </li>
+                                                <li><a href="index.php?route=product/category&path=108">Eternity Rings</a>
+                                                </li>
                                                
                                             </ul>
                                         </li>
@@ -435,6 +441,10 @@
                                                 <li><a href="index.php?route=product/categorynew&path=106">Cross Collection</a>
                                                 </li>
                                                 <li><a href="index.php?route=product/categorynew&path=107">Hoops Collection</a>
+                                                </li>
+                                                 <li><a href="index.php?route=product/category&path=109">Stackable Rings</a>
+                                                </li>
+                                                <li><a href="index.php?route=product/category&path=108">Eternity Rings</a>
                                                 </li>
                                                 </ul>
                                 </li>
