@@ -278,11 +278,15 @@ class ControllerProductCategory extends Controller
 				$product_total = $this->model_catalog_product->getTotalProductsnew($key, $key2, $filter_data);
 
 				$results = $this->model_catalog_product->getProductsnew($key, $key2, $filter_data);
+				shuffle($results);
 			} else {
-
 				$results = $this->model_catalog_product->getProducts($filter_data);
+				shuffle($results);
 				$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 			  }
+
+
+
 			if (isset($_GET['filter']) && trim($_GET['filter']) != "") {
 				$user_filter = explode(',', $_GET['filter']);
 				$filter_by_group = array();
@@ -293,7 +297,6 @@ class ControllerProductCategory extends Controller
 				}
 				$data['filter_by_group'] = $filter_by_group;
 			}
-
 
 
 			foreach ($results as $result) {
@@ -446,9 +449,8 @@ class ControllerProductCategory extends Controller
 					'rating'      => $result['rating'],
 					'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url)
 				);
-
 			}
-
+			
 			if(isset($filter_by_group)){
 				if (sizeof($filter_by_group) > 1) {
 					foreach ($data['products'] as $key => $product) {
@@ -618,6 +620,9 @@ class ControllerProductCategory extends Controller
 			if ($limit && ceil($product_total / $limit) > $page) {
 				$this->document->addLink($this->url->link('product/category', 'path=' . $category_info['category_id'] . '&page=' . ($page + 1), true), 'next');
 			}
+
+
+
 
 			$data['sort'] = $sort;
 			$data['order'] = $order;

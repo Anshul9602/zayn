@@ -463,7 +463,6 @@
                                         <li><a href="index.php?route=common/catalogue" style="text-transform: inherit;">Brochures and Catalog </a></li>
                                         <li><a href="index.php?route=extension/d_blog_module/category1&category_id=1">Zayn
                                                 Blog </a></li>
-                                        
                                     </ul>
                                 </li>
                                 
