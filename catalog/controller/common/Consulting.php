@@ -114,8 +114,8 @@ class ControllerCommonConsulting extends Controller
 			
 				// Call the model method to save consulting data
 				$this->model_account_consulting->saveConsultingData($requestData['currentTime'],$requestData['currentTimezone'], 
-				 $requestData['selectedTime'],$requestData['selectedDate'],$requestData['userEmail'],
-				$requestData['userName'],$requestData['meetingTitle'],$requestData['userMessage']);
+				 $requestData['selectedTime'],$requestData['selectedDate'],$requestData['userEmail'],$requestData['event'],
+				 $requestData['event_name'],$requestData['userName'],$requestData['meetingTitle'],$requestData['userMessage']);
 			
 
 
@@ -124,8 +124,8 @@ class ControllerCommonConsulting extends Controller
 					$requestData['currentTimezone'],
 					$requestData['selectedTime'],
 					$requestData['selectedDate'],
-					$requestData['userEmail'],
-					$requestData['userName'],
+					$requestData['userEmail'],$requestData['event'],
+					$requestData['userName'],$requestData['event_name'],
 					$requestData['meetingTitle'],
 					$requestData['userMessage']
 				);
@@ -139,7 +139,7 @@ class ControllerCommonConsulting extends Controller
 	
 		return $response;
 	}
-	public function send_email($currentTime, $currentTimezone, $selectedTime, $selectedDate, $userEmail, $userName, $meetingTitle, $userMessage)
+	public function send_email($currentTime, $currentTimezone, $selectedTime, $selectedDate, $userEmail,$event, $userName,$event_name, $meetingTitle, $userMessage)
 {
     $mail = new Mail();
     $mail->protocol = $this->config->get('config_mail_protocol');
@@ -164,6 +164,7 @@ class ControllerCommonConsulting extends Controller
 	$message .= "Full Name- " . $userName . "\n\n";
 	$message .= "Date- " . $selectedDate . "\n\n";
 	$message .= "Time- " . $selectedTime . "\n\n";
+	$message .= "Time- " . $event_name . "\n\n";
 	$message .= "Time Zone- " .$currentTimezone . "\n\n";
 	$message .= "Subject- " . $meetingTitle . "\n\n";
 	$message .= "Message- " . $userMessage . "\n\n";

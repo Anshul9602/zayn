@@ -1,7 +1,7 @@
 <?php
 class ModelAccountConsulting extends Model {
     public function saveConsultingData($currentTime, $currentTimezone, $selectedTime, $selectedDate, 
-    $userEmail, $userName, $meetingTitle, $userMessage
+    $userEmail,$event,$userName, $meetingTitle, $userMessage
     ) {
         // Your logic to save the consulting data to the database
         $this->db->query("
@@ -10,12 +10,12 @@ class ModelAccountConsulting extends Model {
             `user_email`,
             `userName`,
             `meetingTitle`,
-            `usermessage`,
+            `usermessage`,`event`,
             `status`
          
             )
             VALUES ('$currentTime', '$currentTimezone', '$selectedTime', '$selectedDate', 
-            '$userEmail', '$userName', '$meetingTitle', '$userMessage','0'
+            '$userEmail', '$userName', '$meetingTitle', '$userMessage','$event','0'
             )"
         );
     }

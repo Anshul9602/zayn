@@ -90,14 +90,34 @@ echo "<script>";
 echo "const co = " . json_encode($con) . ";";
 echo "</script>";
 ?>
+<script>
+    const eventsData = <? php echo json_encode($con1); ?>;
+</script>
 
 <section class="section-padding pb-3 pt-3" style="margin-top:30px;min-height:100vh;">
     <div style="padding:0 7%;">
         <div class="row justify-content-center">
-<div class="event col-12">
-    <h2 class="text-center">Events:  <?php echo $con1[0]['name']; ?> </h2>
-    <p class="text-center"><?php echo $con1[0]['dis']; ?></p>
-</div><br>
+            <div class="event col-12">
+
+                <div class="text-center">
+                    <select id="eventSelect" class=" col-md-4 text-center" onchange="showEventDetails(this.value)">
+                        <option value="">Select an Event</option>
+                        <?php foreach ($con1 as $event): ?>
+                        <option value="<?php echo $event['id']; ?>">
+                            <?php echo $event['name']; ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <h2 class="text-center">Events:
+                    <?php echo $con1[0]['name']; ?>
+                </h2>
+                <p class="text-center">
+                    <?php echo $con1[0]['dis']; ?>
+                </p>
+            </div><br>
+
             <h4 class="col-md-8 text-center pb-3" style="font-weight: 600;">What day is best for you?</h4>
             <div class="col-md-8  mt-3">
                 <div class="splide splidecol" aria-label="Splide Basic HTML Example">
@@ -257,6 +277,18 @@ echo "</script>";
     <div class="hh" style="height: 50px;"></div>
 </section>
 <script>
+    function showEventDetails(eventId) {
+        // Find the selected event by ID
+        const selectedEvent = eventsData.find(event => event.id === eventId);
+
+        if (selectedEvent) {
+            // Update the <h2> and <p> elements with the selected event's data
+            document.querySelector('h2.text-center').innerText = "Events: " + selectedEvent.name;
+            document.querySelector('p.text-center').innerText = selectedEvent.dis;
+        } else {
+            console.log("Event ID not found.");
+        }
+    }
     // Get all time zones
 
     const allTimezones = [
@@ -870,6 +902,9 @@ echo "</script>";
         const selectedDateElement = document.querySelector('.date-element.selected');
         const selectedTimeElement = document.querySelector('.time-slot.selected');
         const userEmail = document.getElementById('mail').value;
+        const event = document.getElementById('eventSelect').value;
+        const eventSelect = document.getElementById('eventSelect');
+        const event_name = eventSelect.options[eventSelect.selectedIndex].text;
         const userName = document.getElementById('name').value;
         const meetingTitle = document.getElementById('meeting').value;
         const userMessage = document.getElementById('message').value || '.';
@@ -882,12 +917,16 @@ echo "</script>";
                 selectedDate: selectedDate,
                 selectedTime: selectedTime,
                 userName: userName,
+                event: event,
+                event_name: event_name,
                 meetingTitle: meetingTitle,
                 userMessage: userMessage,
                 userEmail: userEmail,
                 currentTimezone: selectedTimeZone,
                 currentTime: new Date().toLocaleTimeString()
             };
+
+
 
             const xhr = new XMLHttpRequest();
             xhr.open('POST', 'index.php?route=common/consulting/con_form', true);
