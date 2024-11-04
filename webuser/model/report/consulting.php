@@ -70,6 +70,7 @@ class ModelReportConsulting extends Model
         WHERE `id` = '" . (int)$data['id'] . "'
     ");
     }
+   
 
     public function deleteEvent($eventId)
     {

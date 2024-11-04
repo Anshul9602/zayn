@@ -225,6 +225,31 @@ class ControllerReportAppoint extends Controller
 			$this->response->redirect($this->url->link('error/not_found', '', true));
 		}
 	}
+	public function saveevent()
+	{
+		// Check if the request method is POST
+		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+			// Retrieve the form data
+
+			$data['name'] = isset($this->request->post['name']) ? $this->request->post['name'] : '';
+			$data['des'] = isset($this->request->post['dis']) ? $this->request->post['dis'] : '';
+			$data['date'] = isset($this->request->post['date']) ? $this->request->post['date'] : '';
+			// echo  $orderId;
+			// die();
+			// Perform necessary validation and processing of the form data
+			// For example, update the event in the database
+			// Replace the following code with your actual database update logic
+			$this->load->model('report/consulting');
+			$this->model_report_consulting->addEvent($data);
+
+			// Optionally, you can redirect the user to another page after the form submission
+			$this->response->redirect($this->url->link('report/appoint', 'token=' . $this->request->get['token'], true));
+		} else {
+			// Handle non-POST requests or other cases
+			// You may redirect to an error page or perform other actions
+			$this->response->redirect($this->url->link('error/not_found', '', true));
+		}
+	}
 	public function deleteevent()
 	{
 		// Check if the request is coming from AJAX

@@ -39,6 +39,10 @@
     font-size: 20px;
     padding: 10px 0;
   }
+  #editPopup1 label {
+    font-size: 20px;
+    padding: 5px 0;
+  }
 
   input {
     font-size: 20px !important;
@@ -63,6 +67,8 @@
             </a></li>
         <?php } ?>
       </ul>
+      
+     
     </div>
   </div>
   <div class="container-fluid">
@@ -149,7 +155,16 @@
           </div>
         </div>
 
-        <h5>Event listing</h5>
+        
+        <div class="row" style="padding: 10px 2px;">
+          <div class="col-md-6 p-2">
+            <h4>Event listing</h4>
+          </div>
+          <div class="col-md-6 text-end p-2"style="justify-content: end; display: flex;">
+            <a class="btn btn-primary" onclick="openEditPopup1()" data-original-title="Add New" ><i class="fa fa-plus"></i></a>
+          </div>
+   
+        </div>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -180,7 +195,7 @@
                       <button class="btn btn-primary edit-button" onclick="openEditPopup(<?php echo $order1['id']; ?>)">Edit</button>
 
                       <span>
-                        <div id="delete_Event_<?php echo $order1['id']; ?>" class="btn btn-danger delete-Event" data-order-id="<?php echo $order1['id']; ?>" style="display:none;">
+                        <div id="delete_Event_<?php echo $order1['id']; ?>" class="btn btn-danger delete-Event" data-order-id="<?php echo $order1['id']; ?>" >
                           <i class="fa fa-trash-o"></i>
                         </div>
                       </span>
@@ -278,6 +293,14 @@
       // Optionally, you can perform additional actions based on the event ID
       console.log("Opening popup for event ID: " + eventId);
     }
+    function openEditPopup1() {
+      // Show the popup form
+      var popup = document.getElementById('editPopup1');
+      popup.style.display = 'block';
+
+      // Optionally, you can perform additional actions based on the event ID
+      
+    }
 
 
     // Function to close the edit popup
@@ -328,6 +351,48 @@
 
           </div>
         <?php } ?>
+
+      </form>
+    </div>
+  </div>
+  <div id="editPopup1" class="popup">
+    <div class="popup-content ">
+      <div class="contianer p-4">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <div class="col-md-12 text-start pb-3">
+          <h2 class="bold">Event info</h2>
+          <br>
+        </div>
+
+      </div>
+
+      <form  action="index.php?route=report/appoint/saveevent&token=<?php echo $token; ?>" method="POST" >
+
+        <!-- Hidden input field for user ID -->
+
+        
+          <!-- Input fields for editing user details -->
+          <div class="row  d-flex justify-content-center py-3 m-0">
+            <div class="col-md-8">
+              <div class="col-md-12 " style="padding: 0;"><label for="name">Name:</label></div>
+              <input type="text" id="name" name="name" value="">
+            </div>
+            <br>
+            <div class="col-md-8">
+              <div class="col-md-12" style="padding: 0;"><label for="mobile_number">Description</label></div>
+              <input type="text" name="dis" value="">
+            </div>
+            <div class="col-md-8">
+              <div class="col-md-12" style="padding: 0;"><label for="date">Event Date</label></div>
+              <input type="text" name="date" value="">
+            </div>
+            
+            <div class="col-md-8">
+              <button type="submit" class="btn btn-primary save_event" style="padding: 10px 30px;    font-size: 18px;margin-top:20px">Save</button>
+            </div>
+
+          </div>
+       
 
       </form>
     </div>
