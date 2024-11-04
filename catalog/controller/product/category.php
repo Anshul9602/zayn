@@ -52,8 +52,8 @@ class ControllerProductCategory extends Controller
 
 		if (isset($this->request->get['path'])) {
 			$p = (string)$this->request->get['path'];
-		  if(strpos($p,'_')){
-			$url = '';
+			if (strpos($p, '_')) {
+				$url = '';
 
 				if (isset($this->request->get['sort'])) {
 					$url .= '&sort=' . $this->request->get['sort'];
@@ -91,10 +91,9 @@ class ControllerProductCategory extends Controller
 						);
 					}
 				}
-		  }else{
-			$category_id = (int)$this->request->get['path'];
-		  }	
-			
+			} else {
+				$category_id = (int)$this->request->get['path'];
+			}
 		} else {
 			$category_id = 0;
 		}
@@ -231,8 +230,8 @@ class ControllerProductCategory extends Controller
 				);
 			}
 
-			
-			if ((trim($filter) != "") && $category_id!='99') {
+
+			if ((trim($filter) != "") && $category_id != '99') {
 				$key2 = "XXXX";
 				switch ($category_id) {
 					case '80':
@@ -261,31 +260,41 @@ class ControllerProductCategory extends Controller
 					case '89':
 						$key = "ER";
 						break;
-					
+
 					case '107':
 						$key = "ER";
 						break;
 
 					case '106':
 						$key = "PD";
-						break;	
+						break;
 
 					case '95':
 						$key = "TC1";
 						$key2 = "TC2";
-						break;	
-				}
-				$product_total = $this->model_catalog_product->getTotalProductsnew($key, $key2, $filter_data);
+						break;
 
-				$results = $this->model_catalog_product->getProductsnew($key, $key2, $filter_data);
+					case '109':
+						$key = "RG";
+						break;
+					case '108':
+						$key = "RG";
+
+						break;
+				}
+				if ($category_id == 109 || $category_id == 108) {
+					$results = $this->model_catalog_product->getProducts($filter_data);
+					$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
+				} else {
+					$results = $this->model_catalog_product->getProductsnew($key, $key2, $filter_data);
+					$product_total = $this->model_catalog_product->getTotalProductsnew($key, $key2, $filter_data);
+				}
 				shuffle($results);
 			} else {
 				$results = $this->model_catalog_product->getProducts($filter_data);
 				shuffle($results);
 				$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
-			  }
-
-
+			}
 
 			if (isset($_GET['filter']) && trim($_GET['filter']) != "") {
 				$user_filter = explode(',', $_GET['filter']);
@@ -297,7 +306,6 @@ class ControllerProductCategory extends Controller
 				}
 				$data['filter_by_group'] = $filter_by_group;
 			}
-
 
 			foreach ($results as $result) {
 				if ($result['image']) {
@@ -358,17 +366,17 @@ class ControllerProductCategory extends Controller
 				$options = array();
 
 				foreach ($this->model_catalog_product->getProductOptions($result['product_id']) as $option) {
-					
-					
+
+
 					if ($option['name'] == 'RING SIZE') {
 						$product_size1 = $option['product_option_value'][0]['name'];
-					}else if($option['name'] == 'Bangle Size'){
-						$product_size1= $option['product_option_value'][0]['name'];
-					}else if($option['name'] == 'Bracelet Size'){
+					} else if ($option['name'] == 'Bangle Size') {
 						$product_size1 = $option['product_option_value'][0]['name'];
-					}else if($option['name'] == 'Necklace Size'){
+					} else if ($option['name'] == 'Bracelet Size') {
 						$product_size1 = $option['product_option_value'][0]['name'];
-					}else{
+					} else if ($option['name'] == 'Necklace Size') {
+						$product_size1 = $option['product_option_value'][0]['name'];
+					} else {
 						$product_size1 = '';
 					}
 
@@ -407,25 +415,25 @@ class ControllerProductCategory extends Controller
 				} else {
 					$wishlist_items1 = null;
 				}
-                // print_r($wishlist_items1);
-                // die();
+				// print_r($wishlist_items1);
+				// die();
 				$filter_ids = $this->model_catalog_product->getProductFilters($result['product_id']);
 
 
-				if($wishlist_items1 == null){
+				if ($wishlist_items1 == null) {
 					$product_in_wishlist = false;
-				 }else{
+				} else {
 					$wishlist_items1_array = json_decode($wishlist_items1, true);
-									  
+
 					$product_in_wishlist = false;
 					foreach ($wishlist_items1_array as $item) {
-				  
+
 						if ($item['productid'] == $result['product_id']) {
 							$product_in_wishlist = true;
 							break;
 						}
 					}
-				 }
+				}
 
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
@@ -443,15 +451,15 @@ class ControllerProductCategory extends Controller
 					'wish_sprice'       => $wish_sprice,
 					'special'     => $special,
 					'style_no' => $result['model'],
-			        'metal_purity' => $result['upc'],
+					'metal_purity' => $result['upc'],
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
 					'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url)
 				);
 			}
-			
-			if(isset($filter_by_group)){
+
+			if (isset($filter_by_group)) {
 				if (sizeof($filter_by_group) > 1) {
 					foreach ($data['products'] as $key => $product) {
 						foreach ($filter_by_group as $k1 => $fg) {
@@ -459,7 +467,7 @@ class ControllerProductCategory extends Controller
 								unset($data['products'][$key]);
 								continue;
 							} else {
-	
+
 								if (empty(array_intersect($product['filter_id'][$k1], $fg))) {
 									unset($data['products'][$key]);
 								}
@@ -468,7 +476,7 @@ class ControllerProductCategory extends Controller
 					}
 				}
 			}
-		
+
 			if (isset($_GET['filter']) && trim($_GET['filter']) != "") {
 				$x = (ceil(sizeof($data['products']) / 16));
 				if (!isset($_GET['page']) || $_GET['page'] == '1') {
@@ -512,6 +520,7 @@ class ControllerProductCategory extends Controller
 				'value' => 'pd.name-DESC',
 				'href'  => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '&sort=pd.name&order=DESC' . $url)
 			);
+
 
 			$data['sorts'][] = array(
 				'text'  => $this->language->get('text_price_asc'),
@@ -696,4 +705,3 @@ class ControllerProductCategory extends Controller
 		}
 	}
 }
-
