@@ -202,12 +202,11 @@ class ControllerReportAppoint extends Controller
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
 			// Retrieve the form data
 
-// print_r($_POST);
-// die();
+
 
 			$data['id'] = isset($this->request->post['orderId']) ? (int)$this->request->post['orderId'] : 0;
 			$data['name'] = isset($this->request->post['name']) ? $this->request->post['name'] : '';
-			$data['des'] = isset($this->request->post['dis']) ? $this->request->post['dis'] : '';
+			$data['dis'] = isset($this->request->post['dis']) ? $this->request->post['dis'] : '';
 			$data['date'] = isset($this->request->post['date']) ? $this->request->post['date'] : '';
 			// echo  $orderId;
 			// die();
@@ -232,7 +231,7 @@ class ControllerReportAppoint extends Controller
 			// Retrieve the form data
 
 			$data['name'] = isset($this->request->post['name']) ? $this->request->post['name'] : '';
-			$data['des'] = isset($this->request->post['dis']) ? $this->request->post['dis'] : '';
+			$data['dis'] = isset($this->request->post['dis']) ? $this->request->post['dis'] : '';
 			$data['date'] = isset($this->request->post['date']) ? $this->request->post['date'] : '';
 			// echo  $orderId;
 			// die();
@@ -240,7 +239,7 @@ class ControllerReportAppoint extends Controller
 			// For example, update the event in the database
 			// Replace the following code with your actual database update logic
 			$this->load->model('report/consulting');
-			$this->model_report_consulting->addEvent($data);
+			$this->model_report_consulting->saveEvent($data);
 
 			// Optionally, you can redirect the user to another page after the form submission
 			$this->response->redirect($this->url->link('report/appoint', 'token=' . $this->request->get['token'], true));

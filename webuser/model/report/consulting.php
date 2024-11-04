@@ -61,7 +61,7 @@ class ModelReportConsulting extends Model
         // print_r($data);
         // die();
         $name = $data['name'];
-        $dis = $data['des'];
+        $dis = $data['dis'];
         $date = $data['date'];
 
         $this->db->query("
@@ -89,6 +89,17 @@ class ModelReportConsulting extends Model
     }
 
     public function addEvent($data)
+    {
+        $this->db->query("
+        INSERT INTO `" . DB_PREFIX . "events` 
+        SET 
+        `name` = '" . $this->db->escape($data['name']) . "',
+        `dis` = '" . $this->db->escape($data['dis']) . "',
+        `date` = '" . $this->db->escape($data['date']) . "'
+    ");
+        return $this->db->getLastId();
+    }
+    public function saveEvent($data)
     {
         $this->db->query("
         INSERT INTO `" . DB_PREFIX . "events` 
