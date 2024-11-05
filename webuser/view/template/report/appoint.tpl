@@ -225,6 +225,8 @@
             <thead>
               <tr>
                 <td class="text-left">Name</td>
+                <td class="text-left">Event Name</td>
+
                 <td class="text-left">AppointmentDate</td>
                 <td class="text-right">Time</td>
                 <td class="text-right">User Time Zone</td>
@@ -239,6 +241,9 @@
               <tr>
                 <td class="text-left">
                   <?php echo $order['userName']; ?>
+                </td>
+                <td class="text-left">
+                  <?php echo $order['event_name']; ?>
                 </td>
                 <td class="text-left">
                   <?php echo $order['selected_date']; ?>
@@ -309,11 +314,6 @@
         document.getElementById('name').value = btn.getAttribute("btnname");
         document.getElementById('dis').value = btn.getAttribute("btndis");
         document.getElementById('date').value = btn.getAttribute("btndate");
-
-
-
-
-
       });
     });
     // Function to open the edit popup and populate it with event details

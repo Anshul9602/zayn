@@ -171,7 +171,7 @@ echo "</script>";
 
                                 // Generate and append slides for the next 10 days
                                 const dateSlider = document.getElementById('dateSlider');
-                                for (let i = 0; i <= 7; i++) {
+                                for (let i = 0; i <= 365; i++) {
                                     const { dayName, day, monthName } = getDateForOffset(i);
 
                                     const li = document.createElement('li');
