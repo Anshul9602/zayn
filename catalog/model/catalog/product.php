@@ -174,7 +174,6 @@ class ModelCatalogProduct extends Model
 		}
 
 		$sql .= " GROUP BY p.product_id";
-
 		$sort_data = array(
 			'pd.name',
 			'p.model',
@@ -184,34 +183,41 @@ class ModelCatalogProduct extends Model
 			'p.sort_order',
 			'p.date_added'
 		);
-
+		
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
 			if ($data['sort'] == 'pd.name' || $data['sort'] == 'p.model') {
 				$sql .= " ORDER BY LCASE(" . $data['sort'] . ")";
 			} elseif ($data['sort'] == 'p.price') {
+				// Handle sorting by price, including specials and discounts
 				$sql .= " ORDER BY (CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END)";
 			} else {
 				$sql .= " ORDER BY " . $data['sort'];
 			}
+		
+			// Add sorting order (ASC or DESC) after the initial order condition
+			if (isset($data['order']) && $data['order'] == 'DESC') {
+				$sql .= " DESC";
+			} else {
+				$sql .= " ASC";
+			}
 		} else {
-			$sql .= " ORDER BY p.sort_order";
+			// Default sort order
+			$sql .= " ORDER BY p.sort_order ASC";
 		}
-
-		if (isset($data['order']) && ($data['order'] == 'DESC')) {
-			$sql .= " DESC, LCASE(pd.name) DESC";
-		} else {
-			$sql .= " ASC, LCASE(pd.name) ASC";
-		}
-
+		
+		// Ensure secondary sorting by name if needed
+		$sql .= ", LCASE(pd.name)";
+		
+		// Handle pagination
 		if (isset($data['start']) || isset($data['limit'])) {
 			if ($data['start'] < 0) {
 				$data['start'] = 0;
 			}
-
+		
 			if ($data['limit'] < 1) {
 				$data['limit'] = 20;
 			}
-
+		
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
 
@@ -268,13 +274,6 @@ class ModelCatalogProduct extends Model
 
 	public function getProductsnew($key, $key2, $data = array())
 	{
-
-
-		echo("<pre>");
-	
-		print_r( $data);
-		echo("</pre>"); 
-		die();
 
 		$sql = "SELECT p.product_id , (SELECT AVG(rating) AS total FROM " . DB_PREFIX . "review r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT price FROM " . DB_PREFIX . "product_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM " . DB_PREFIX . "product_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special ";
 

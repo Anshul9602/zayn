@@ -205,8 +205,6 @@ function sortByPriceA(data){
     return priceA - priceB; // Ascending order
   });
 }
-
-
 $(document).on('click', '.wishlist_link1', function (e) {
   e.preventDefault();
 
@@ -261,3 +259,4 @@ $(document).on('click', '.wishlist_link1', function (e) {
     }
   }
 });
+

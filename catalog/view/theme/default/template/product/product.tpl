@@ -12,7 +12,13 @@ if (isset($draft) && is_string($draft)) {
 }
 
 ?>
+<script>
+   var temp = <?php print_r(json_encode($options));?>;
+   
 
+console.log(temp);
+
+</script>
 <style>
    .btn-find-store {
       color: #423c9e;
@@ -386,7 +392,6 @@ if (isset($draft) && is_string($draft)) {
                          btnprice="<?php echo $wish_price; ?>"
                          btnsiz="<?php echo $product_size1; ?>"
                          btnwet="<?php echo $wet; ?>"
-                         
                         btnsprice="<?php echo $wish_special; ?>">
 
                         <i class="fa fa-heart-o"></i>

@@ -85,7 +85,7 @@
    .p_box:hover .option-tab {
       opacity: 1;
    }
-   .product-thumb:hover .wishlist_link2 {
+    .product-thumb:hover .wishlist_link2 {
       display: block;
   }
   .wishlist_link2 {
@@ -232,11 +232,6 @@
 
 
                      <?php $k = 0;
-
-
-                
-
-
                      foreach ($products as $product) {
                      ?>
 
@@ -250,7 +245,7 @@
 
                                     <img class="sec-img" src="<?php print_r($images[$product['product_id']]['popup']); ?>" alt="product">
                                  </a>
-                                 <?php if ($product['in_wishlist']) { ?>
+<?php if ($product['in_wishlist']) { ?>
 
                                     <a style="position: absolute;right: 5px; padding: 12px; top: 5px;"class="btn btn-find-store "><i class="fa fa-heart"></i> </a>
                                     <?php } else { ?>
@@ -271,7 +266,6 @@
                
                                     </a>
                                     <?php } ?>
-               
 
                               </figure>
                               <div class="product-caption">
@@ -442,7 +436,7 @@
      location = 'index.php?route=product/category&path=' + path + '&filter=' + filter.join(',');
    });
    //
-
+   
    $(document).on('click', '.wishlist_link2', function (e) {
       e.preventDefault();
     console.log("Click");

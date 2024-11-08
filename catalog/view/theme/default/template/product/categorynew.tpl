@@ -206,7 +206,6 @@
    //fetch products and show array
    var temp = <?php print_r(json_encode($products));?>;
    var items = shuffleArray([...temp]);
-
    var filteredData = items;
 
     

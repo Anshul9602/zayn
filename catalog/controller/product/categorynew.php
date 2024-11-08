@@ -179,15 +179,7 @@ class ControllerProductCategorynew extends Controller
 				}
 
 				//additional images
-				$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($result['product_id']);
-				foreach ($data['attribute_groups'] as $attr) {
-					if ($attr['name'] == 'Stone details') {
-						foreach ($attr['attribute'] as $attribute) {
-							$wet = $attribute['text'];
-						}
-					}
-				}
-			
+
 				$pid = $result['product_id'];
 
 				$data['images'][$pid] = array();
@@ -229,7 +221,14 @@ class ControllerProductCategorynew extends Controller
 				} else {
 					$rating = false;
 				}
-
+$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($result['product_id']);
+				foreach ($data['attribute_groups'] as $attr) {
+					if ($attr['name'] == 'Stone details') {
+						foreach ($attr['attribute'] as $attribute) {
+							$wet = $attribute['text'];
+						}
+					}
+				}
 				$options = array();
 
 				foreach ($this->model_catalog_product->getProductOptions($result['product_id']) as $option) {
@@ -248,7 +247,6 @@ class ControllerProductCategorynew extends Controller
 								'price'                   => $opt_price,
 								'price_prefix'            => $option_value['price_prefix']
 							);
-
 						}
 					}
 
@@ -291,8 +289,8 @@ class ControllerProductCategorynew extends Controller
 					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
 					'model'       => $result['model'],
 					'option'		=> $options,
-					'wet' => $wet,
 					'price'       => $price,
+ 					'wet' => $wet,
 					'wish_price'       => $wish_price,
 					'wish_special'     => $wish_special,
 					'in_wishlist'    => $product_in_wishlist,
@@ -316,12 +314,7 @@ class ControllerProductCategorynew extends Controller
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-
-
-		// echo "<pre>";
-		// print_r($data['products']);
-		// echo "</pre>";
-		// die();
+		
 
 			$this->response->setOutput($this->load->view('product/categorynew', $data));
 		} else {

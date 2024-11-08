@@ -212,7 +212,7 @@
             <div>
                 <p class="text-center container mob-size"
                     style=" font-size:14px; color:#f1f1f1; padding:5px;font-weight: 400;">
-                    Copyright © 2023 Zayn Jewels . All Rights Reserved. Developed By
+                    Copyright © 2024 Zayn Jewels . All Rights Reserved. Developed By
                     <a href="https://theodin.in/" style="color:#fff;    text-decoration: underline;">
                         @The Odin</a> .
                 </p>
@@ -227,25 +227,25 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Initialize the wishlist from localStorage
         let wishzayn = JSON.parse(localStorage.getItem("wishzayn")) || [];
-
+    
         // Function to update the wishlist count
         const updateWishlistCount = () => {
             const wishlistCount = wishzayn.length;
             document.getElementById('wish_count').textContent = wishlistCount;
         };
-
+    
         // Update the wishlist count on page load
         updateWishlistCount();
-
+    
         // Add event listeners to wishlist buttons
         const allProductBtns = document.querySelectorAll(".wishlist_link");
-
+    
         allProductBtns.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
                 console.log("Button clicked");
-
-                const productId = btn.getAttribute("btnid");
+    
+                 const productId = btn.getAttribute("btnid");
                 const productname = btn.getAttribute("btnname");
                 const productimg = btn.getAttribute("btnimg");
                 const producturl = btn.getAttribute("btnhref");
@@ -256,8 +256,8 @@
                 const productsize = btn.getAttribute("btnsize");
                 const productsize1 = btn.getAttribute("btnsiz");
                 const productwet = btn.getAttribute("btnwet");
-
-                if (productId && productname && productimg && producturl && productprice && productsprice && productsize1) {
+ 
+                if (productId && productname && productimg && producturl && productprice && productsprice) {
                     const product = {
                         productid: productId,
                         productname: productname,
@@ -271,15 +271,15 @@
                         productsize1: productsize1,
                         productwet: productwet
                     };
-
+    
+    
                     const isProductInWishlist = wishzayn.some(item => item.productid === productId);
-
-                    console.log(product);
-
+    
                     if (!isProductInWishlist) {
                         wishzayn.push(product);
                         localStorage.setItem("wishzayn", JSON.stringify(wishzayn));
                         alert("ITEM ADDED TO YOUR WISHLIST SUCCESSFULLY");
+    
                         updateWishlistCount();
                         location.reload();
                     } else {
@@ -288,7 +288,7 @@
                 }
             });
         });
-
+    
         // Send wishlist data to the server
         const wishlistItems = localStorage.getItem('wishzayn');
         console.log(wishlistItems, "wishlist items");
@@ -300,16 +300,16 @@
                 },
                 body: JSON.stringify({ wishlist: wishlistItems })
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Wishlist items sent to server:', data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Wishlist items sent to server:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     });
-
+    
 
 
 </script>

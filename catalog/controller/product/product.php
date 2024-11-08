@@ -275,8 +275,8 @@ class ControllerProductProduct extends Controller
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];
 
-			$data['style_no'] = $product_info['model'];
-			$data['metal_purity'] = $product_info['upc'];
+			$data['style_no'] = $product_info['model'];;
+			$data['metal_purity'] = $product_info['upc'];;
 			$data['design_no'] = $product_info['sku'];;
 			$data['gold_wt'] = $product_info['isbn'];;
 			$data['stone_wt'] = $product_info['mpn'];;
@@ -363,7 +363,7 @@ class ControllerProductProduct extends Controller
 			$data['options'] = array();
 
 			foreach ($this->model_catalog_product->getProductOptions($this->request->get['product_id']) as $option) {
-				if ($option['name'] == 'RING SIZE') {
+if ($option['name'] == 'RING SIZE') {
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
 				}else if($option['name'] == 'Bangle Size'){
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
@@ -371,9 +371,8 @@ class ControllerProductProduct extends Controller
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
 				}else if($option['name'] == 'Necklace Size'){
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
-				}else{
-					$data['product_size1'] = '';
 				}
+
 				$product_option_value_data = array();
 
 				foreach ($option['product_option_value'] as $option_value) {
@@ -441,13 +440,14 @@ class ControllerProductProduct extends Controller
 			$data['share'] = $this->url->link('product/product', 'product_id=' . (int)$this->request->get['product_id']);
 
 			$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($this->request->get['product_id']);
-			foreach ($data['attribute_groups'] as $attr) {
+foreach ($data['attribute_groups'] as $attr) {
 				if ($attr['name'] == 'Stone details') {
 					foreach ($attr['attribute'] as $attribute) {
 						$data['wet'] = $attribute['text'];
 					}
 				}
 			}
+ 		
 			$data['products'] = array();
 
 			$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);

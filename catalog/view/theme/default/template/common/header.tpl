@@ -239,6 +239,7 @@
                                                 </li>
                                             </ul>
                                         </li>
+                                        <li><a href="index.php?route=product/category&path=110">Watches</a> </li>
                                         
                                         <li>
                                             <a href="index.php?route=common/collection">Collections</a>
@@ -250,9 +251,7 @@
                                                 </li>
                                                 <li><a href="index.php?route=product/category&path=107">Hoops Collection</a>
                                                 </li>
-                                                <li><a href="index.php?route=product/category&path=107">Hoops Collection</a>
-                                                </li>
-                                                <li><a href="index.php?route=product/category&path=109">Stackable Rings</a>
+                                                 <li><a href="index.php?route=product/category&path=109">Stackable Rings</a>
                                                 </li>
                                                 <li><a href="index.php?route=product/category&path=108">Eternity Rings</a>
                                                 </li>
@@ -432,6 +431,9 @@
                                 <li>
                                     <a href="index.php?route=common/jewelry">Jewelry</a>
                                 </li>
+                                <li>
+                                    <a href="index.php?route=product/categorynew&path=110">Watches</a>
+                                </li>
                                 <li class="menu-item-has-children">
                                     <a href="index.php?route=common/collection">Collections</a>
                                     <ul class="dropdown">
@@ -463,6 +465,7 @@
                                         <li><a href="index.php?route=common/catalogue" style="text-transform: inherit;">Brochures and Catalog </a></li>
                                         <li><a href="index.php?route=extension/d_blog_module/category1&category_id=1">Zayn
                                                 Blog </a></li>
+                                        
                                     </ul>
                                 </li>
                                 
