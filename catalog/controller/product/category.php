@@ -279,11 +279,7 @@ class ControllerProductCategory extends Controller
 					
 						
 						break;
- 					case '110':
-						$key = "RG";
-					
-						
-						break;
+ 					
 					case '95':
 						$key = "TC1";
 						$key2 = "TC2";
