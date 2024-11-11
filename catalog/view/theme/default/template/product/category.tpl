@@ -142,7 +142,9 @@
            <div class="row">
                <div style="text-align: center;" class="col-sm-8 offset-sm-2">
                   <h3 style="text-align: center; margin-top:-55px; text-transform: uppercase;">
-                     <?php echo $heading_title; ?>
+                        <?php if($heading_title == 'Watches'){ }else{?>
+                        
+                         <?php echo $heading_title; ?> <?php }?>
                   </h3> <br/>
                   <p style="text-align: center;"> <?php echo $description; ?></p>
                </div>
@@ -197,6 +199,7 @@
                                  <li>
                                     <img style="max-width: 130px;" src="<?php echo $category['image']; ?>" alt="" class="img-responsive">
                                     <br /> <br />
+
                                     <span style="font-size: 13px; margin-top:10px; margin-top:10px; padding:10px 22.5px">
                                        <?php echo $category['name']; ?>
                                     </span>
