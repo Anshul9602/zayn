@@ -334,15 +334,21 @@ class ControllerProductProduct extends Controller
 				$data['price'] = false;
 				$data['customer_id'] = 0;
 			}
-			
-			if ((float)$product_info['special']) {
-				$data['special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-			
-				// Calculate discount percentage
-				$price_raw = (float)$product_info['price'];
-				$special_raw = (float)$product_info['special'];
-				$data['discount_percentage'] = round((($price_raw - $special_raw) / $price_raw) * 100);
-				// $data['discount_percentage'] = 10;
+
+			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+				if ((float)$product_info['special']) {
+					$data['special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+
+					// Calculate discount percentage
+					$price_raw = (float)$product_info['price'];
+					$special_raw = (float)$product_info['special'];
+					$data['discount_percentage'] = round((($price_raw - $special_raw) / $price_raw) * 100);
+					// $data['discount_percentage'] = 10;
+				} else {
+					$data['wish_special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					$data['special'] = false;
+					$data['discount_percentage'] = null; // No discount
+				}
 			} else {
 				$data['wish_special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				$data['special'] = false;
@@ -386,7 +392,6 @@ class ControllerProductProduct extends Controller
 					if (!$option_value['subtract'] || ($option_value['quantity'] > 0)) {
 						if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option_value['price']) {
 							$price = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
-							
 						} else {
 							$price = false;
 						}
@@ -447,16 +452,16 @@ class ControllerProductProduct extends Controller
 			$data['share'] = $this->url->link('product/product', 'product_id=' . (int)$this->request->get['product_id']);
 
 			$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($this->request->get['product_id']);
-			
-			
+
+
 			$data['watch_attr'] = [];
-			
+
 			foreach ($data['attribute_groups'] as $attr) {
 				if ($attr['name'] == 'Stone details') {
 					foreach ($attr['attribute'] as $attribute) {
 						$data['wet'] = $attribute['text'];
 					}
-				}elseif($attr['name'] == 'watch'){
+				} elseif ($attr['name'] == 'watch') {
 
 					foreach ($attr['attribute'] as $attribute) {
 						$data['watch_attr'][] = [
@@ -540,8 +545,7 @@ class ControllerProductProduct extends Controller
 
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-					$price_raw = (float)$result['price']; 
-				
+					$price_raw = (float)$result['price'];
 				} else {
 					$price = false;
 					$price_raw = 0;

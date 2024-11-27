@@ -281,8 +281,8 @@
                                  <?php if ($product['price']) { ?>
                                     <?php if ($product['special']) { ?>
                                        <div class="price-box">
-                                          <span class="price-regular"><?php echo $product['special']; ?></span>
-                                          <span class="price-old"><del><?php echo $product['price']; ?></del></span>
+                                          <span class="price-regular"> <?php echo rtrim(rtrim($product['special'], '0'), '.'); ?></span>
+                                          <span class="price-old"><del> <?php echo rtrim(rtrim($product['price'], '0'), '.'); ?></del></span>
                                        </div>
                                     <?php } else { ?>
                                        <div class="price-box">

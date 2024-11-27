@@ -83,6 +83,10 @@ function generatePage(filteredData) {
           } else {
             ringSizeValue = "-";
           }
+
+
+
+
           return `<div class="col-md-4 col-sm-6 col-6 p_box">
   <div class="product-item">
     <figure class="product-thumb" style="    position: relative;">
@@ -113,14 +117,23 @@ ${item.in_wishlist
         Available In : ${colorOptions}
       </span>
       <br>
-      ${item.price
+      ${item.special
               ? `<span class="price-regular">
-        Price: $${parseFloat(item.price.replace(/[,\$]/g, ""))
+       Price: $${parseFloat(item.special.replace(/[,\$]/g, ""))
                 .toFixed(0)
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       </span>`
               : ""
             }
+      ${item.price
+              ? `<span class="price-old" style="    text-decoration: line-through;">
+        $${parseFloat(item.price.replace(/[,\$]/g, ""))
+                .toFixed(0)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </span>`
+              : ""
+            }
+      
      
     </div>
   </div>
