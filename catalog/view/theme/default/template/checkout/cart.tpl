@@ -467,7 +467,59 @@
                </form>
                <hr />
                <div class="row">
-                  <div class="col-sm-6">
+                  <div class="col-md-6">
+                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                           <h4 class="panel-title mb-2"><a href="#collapse-coupon" class="accordion-toggle " data-toggle="collapse" data-parent="#accordion" style="color:#000;">Use Coupon Code </a></h4>
+                        </div>
+                        <div id="collapse-coupon" class="panel-collapse  col-md-10 mb-3 p-0">
+                           <div class="panel-body col-md-12">
+                             
+                              <div class="input-group row">
+                                 <input type="text" name="coupon" value="" placeholder="Enter your coupon here" id="input-coupon" class="form-control col-md-8 col-8 " fdprocessedid="b9ezjk" style="line-height: 2.5;">
+                                 <div class="input-group-btn col-md-4 col-4 p-0 spb">
+                                    <input type="button" value="Apply Coupon" id="button-coupon" data-loading-text="Loading..." class="btn btn-primary btn-hero" fdprocessedid="uhals" style="    margin: 0;
+    border-radius: 0;
+    padding: 12px 20px;">
+                                 </div>
+                              </div>
+                     
+                     <script type="text/javascript">
+                        
+                     $('#button-coupon').on('click', function() {
+                     $.ajax({
+                     url: 'index.php?route=extension/total/coupon/coupon',
+                     type: 'post',
+                     data: 'coupon=' + encodeURIComponent($('input[name=\'coupon\']').val()),
+                     dataType: 'json',
+                     beforeSend: function() {
+                     $('#button-coupon').button('loading');
+                     },
+                     complete: function() {
+                     $('#button-coupon').button('reset');
+                     },
+                     success: function(json) {
+                     $('.alert-dismissible').remove();
+                     
+                     if (json['error']) {
+                     $('.breadcrumb').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                     
+                     $('html, body').animate({ scrollTop: 0 }, 'slow');
+                     }
+                     
+                     if (json['redirect']) {
+                     location = json['redirect'];
+                     }
+                     },
+                     error: function(xhr, ajaxOptions, thrownError) {
+                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                     }
+                     });
+                     });
+                     //--></script>
+                           </div>
+                        </div>
+                     </div>
                      <br />
                   </div>
                   <div class="col-sm-1"></div>
@@ -496,6 +548,9 @@
                         <?php } ?>
                      </table>
                      <br />
+
+                   
+
                      <div class="row">
                         <div class="col-sm-12">
                            <?php if (!$logged) { ?>

@@ -52,8 +52,8 @@ class ControllerProductCategory extends Controller
 
 		if (isset($this->request->get['path'])) {
 			$p = (string)$this->request->get['path'];
-		  if(strpos($p,'_')){
-			$url = '';
+			if (strpos($p, '_')) {
+				$url = '';
 
 				if (isset($this->request->get['sort'])) {
 					$url .= '&sort=' . $this->request->get['sort'];
@@ -91,10 +91,9 @@ class ControllerProductCategory extends Controller
 						);
 					}
 				}
-		  }else{
-			$category_id = (int)$this->request->get['path'];
-		  }	
-			
+			} else {
+				$category_id = (int)$this->request->get['path'];
+			}
 		} else {
 			$category_id = 0;
 		}
@@ -231,8 +230,8 @@ class ControllerProductCategory extends Controller
 				);
 			}
 
-			
-			if ((trim($filter) != "") && $category_id!='99') {
+
+			if ((trim($filter) != "") && $category_id != '99') {
 				$key2 = "XXXX";
 				switch ($category_id) {
 					case '80':
@@ -261,45 +260,45 @@ class ControllerProductCategory extends Controller
 					case '89':
 						$key = "ER";
 						break;
-					
+
 					case '107':
 						$key = "ER";
 						break;
 
 					case '106':
 						$key = "PD";
-						break;	
-                    case '109':
-						$key = "RG";
-					
-						
 						break;
- 					case '108':
+					case '109':
 						$key = "RG";
-					
-						
+
+
 						break;
- 					
+					case '108':
+						$key = "RG";
+
+
+						break;
+
 					case '95':
 						$key = "TC1";
 						$key2 = "TC2";
-						break;	
+						break;
 				}
-				
-if($category_id == 109 || $category_id == 108 || $category_id == 110){
-	$results = $this->model_catalog_product->getProducts($filter_data);
-	$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
-}else{
-	$results = $this->model_catalog_product->getProductsnew($key, $key2, $filter_data);
-	$product_total = $this->model_catalog_product->getTotalProductsnew($key, $key2, $filter_data);
-}
-shuffle($results);
+
+				if ($category_id == 109 || $category_id == 108 || $category_id == 110 || $category_id == 107) {
+					$results = $this->model_catalog_product->getProducts($filter_data);
+					$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
+				} else {
+					$results = $this->model_catalog_product->getProductsnew($key, $key2, $filter_data);
+					$product_total = $this->model_catalog_product->getTotalProductsnew($key, $key2, $filter_data);
+				}
+				shuffle($results);
 			} else {
 
 				$results = $this->model_catalog_product->getProducts($filter_data);
 				$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
- 			shuffle($results);
-			  }
+				shuffle($results);
+			}
 			if (isset($_GET['filter']) && trim($_GET['filter']) != "") {
 				$user_filter = explode(',', $_GET['filter']);
 				$filter_by_group = array();
@@ -375,13 +374,13 @@ shuffle($results);
 
 					if ($option['name'] == 'RING SIZE') {
 						$product_size1 = $option['product_option_value'][0]['name'];
-					}else if($option['name'] == 'Bangle Size'){
-						$product_size1= $option['product_option_value'][0]['name'];
-					}else if($option['name'] == 'Bracelet Size'){
+					} else if ($option['name'] == 'Bangle Size') {
 						$product_size1 = $option['product_option_value'][0]['name'];
-					}else if($option['name'] == 'Necklace Size'){
+					} else if ($option['name'] == 'Bracelet Size') {
 						$product_size1 = $option['product_option_value'][0]['name'];
-					}else{
+					} else if ($option['name'] == 'Necklace Size') {
+						$product_size1 = $option['product_option_value'][0]['name'];
+					} else {
 						$product_size1 = '';
 					}
 
@@ -424,20 +423,20 @@ shuffle($results);
 				$filter_ids = $this->model_catalog_product->getProductFilters($result['product_id']);
 
 
-				if($wishlist_items1 == null){
+				if ($wishlist_items1 == null) {
 					$product_in_wishlist = false;
-				 }else{
+				} else {
 					$wishlist_items1_array = json_decode($wishlist_items1, true);
-									  
+
 					$product_in_wishlist = false;
 					foreach ($wishlist_items1_array as $item) {
-				  
+
 						if ($item['productid'] == $result['product_id']) {
 							$product_in_wishlist = true;
 							break;
 						}
 					}
-				 }
+				}
 
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
@@ -448,14 +447,15 @@ shuffle($results);
 					'model'       => $result['model'],
 					'option'		=> $options,
 					'wet' => $wet,
- 					'product_size1'     => $product_size1,
+					'product_size1'     => $product_size1,
 					'price'       => $price,
+					'special'       => $special,
 					'in_wishlist'    => $product_in_wishlist,
 					'wish_price'       => $wish_price,
 					'wish_sprice'       => $wish_sprice,
 					'special'     => $special,
 					'style_no' => $result['model'],
-			'metal_purity' => $result['upc'],
+					'metal_purity' => $result['upc'],
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
@@ -465,7 +465,7 @@ shuffle($results);
 
 
 
-			if(isset($filter_by_group)){
+			if (isset($filter_by_group)) {
 				if (sizeof($filter_by_group) > 1) {
 					foreach ($data['products'] as $key => $product) {
 						foreach ($filter_by_group as $k1 => $fg) {
@@ -473,7 +473,7 @@ shuffle($results);
 								unset($data['products'][$key]);
 								continue;
 							} else {
-	
+
 								if (empty(array_intersect($product['filter_id'][$k1], $fg))) {
 									unset($data['products'][$key]);
 								}
@@ -482,7 +482,9 @@ shuffle($results);
 					}
 				}
 			}
-		
+
+
+
 			if (isset($_GET['filter']) && trim($_GET['filter']) != "") {
 				$x = (ceil(sizeof($data['products']) / 16));
 				if (!isset($_GET['page']) || $_GET['page'] == '1') {
@@ -610,13 +612,14 @@ shuffle($results);
 			if (isset($this->request->get['limit'])) {
 				$url .= '&limit=' . $this->request->get['limit'];
 			}
-
+		
 			$prodcut_total = sizeof($data['products']);
 			$pagination = new Pagination();
 			$pagination->total = $product_total;
 			$pagination->page = $page;
 			$pagination->limit = $limit;
 			$pagination->url = $this->url->link('product/category', 'path=' . $this->request->get['path'] . $url . '&page={page}');
+			
 
 			$data['pagination'] = $pagination->render();
 
@@ -707,4 +710,3 @@ shuffle($results);
 		}
 	}
 }
-

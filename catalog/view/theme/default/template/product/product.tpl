@@ -4,19 +4,19 @@
 $u = basename($_SERVER['REQUEST_URI']);
 $cad = false;
 if (strpos($u, 'cad-cam-services') !== false) {
-    $cad = true;
+$cad = true;
 }
 
 if (isset($draft) && is_string($draft)) {
-    $draft = json_decode($draft, true);
+$draft = json_decode($draft, true);
 }
 
 ?>
 <script>
-   var temp = <?php print_r(json_encode($options));?>;
-   
+   var temp = <? php print_r(json_encode($options));?>;
 
-console.log(temp);
+
+   console.log(temp);
 
 </script>
 <style>
@@ -60,10 +60,81 @@ console.log(temp);
          font-size: 24px !important;
       }
    }
+
+   .spacer {
+      position: relative;
+      top: -80px;
+      width: 100%;
+  }
+  .full_specSection {
+   margin-bottom: 25px;
+}
+.specListWrap {
+   width: 100%;
+   max-width: 100%;
+   margin-bottom: 2rem;
+   margin-bottom: 30px;
+   font-size: 12px;
+   line-height: 22px;
+}
+.specFirstRow {
+   margin-bottom: 30px;
+}
+.specCol {
+   -ms-flex: 0 0 20.5%;
+   flex: 0 0 20.5%;
+   max-width: 20.5%;
+}
+.specColWidth.specFirstRow .specName {
+   text-transform: capitalize;
+   font-size: 16px;
+   display: block;
+   color: #000;
+   line-height: 22px;
+   letter-spacing: .1px;
+}
+.specColWidth {
+   display: flex
+;
+   justify-content: space-between;
+}
+.specValue {
+   color: #2f2f2f;
+   display: block;
+}
+.specColRowWrap {
+   margin-bottom: 20px;
+   color: #404040;
+   width: 100%;
+}
+.specHeading {
+   margin-bottom: 25px;
+   padding-bottom: 10px;
+   font-weight: 700;
+   color: #000;
+   border-bottom: 1px solid #e4e4e4;
+   display: block;
+   text-transform: uppercase;
+   line-height: 22px;
+   letter-spacing: .5px;
+}
+.specRow {
+   margin-bottom: 25px;
+}
+.specName {
+   display: block;
+   color: #000;
+   text-transform: capitalize;
+   font-size: 16px;
+   line-height: 30px;
+   letter-spacing: .1px;
+}
 </style>
-<link href="catalog/view/theme/default/stylesheet/product.css" rel="stylesheet" type="text/css" />
+<link href="catalog/view/theme/default/stylesheet/product.css" rel="stylesheet"
+   type="text/css" />
 <script src="catalog/view/javascript/jquery.zoom.js"></script>
-<link href="catalog/view/theme/default/stylesheet/magnify.css" rel="stylesheet" type="text/css">
+<link href="catalog/view/theme/default/stylesheet/magnify.css" rel="stylesheet"
+   type="text/css">
 
 <?php if ($cad) { ?>
 <img src="assets/cad/pb1.jpg" class="img-fluid">
@@ -85,7 +156,7 @@ console.log(temp);
                         </a>
                      </li>
                      <?php
-                        } ?>
+                     } ?>
                   </ul>
                </nav>
             </div>
@@ -101,649 +172,954 @@ console.log(temp);
    <li style="color:#423c9e" class="fa fa-check-circle-o"></li>
    <h3>Item added to cart</h3>
    <br>
-   <a href="index.php?route=checkout/cart"><button class="btn btn-hero">Checkout</button></a>
-   <button id="continue_shopping" class="btn btn-hero">Continue Shopping</button>
+   <a href="index.php?route=checkout/cart"><button
+         class="btn btn-hero">Checkout</button></a>
+   <button id="continue_shopping" class="btn btn-hero">Continue
+      Shopping</button>
 </div>
 
-
-<div style="margin-top:10px;" class="container mt-md-4">
-   <div class="row">
-      <div class="col-sm-12">
-         <div style="margin-bottom: 100px;" class="row">
-            <div style="padding:0px; max-width:200px; text-align:left" class="col-sm-2 desktop_slider">
-               <ul class="slider slider-nav ">
-                  <?php if ($thumb) { ?>
-                  <li style="outline:none"><img style="margin: auto -5px" class="img-responsive nav-list-li"
-                        src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>"
-                        alt="<?php echo $heading_title; ?>" /></li>
-                  <?php
-                     } ?>
-                  <?php if ($images) { ?>
-                  <?php foreach ($images as $image) { ?>
-                  <li style="margin-top:20px; outline:none">
-                     <img class="img-responsive nav-list-li" style="margin: auto -5px; "
-                        src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>"
-                        alt="<?php echo $heading_title; ?>" />
-                  </li>
-                  <?php
-                        } ?>
-                  <?php
-                     } ?>
-               </ul>
-            </div>
-            <div style="padding:0px" class="col-sm-5 desktop_slider">
-               <?php if ($thumb || $images) { ?>
-               <div id="s_wrap">
-                  <ul class="slider slider-for">
+<div style="margin-top:10px;" class=" mt-md-4">
+   <div class="container">
+      <div class="row">
+         <div class="col-sm-12">
+            <div style="margin-bottom: 100px;" class="row">
+               <div style="padding:0px; max-width:200px; text-align:left"
+                  class="col-sm-2 desktop_slider">
+                  <ul class="slider slider-nav ">
                      <?php if ($thumb) { ?>
-                     <li class="zoom"><img class="img-responsive" style="margin: auto; max-width:370px"
-                           src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>"
+                     <li style="outline:none"><img style="margin: auto -5px"
+                           class="img-responsive nav-list-li"
+                           src="<?php echo $thumb; ?>"
+                           title="<?php echo $heading_title; ?>"
                            alt="<?php echo $heading_title; ?>" /></li>
                      <?php
-                           } ?>
+                     } ?>
                      <?php if ($images) { ?>
                      <?php foreach ($images as $image) { ?>
-                     <li class="zoom"><img class="img-responsive" style="margin: auto; max-width:370px"
-                           src="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>"
-                           alt="<?php echo $heading_title; ?>" /></li>
+                     <li style="margin-top:20px; outline:none">
+                        <img class="img-responsive nav-list-li"
+                           style="margin: auto -5px; "
+                           src="<?php echo $image['thumb']; ?>"
+                           title="<?php echo $heading_title; ?>"
+                           alt="<?php echo $heading_title; ?>" />
+                     </li>
                      <?php
-                              } ?>
+                     } ?>
                      <?php
-                           } ?>
+                     } ?>
                   </ul>
                </div>
-               <?php
-                  } ?>
-               <div style="width:145%; margin-left:-45%" class="row">
-
-                  <div class="col-sm-12">
-                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab-description" data-toggle="tab">
-                              <?php echo strip_tags($tab_description); ?>
-                           </a></li>
-                        <?php if ($attribute_groups) { ?>
-                        <li><a href="#tab-specification" data-toggle="tab">
-                              <?php echo $tab_attribute; ?>
-                           </a></li>
+               <div style="padding:0px" class="col-sm-5 desktop_slider">
+                  <?php if ($thumb || $images) { ?>
+                  <div id="s_wrap">
+                     <ul class="slider slider-for">
+                        <?php if ($thumb) { ?>
+                        <li class="zoom"><img class="img-responsive"
+                              style="margin: auto; max-width:370px"
+                              src="<?php echo $thumb; ?>"
+                              title="<?php echo $heading_title; ?>"
+                              alt="<?php echo $heading_title; ?>" /></li>
                         <?php
-                           } ?>
-                        <?php if ($review_status) { ?>
-                        <li><a href="#tab-review" data-toggle="tab">
-                              <?php echo $tab_review; ?>
-                           </a></li>
+                        } ?>
+                        <?php if ($images) { ?>
+                        <?php foreach ($images as $image) { ?>
+                        <li class="zoom"><img class="img-responsive"
+                              style="margin: auto; max-width:370px"
+                              src="<?php echo $image['popup']; ?>"
+                              title="<?php echo $heading_title; ?>"
+                              alt="<?php echo $heading_title; ?>" /></li>
                         <?php
-                           } ?>
+                        } ?>
+                        <?php
+                        } ?>
                      </ul>
-                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab-description">
-                           <br />
-                           <?php echo strip_tags($description); ?>
-                        </div>
-                        <?php if ($attribute_groups) { ?>
-                        <div class="tab-pane" id="tab-specification">
-                           <table class="table table-bordered">
-                              <?php foreach ($attribute_groups as $attribute_group) { ?>
-                              <thead>
-                                 <tr>
-                                    <td colspan="2"><strong>
-                                          <?php echo $attribute_group['name']; ?>
-                                       </strong></td>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <?php foreach ($attribute_group['attribute'] as $attribute) { ?>
-                                 <tr>
-                                    <td>
-                                       <?php echo $attribute['name']; ?>
-                                    </td>
-                                    <td>
-                                       <?php echo $attribute['text']; ?>
-                                    </td>
-                                 </tr>
+                  </div>
+                  <?php
+                  } ?>
+                  <div style="width:145%; margin-left:-45%" class="row">
+
+                     <div class="col-sm-12">
+                        <ul class="nav nav-tabs">
+                           <li class="active"><a href="#tab-description"
+                                 data-toggle="tab">
+                                 <?php echo strip_tags($tab_description); ?>
+                              </a></li>
+                           <?php if ($watch_attr) { ?>
+                           <li><a href="#tab-specification" data-toggle="tab">
+                                 <?php echo $tab_attribute; ?>
+                              </a></li>
+                           <?php
+                           } ?>
+                           <?php if ($review_status) { ?>
+                           <li><a href="#tab-review" data-toggle="tab">
+                                 <?php echo $tab_review; ?>
+                              </a></li>
+                           <?php
+                           } ?>
+                        </ul>
+                        <div class="tab-content">
+                           <div class="tab-pane active" id="tab-description">
+                              <br />
+                              <?php echo strip_tags($description); ?>
+                           </div>
+                           <?php if ($watch_attr) { ?>
+                           <div class="tab-pane" id="tab-specification">
+                              <div class="product_specSection w-100">
+
+                                 <div id="full_specification"
+                                    class=" mt-2 full_specSection specification_row borderBottom_e4">
+
+                                    <ul class="specListWrap">
+
+                                       <li class="specColWidth specFirstRow">
+                                          <div class="specCol"><span
+                                                class="specName">Brand</span>
+                                             <span class="specValue">
+                                                <a
+                                                   href="https://www.ethoswatches.com/brands/hublot.html"
+                                                   title="Hublot">Hublot</a></span>
+                                          </div>
+                                          <div class="specCol"><span
+                                                class="specName">Collection</span><span
+                                                class="specValue">Classic
+                                                Fusion</span></div>
+                                          <div class="specCol"><span
+                                                class="specName">Series</span><span
+                                                class="specValue">3-Hands</span></div>
+                                          <div class="specCol"><span
+                                                class="specName">Model
+                                                No</span><span
+                                                class="specValue">565.NX.1470.LR.1204</span></div>
+                                       </li>
+
+                                       <li class="specColWidth">
+
+                                          <div class="specCol">
+                                             <div class="specColRowWrap">
+                                                <span
+                                                   class="specHeading">Movement</span>
+                                                <div class="specRow">
+                                                   <span
+                                                      class="specName">Features</span>
+                                                   <span
+                                                      class="specValue">Date</span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span
+                                                      class="specName">Movement</span>
+                                                   <span
+                                                      class="specValue">Automatic</span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span
+                                                      class="specName">Calibre</span>
+                                                   <span
+                                                      class="specValue">HUB1110</span>
+                                                </div>
+                                             </div>
+                                          </div>
+
+                                          <div class="specCol">
+                                             <div class="specColRowWrap">
+                                                <span
+                                                   class="specHeading">Case</span>
+
+                                                <div class="specRow">
+                                                   <span class="specName">Case
+                                                      Size</span>
+                                                   <span class="specValue">38
+                                                      mm</span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span class="specName">Case
+                                                      Shape</span>
+                                                   <span
+                                                      class="specValue">Round</span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span class="specName">Case
+                                                      Material</span>
+                                                   <span
+                                                      class="specValue">Titanium</span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span class="specName">Glass
+                                                      Material</span>
+                                                   <span
+                                                      class="specValue">Sapphire
+                                                      Crystal</span>
+                                                </div>
+
+                                             </div>
+                                          </div>
+
+                                          <div class="specCol">
+                                             <div class="specColRowWrap">
+                                                <span
+                                                   class="specHeading">Dial</span>
+                                                <div class="specRow">
+                                                   <span class="specName">Dial
+                                                      Colour</span>
+                                                   <span
+                                                      class="specValue">Black</span>
+                                                </div>
+                                             </div>
+                                          </div>
+
+                                          <div class="specCol">
+
+                                             <div class="specColRowWrap">
+                                                <span
+                                                   class="specHeading">Strap</span>
+                                                <div class="specRow">
+                                                   <span class="specName">Strap
+                                                      Material</span>
+                                                   <span
+                                                      class="specValue">Rubber
+                                                      &amp; Leather</span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span class="specName">Strap
+                                                      Colour</span>
+                                                   <span
+                                                      class="specValue">Black</span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span class="specName">Clasp
+                                                      Type</span>
+                                                   <span
+                                                      class="specValue">Deployment
+                                                      Clasp</span>
+                                                </div>
+                                             </div>
+
+                                             <div class="specColRowWrap">
+                                                <span
+                                                   class="specHeading">Other</span>
+
+                                                <div class="specRow">
+                                                   <span
+                                                      class="specName">Precious
+                                                      Stone</span>
+                                                   <span class="specValue">
+                                                      On Bezel
+                                                   </span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span
+                                                      class="specName">Gender</span>
+                                                   <span class="specValue">
+                                                      Men
+                                                   </span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span class="specName">Water
+                                                      Resistance (M)</span>
+                                                   <span class="specValue">
+                                                      50
+                                                   </span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span
+                                                      class="specName">Warranty
+                                                      Period</span>
+                                                   <span class="specValue">
+                                                      2 Years </span>
+                                                </div>
+                                                <div class="specRow">
+                                                   <span
+                                                      class="specName">Country
+                                                      of Origin</span>
+                                                   <span class="specValue">
+                                                      Switzerland
+                                                   </span>
+                                                </div>
+
+                                             </div>
+                                          </div>
+
+                                       </li>
+
+                                    </ul>
+
+                                 </div>
+
+                              </div>
+                              <table class="table table-bordered">
+
+                                 <thead>
+                                    <tr>
+                                       <td colspan="2"><strong>
+                                             <?php echo
+                                             $attribute_group['name']; ?>
+                                          </strong></td>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <?php foreach ($attribute_group['attribute']
+                                    as $attribute) { ?>
+                                    <tr>
+                                       <td>
+                                          <?php echo $attribute['name']; ?>
+                                       </td>
+                                       <td>
+                                          <?php echo $attribute['text']; ?>
+                                       </td>
+                                    </tr>
+                                    <?php
+                                    } ?>
+                                 </tbody>
                                  <?php
-                                          } ?>
-                              </tbody>
-                              <?php
-                                    } ?>
-                           </table>
-                        </div>
-                        <?php
-                           } ?>
-                        <?php if ($review_status) { ?>
-                        <div class="tab-pane" id="tab-review">
-                           <form class="form-horizontal" id="form-review">
-                              <div id="review"></div>
-
-                              <?php if ($review_guest) { ?>
-                              <div class="form-group required">
-                                 <div class="col-sm-12">
-                                    <label class="control-label" for="input-name">
-                                       <?php echo $entry_name; ?>
-                                    </label>
-                                    <input type="text" name="name" value="<?php echo $customer_name; ?>" id="input-name"
-                                       class="form-control" />
-                                 </div>
-                              </div>
-                              <div class="form-group required">
-                                 <div class="col-sm-12">
-                                    <label class="control-label" for="input-review">
-                                       <?php echo $entry_review; ?>
-                                    </label>
-                                    <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
-                                 </div>
-                              </div>
-                              <div class="form-group required">
-                                 <div class="col-sm-12">
-                                    <span class="star-cb-group star-rating star-5">
-                                       <label class="control-label">
-                                          <?php echo $entry_rating; ?>
-                                       </label>
-                                       <input type="radio" name="rating" value="1" /><i></i>
-                                       &nbsp;
-                                       <input type="radio" name="rating" value="2" /><i></i>
-                                       &nbsp;
-                                       <input type="radio" name="rating" value="3" /><i></i>
-                                       &nbsp;
-                                       <input type="radio" name="rating" value="4" /><i></i>
-                                       &nbsp;
-                                       <input type="radio" name="rating" value="5" /><i></i>
-                                    </span>
-                                 </div>
-                              </div>
-                              <?php echo $captcha; ?>
-                              <div class="buttons clearfix">
-                                 <div class="text-center">
-                                    <button type="button" id="button-review"
-                                       data-loading-text="<?php echo $text_loading; ?>"
-                                       class="btn btn-hero">Submit</button>
-                                 </div>
-                              </div>
-                              <?php
-                                    } else { ?>
-                              <?php echo $text_login; ?>
-                              <?php
-                                    } ?>
-                           </form>
-                        </div>
-                        <?php
-                           } ?>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="col-xs-12 slider-mob-box" style="max-width:100%; overflow-x:hidden">
-               <div>
-                  <ul class="slider-mob" style="z-index:99999">
-                     <?php if ($thumb) { ?>
-                     <li><img class="img-responsive" src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>"
-                           alt="<?php echo $heading_title; ?>" /></li>
-                     <?php
-                        } ?>
-                     <?php if ($images) { ?>
-                     <?php foreach ($images as $image) { ?>
-                     <li><img class="img-responsive" style="margin: auto;" src="<?php echo $image['popup']; ?>"
-                           title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></li>
-                     <?php
-                           } ?>
-                     <?php
-                        } ?>
-                  </ul>
-               </div>
-            </div>
-
-            <div style=" text-align:left" id="product" class="col-xs-12 col-sm-5">
-
-
-               <?php if ($stock == 0) { ?>
-
-
-               <div classs="container p-5 ">
-                  <div class="row no-gutters">
-                     <div class="col-lg-6 col-md-12 m-auto">
-                        <div class="alert alert-danger fade show" role="alert">
-                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                              <span aria-hidden="True">&times;</span>
-                           </button>
-                           <h4 class="alert-heading">Out Of Stock</h4>
-
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <?php } ?>
-
-               <h3 class="product_font" style="text-transform: capitalize; color:#000; font-size:28px; margin-top:25px">
-                  <?php echo $heading_title; ?>
-                  
-               </h3>
-               <div class="row">
-                  <div class="col-md-10"><?php if ($review_status) { ?>
-                     <div class="rating">
-                        <p>
-                           <?php for ($i = 1; $i <= 5; $i++) { ?>
-                           <?php if ($rating < $i) { ?>
-                           <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>
-                           <?php
-                                    } else { ?>
-                           <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i
-                                 class="fa fa-star-o fa-stack-1x"></i></span>
-                           <?php
-                                    } ?>
-                           <?php
                                  } ?>
-                           <a href="" class="writeme d-sm-none"
-                              onclick="$('a[href=\'#tab-review-mob\']').trigger('click'); return false;">
-                              <?php echo $reviews; ?>
-                           </a>
-                           / <a href="" class="writeme d-sm-none"
-                              onclick="$('a[href=\'#tab-review-mob\']').trigger('click'); return false;">
-                              <?php echo $text_write; ?>
-                           </a>
-                           <a href="" class="writeme d-none d-sm-inline"
-                              onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">
-                              <?php echo $reviews; ?>
-                           </a>
-                           / <a href="" class="writeme d-none d-sm-inline"
-                              onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">
-                              <?php echo $text_write; ?>
-                           </a>
-                        </p>
-                        <?php if (!$cad) { ?>
-                       
-                        <!-- AddThis Button BEGIN -->
-                        <div class="addthis_toolbox addthis_default_style" data-url="<?php echo $share; ?>"><a
-                              class="addthis_button_facebook_like" fb:like:layout="button_count"></a> <a
-                              class="addthis_button_tweet"></a> <a class="addthis_button_pinterest_pinit"></a> <a
-                              class="addthis_counter addthis_pill_style"></a></div>
-                        <script type="text/javascript"
-                           src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-515eeaf54693130e"></script>
-                        <!-- AddThis Button END -->
-                        <?php
-                              } ?>
+                              </table>
+                           </div>
+                           <?php
+                           } ?>
+                           <?php if ($review_status) { ?>
+                           <div class="tab-pane" id="tab-review">
+                              <form class="form-horizontal" id="form-review">
+                                 <div id="review"></div>
+
+                                 <?php if ($review_guest) { ?>
+                                 <div class="form-group required">
+                                    <div class="col-sm-12">
+                                       <label class="control-label"
+                                          for="input-name">
+                                          <?php echo $entry_name; ?>
+                                       </label>
+                                       <input type="text" name="name"
+                                          value="<?php echo $customer_name; ?>"
+                                          id="input-name"
+                                          class="form-control" />
+                                    </div>
+                                 </div>
+                                 <div class="form-group required">
+                                    <div class="col-sm-12">
+                                       <label class="control-label"
+                                          for="input-review">
+                                          <?php echo $entry_review; ?>
+                                       </label>
+                                       <textarea name="text" rows="5"
+                                          id="input-review"
+                                          class="form-control"></textarea>
+                                    </div>
+                                 </div>
+                                 <div class="form-group required">
+                                    <div class="col-sm-12">
+                                       <span
+                                          class="star-cb-group star-rating star-5">
+                                          <label class="control-label">
+                                             <?php echo $entry_rating; ?>
+                                          </label>
+                                          <input type="radio" name="rating"
+                                             value="1" /><i></i>
+                                          &nbsp;
+                                          <input type="radio" name="rating"
+                                             value="2" /><i></i>
+                                          &nbsp;
+                                          <input type="radio" name="rating"
+                                             value="3" /><i></i>
+                                          &nbsp;
+                                          <input type="radio" name="rating"
+                                             value="4" /><i></i>
+                                          &nbsp;
+                                          <input type="radio" name="rating"
+                                             value="5" /><i></i>
+                                       </span>
+                                    </div>
+                                 </div>
+                                 <?php echo $captcha; ?>
+                                 <div class="buttons clearfix">
+                                    <div class="text-center">
+                                       <button type="button" id="button-review"
+                                          data-loading-text="<?php echo $text_loading; ?>"
+                                          class="btn btn-hero">Submit</button>
+                                    </div>
+                                 </div>
+                                 <?php
+                                 } else { ?>
+                                 <?php echo $text_login; ?>
+                                 <?php
+                                 } ?>
+                              </form>
+                           </div>
+                           <?php
+                           } ?>
+                        </div>
                      </div>
+                  </div>
+               </div>
+               <div class="col-xs-12 slider-mob-box"
+                  style="max-width:100%; overflow-x:hidden">
+                  <div>
+                     <ul class="slider-mob" style="z-index:99999">
+                        <?php if ($thumb) { ?>
+                        <li><img class="img-responsive"
+                              src="<?php echo $thumb; ?>"
+                              title="<?php echo $heading_title; ?>"
+                              alt="<?php echo $heading_title; ?>" /></li>
+                        <?php
+                        } ?>
+                        <?php if ($images) { ?>
+                        <?php foreach ($images as $image) { ?>
+                        <li><img class="img-responsive" style="margin: auto;"
+                              src="<?php echo $image['popup']; ?>"
+                              title="<?php echo $heading_title; ?>"
+                              alt="<?php echo $heading_title; ?>" /></li>
+                        <?php
+                        } ?>
+                        <?php
+                        } ?>
+                     </ul>
+                  </div>
+               </div>
+
+               <div style=" text-align:left" id="product"
+                  class="col-xs-12 col-sm-5">
+
+                  <?php if ($stock == 0) { ?>
+
+                  <div classs="container p-5 ">
+                     <div class="row no-gutters">
+                        <div class="col-lg-6 col-md-12 m-auto">
+                           <div class="alert alert-danger fade show"
+                              role="alert">
+                              <button type="button" class="close"
+                                 data-dismiss="alert" aria-label="Close">
+                                 <span aria-hidden="True">&times;</span>
+                              </button>
+                              <h4 class="alert-heading">Out Of Stock</h4>
+
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <?php } ?>
+
+                  <h3 class="product_font"
+                     style="text-transform: capitalize; color:#000; font-size:28px; margin-top:25px">
+                     <?php echo $heading_title; ?>
+
+                  </h3>
+                  <div class="row">
+                     <div class="col-md-10">
+                        <?php if ($review_status) { ?>
+                        <div class="rating">
+                           <p>
+                              <?php for ($i = 1; $i <= 5; $i++) { ?>
+                              <?php if ($rating < $i) { ?>
+                              <span class="fa fa-stack"><i
+                                    class="fa fa-star-o fa-stack-1x"></i></span>
+                              <?php
+                              } else { ?>
+                              <span class="fa fa-stack"><i
+                                    class="fa fa-star fa-stack-1x"></i><i
+                                    class="fa fa-star-o fa-stack-1x"></i></span>
+                              <?php
+                              } ?>
+                              <?php
+                              } ?>
+                              <a href class="writeme d-sm-none"
+                                 onclick="$('a[href=\'#tab-review-mob\']').trigger('click'); return false;">
+                                 <?php echo $reviews; ?>
+                              </a>
+                              / <a href class="writeme d-sm-none"
+                                 onclick="$('a[href=\'#tab-review-mob\']').trigger('click'); return false;">
+                                 <?php echo $text_write; ?>
+                              </a>
+                              <a href class="writeme d-none d-sm-inline"
+                                 onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">
+                                 <?php echo $reviews; ?>
+                              </a>
+                              / <a href class="writeme d-none d-sm-inline"
+                                 onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">
+                                 <?php echo $text_write; ?>
+                              </a>
+                           </p>
+                           <?php if (!$cad) { ?>
+
+                           <!-- AddThis Button BEGIN -->
+                           <div class="addthis_toolbox addthis_default_style"
+                              data-url="<?php echo $share; ?>"><a
+                                 class="addthis_button_facebook_like"
+                                 fb:like:layout="button_count"></a> <a
+                                 class="addthis_button_tweet"></a> <a
+                                 class="addthis_button_pinterest_pinit"></a> <a
+                                 class="addthis_counter addthis_pill_style"></a></div>
+                           <script type="text/javascript"
+                              src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-515eeaf54693130e"></script>
+                           <!-- AddThis Button END -->
+                           <?php
+                           } ?>
+                        </div>
+                        <?php
+                        } ?>
+                     </div>
+
                      <?php
-                        } ?></div>
+                     $wishlist_items1_array = json_decode($wishlist_items1,
+                     true);
 
-                        <?php                 
-                        $wishlist_items1_array = json_decode($wishlist_items1, true);
-                                 
-                                    $product_in_wishlist = 0;
-                                    foreach ($wishlist_items1_array as $item) {
-                                  
-                                        if ($item['productid'] == $product_id) {
-                                            $product_in_wishlist = 1;
-                                            break;
-                                        }
-                                    }
-                                  
-                                    ?>
-                  <div class="col-md-2">
-                     <?php if ($product_in_wishlist) { ?>
+                     $product_in_wishlist = 0;
+                     foreach ($wishlist_items1_array as $item) {
 
-                     <a style="float:right;  padding:12px;    margin-top: 10px;" class="btn btn-find-store "><i class="fa fa-heart"></i> </a>
-                     <?php } else { ?>
-                     <a style="float:right;  padding:12px;    margin-top: 10px;"
-                        class="btn btn-find-store wishlist_link" btnid="<?php echo $product_id; ?>"
-                        btnname="<?php echo $heading_title; ?>" btnimg="<?php echo $thumb; ?>"
-                        btnhref="<?php echo $href1; ?>"
-                        btnstyle="<?php echo $style_no; ?>"
-                        btndesign="<?php echo $design_no; ?>"
-                        btnsize="<?php echo $metal_purity; ?>"
-                         btnprice="<?php echo $wish_price; ?>"
-                         btnsiz="<?php echo $product_size1; ?>"
-                         btnwet="<?php echo $wet; ?>"
-                        btnsprice="<?php echo $wish_special; ?>">
+                     if ($item['productid'] == $product_id) {
+                     $product_in_wishlist = 1;
+                     break;
+                     }
+                     }
 
-                        <i class="fa fa-heart-o"></i>
+                     ?>
+                     <div class="col-md-2">
+                        <?php if ($product_in_wishlist) { ?>
 
-                     </a>
-                     <?php } ?>
+                        <a
+                           style="float:right;  padding:12px;    margin-top: 10px;"
+                           class="btn btn-find-store "><i
+                              class="fa fa-heart"></i> </a>
+                        <?php } else { ?>
+                        <a
+                           style="float:right;  padding:12px;    margin-top: 10px;"
+                           class="btn btn-find-store wishlist_link"
+                           btnid="<?php echo $product_id; ?>"
+                           btnname="<?php echo $heading_title; ?>"
+                           btnimg="<?php echo $thumb; ?>"
+                           btnhref="<?php echo $href1; ?>"
+                           btnstyle="<?php echo $style_no; ?>"
+                           btndesign="<?php echo $design_no; ?>"
+                           btnsize="<?php echo $metal_purity; ?>"
+                           btnprice="<?php echo $wish_price; ?>"
+                           btnsiz="<?php echo $product_size1; ?>"
+                           btnwet="<?php echo $wet; ?>"
+                           btnsprice="<?php echo $wish_special; ?>">
+
+                           <i class="fa fa-heart-o"></i>
+
+                        </a>
+                        <?php } ?>
+
+                     </div>
 
                   </div>
+                  <hr style="    margin-top: 0px;">
+                  <h3  style="color:#a38129; font-size:22px;">
+                     <?php if ($special) { ?>
+                         <!-- Regular Price -->
+                         <span style="text-decoration: line-through; color: #999;">
+                             <?php echo preg_replace('~\.0+$~', '', $price) ; ?>
+                         </span>
                  
-               </div>
-               <hr style="    margin-top: 0px;">
-               <h3 id="p_pr" style="  color:#a38129; font-size:22px;">
-                  <?php echo preg_replace('~\.0+$~', '', $price); ?>
-               </h3>
-               <?php if (!$cad) { ?>
-               <p style="line-height:36px">
-                  Style No : <i>
-                     <?php echo $style_no; ?>
-                  </i>
-                  <br />
-                  Design No : <i>
-                     <?php echo $design_no; ?>
-                  </i>
-                  <br />
-                  Metal Purity: <i>
-                     <?php echo $metal_purity; ?>
-                  </i>
-               </p>
-               <?php
-                  } ?>
-
-               <div style="margin-top:20px; display:none" class="row">
-                  <div style="text-align: left; padding-left: 0px; width:120px">
-                     <p style="color:#000; font-size:16px">Quantity &nbsp;&nbsp;&nbsp;&nbsp;</p>
-                     <div style="text-align: left; padding-left: 0px; " class="col-sm-4 col-xs-4">
-                        <span class="minus-btn" id="less_quantity"
-                           style="height: 40px; text-align: center; padding:7px 10px; border:thin solid #333; cursor: pointer">
-                           <input style="margin: 0px; padding: 2.5px;" type="hidden" name="product_id"
-                              value="<?php echo $product_id; ?>" />
-                           <li style="color: #333; font-size: 12px" class="fa fa-minus"></li>
-                        </span>
-                     </div>
-                     <div style="text-align: center; padding: 0px" class="col-sm-4 col-xs-2">
-                        <input
-                           style="text-align: center; border-radius:0px; color:#000; width: auto; height: auto; box-shadow:none; border: none; background-color: transparent; padding: 0px"
-                           type="text" readonly name="quantity" value="1" size="2" id="input-quantity"
-                           class="form-control" />
-                     </div>
-                     <div style="text-align: left; padding-left: 0px; " class="col-sm-4 col-xs-6">
-                        <span class="pluse-btn" id="add_quantity"
-                           style="height: 40px; text-align: center; padding: 7px 10px; border:thin solid #000; cursor: pointer">
-                           <li style="font-size: 12px; color:#000" class="fa fa-plus"></li>
-                        </span>
-                     </div>
-                  </div>
-               </div>
-               <?php if ($options) { ?>
-               <hr>
-
-               <?php foreach ($options as $option) { ?>
-               <?php if ($option['type'] == 'file') { ?>
-               <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
-                  <label class="control-label">
-                     <?php echo $option['name']; ?>
-                  </label>
-                  <button type="button" id="button-upload<?php echo $option['product_option_id']; ?>"
-                     data-loading-text="<?php echo $text_loading; ?>" class="btn btn-default btn-block"><i
-                        class="fa fa-upload"></i>
-                     <?php echo $button_upload; ?>
-                  </button>
-                  <input type="hidden" name="option[<?php echo $option['product_option_id']; ?>]" value=""
-                     id="input-option<?php echo $option['product_option_id']; ?>" />
-               </div>
-               <hr />
-               <?php
-                        } ?>
-               <?php if ($option['type'] == 'select') { ?>
-               <p style="display: none;">Metal Colors</p>
-               <?php foreach ($option['product_option_value'] as $option_value) { ?>
-               <div class="text-center" style="display: inline-block;">
-                  <span style="background:url(<?php echo $option_value['image']; ?>)"
-                     data-sign="<?php echo $option_value['price_prefix']; ?>"
-                     data-money="<?php echo $option_value['price']; ?>"
-                     data-image="<?php if(isset($option_value['option_image'])){ echo $option_value['option_image'];} ?>"
-                     data-val="<?php if(isset($option_value)) echo $option_value['product_option_value_id']; ?>"
-                     class="tab_options">
-
-                  </span>
-                  <p style="margin-top: 0px; font-size:12px">
-                     <?php echo $option_value['name']; ?>
+                         <!-- Special Price -->
+                         <span style="color:#a38129; font-weight: bold;">
+                           <?php echo rtrim(rtrim($special, '0'), '.'); ?>
+                         </span>
+                 
+                         <!-- Discount Percentage -->
+                         <?php if ($discount_percentage) { ?>
+                             <span style="color: red; font-size: 18px; margin-left: 10px;">
+                                 (<?php echo $discount_percentage; ?>% Off)
+                             </span>
+                         <?php } ?>
+                     <?php } else { ?>
+                         <!-- Regular Price Only -->
+                         <span>
+                             <?php echo preg_replace('~\.0+$~', '', $price); ?>
+                         </span>
+                     <?php } ?>
+                 </h3>
+                 
+                  <?php if (!$cad) { ?>
+                  <p style="line-height:36px">
+                     Style No : <i>
+                        <?php echo $style_no; ?>
+                     </i>
+                     <br />
+                     Design No : <i>
+                        <?php echo $design_no; ?>
+                     </i>
+                     <br />
+                     Metal Purity: <i>
+                        <?php echo $metal_purity; ?>
+                     </i>
                   </p>
-               </div>
+                  <?php
+                  } ?>
 
-               <?php
-                           } ?>
-               <div style="display: none;" style="width:200px;"
-                  class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
-                  <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>">
-                     <?php echo $option['name']; ?>
-                  </label>
-                  <select name="option[<?php echo $option['product_option_id']; ?>]"
-                     id="input-option<?php echo $option['product_option_id']; ?>" class="form-control">
-                     <option value="">
-                        <?php echo $text_select; ?>
-                     </option>
-                     <?php foreach ($option['product_option_value'] as $option_value) { ?>
-                     <option data-sign="<?php echo $option_value['price_prefix']; ?>"
-                        data-link="<?php echo $option_value['link']; ?>"
-                        value="<?php echo $option_value['product_option_value_id']; ?>">
-                        <?php echo $option_value['name']; ?>
-                        <?php if ($option_value['price']) { ?>
-                        (
-                        <?php echo $option_value['price_prefix']; ?>
-                        <?php echo $option_value['price']; ?>)
-                        <?php
-                                       } ?>
-                     </option>
-                     <?php
-                                 } ?>
-                  </select>
-               </div>
-               <hr style="margin-top: 30px;" />
-               <?php
-                        } ?>
-               <?php if ($option['type'] == 'radio') { ?>
-               <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
-                  <label class="control-label">
-                     <?php echo $option['name']; ?>
-                  </label>
-                  <div id="input-option<?php echo $option['product_option_id']; ?>">
-                     <?php foreach ($option['product_option_value'] as $option_value) { ?>
-                     <div class="radio">
-                        <label>
-                           <input class="sizes" data-sign="<?php echo $option_value['price_prefix']; ?>"
-                              data-price="<?php echo $option_value['price']; ?>" type="radio"
-                              name="option[<?php echo $option['product_option_id']; ?>]"
-                              value="<?php echo $option_value['product_option_value_id']; ?>" />
-                           <?php if ($option_value['image']) { ?>
-                           <img style="display: none;" src="<?php echo $option_value['image']; ?>"
-                              alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"
-                              class="img-thumbnail" />
-                           <?php
-                                          } ?>
-                           <?php echo $option_value['name']; ?>
-
-                        </label>
+                  <div style="margin-top:20px; display:none" class="row">
+                     <div
+                        style="text-align: left; padding-left: 0px; width:120px">
+                        <p style="color:#000; font-size:16px">Quantity
+                           &nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <div style="text-align: left; padding-left: 0px; "
+                           class="col-sm-4 col-xs-4">
+                           <span class="minus-btn" id="less_quantity"
+                              style="height: 40px; text-align: center; padding:7px 10px; border:thin solid #333; cursor: pointer">
+                              <input style="margin: 0px; padding: 2.5px;"
+                                 type="hidden" name="product_id"
+                                 value="<?php echo $product_id; ?>" />
+                              <li style="color: #333; font-size: 12px"
+                                 class="fa fa-minus"></li>
+                           </span>
+                        </div>
+                        <div style="text-align: center; padding: 0px"
+                           class="col-sm-4 col-xs-2">
+                           <input
+                              style="text-align: center; border-radius:0px; color:#000; width: auto; height: auto; box-shadow:none; border: none; background-color: transparent; padding: 0px"
+                              type="text" readonly name="quantity" value="1"
+                              size="2" id="input-quantity"
+                              class="form-control" />
+                        </div>
+                        <div style="text-align: left; padding-left: 0px; "
+                           class="col-sm-4 col-xs-6">
+                           <span class="pluse-btn" id="add_quantity"
+                              style="height: 40px; text-align: center; padding: 7px 10px; border:thin solid #000; cursor: pointer">
+                              <li style="font-size: 12px; color:#000"
+                                 class="fa fa-plus"></li>
+                           </span>
+                        </div>
                      </div>
-                     <?php
-                                 } ?>
                   </div>
-               </div>
-               <br />
-               <hr />
-               <?php
+                  <?php if ($options) { ?>
+                  <hr>
+
+                  <?php foreach ($options as $option) { ?>
+                  <?php if ($option['type'] == 'file') { ?>
+                  <div
+                     class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+                     <label class="control-label">
+                        <?php echo $option['name']; ?>
+                     </label>
+                     <button type="button"
+                        id="button-upload<?php echo $option['product_option_id']; ?>"
+                        data-loading-text="<?php echo $text_loading; ?>"
+                        class="btn btn-default btn-block"><i
+                           class="fa fa-upload"></i>
+                        <?php echo $button_upload; ?>
+                     </button>
+                     <input type="hidden"
+                        name="option[<?php echo $option['product_option_id']; ?>]"
+                        value
+                        id="input-option<?php echo $option['product_option_id']; ?>" />
+                  </div>
+                  <hr />
+                  <?php
+                  } ?>
+                  <?php if ($option['type'] == 'select') { ?>
+                  <p style="display: none;">Metal Colors</p>
+                  <?php foreach ($option['product_option_value'] as
+                  $option_value) { ?>
+                  <div class="text-center" style="display: inline-block;">
+                     <span
+                        style="background:url(<?php echo $option_value['image']; ?>)"
+                        data-sign="<?php echo $option_value['price_prefix']; ?>"
+                        data-money="<?php echo $option_value['price']; ?>"
+                        data-image="<?php if(isset($option_value['option_image'])){ echo $option_value['option_image'];} ?>"
+                        data-val="<?php if(isset($option_value)) echo $option_value['product_option_value_id']; ?>"
+                        class="tab_options">
+
+                     </span>
+                     <p style="margin-top: 0px; font-size:12px">
+                        <?php echo $option_value['name']; ?>
+                     </p>
+                  </div>
+
+                  <?php
+                  } ?>
+                  <div style="display: none;" style="width:200px;"
+                     class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+                     <label class="control-label"
+                        for="input-option<?php echo $option['product_option_id']; ?>">
+                        <?php echo $option['name']; ?>
+                     </label>
+                     <select
+                        name="option[<?php echo $option['product_option_id']; ?>]"
+                        id="input-option<?php echo $option['product_option_id']; ?>"
+                        class="form-control">
+                        <option value>
+                           <?php echo $text_select; ?>
+                        </option>
+                        <?php foreach ($option['product_option_value'] as
+                        $option_value) { ?>
+                        <option
+                           data-sign="<?php echo $option_value['price_prefix']; ?>"
+                           data-link="<?php echo $option_value['link']; ?>"
+                           value="<?php echo $option_value['product_option_value_id']; ?>">
+                           <?php echo $option_value['name']; ?>
+                           <?php if ($option_value['price']) { ?>
+                           (
+                           <?php echo $option_value['price_prefix']; ?>
+                           <?php echo $option_value['price']; ?>)
+                           <?php
+                           } ?>
+                        </option>
+                        <?php
                         } ?>
-               <?php if ($option['type'] == 'textarea') { ?>
-               <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
-                  <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>">
-                     <?php echo $option['name']; ?>
-                  </label>
-                  <textarea name="option[<?php echo $option['product_option_id']; ?>]" rows="5"
-                     placeholder="<?php echo $option['name']; ?>"
-                     id="input-option<?php echo $option['product_option_id']; ?>"
-                     class="form-control"><?php echo $option['value']; ?></textarea>
-               </div>
-               <?php
+                     </select>
+                  </div>
+                  <hr style="margin-top: 30px;" />
+                  <?php
+                  } ?>
+                  <?php if ($option['type'] == 'radio') { ?>
+                  <div
+                     class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+                     <label class="control-label">
+                        <?php echo $option['name']; ?>
+                     </label>
+                     <div
+                        id="input-option<?php echo $option['product_option_id']; ?>">
+                        <?php foreach ($option['product_option_value'] as
+                        $option_value) { ?>
+                        <div class="radio">
+                           <label>
+                              <input class="sizes"
+                                 data-sign="<?php echo $option_value['price_prefix']; ?>"
+                                 data-price="<?php echo $option_value['price']; ?>"
+                                 type="radio"
+                                 name="option[<?php echo $option['product_option_id']; ?>]"
+                                 value="<?php echo $option_value['product_option_value_id']; ?>" />
+                              <?php if ($option_value['image']) { ?>
+                              <img style="display: none;"
+                                 src="<?php echo $option_value['image']; ?>"
+                                 alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"
+                                 class="img-thumbnail" />
+                              <?php
+                              } ?>
+                              <?php echo $option_value['name']; ?>
+
+                           </label>
+                        </div>
+                        <?php
                         } ?>
-
-
-
-
-               <?php
-                     } ?>
-               <?php
+                     </div>
+                  </div>
+                  <br />
+                  <hr />
+                  <?php
+                  } ?>
+                  <?php if ($option['type'] == 'textarea') { ?>
+                  <div
+                     class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+                     <label class="control-label"
+                        for="input-option<?php echo $option['product_option_id']; ?>">
+                        <?php echo $option['name']; ?>
+                     </label>
+                     <textarea
+                        name="option[<?php echo $option['product_option_id']; ?>]"
+                        rows="5"
+                        placeholder="<?php echo $option['name']; ?>"
+                        id="input-option<?php echo $option['product_option_id']; ?>"
+                        class="form-control"><?php echo $option['value']; ?></textarea>
+                  </div>
+                  <?php
                   } ?>
 
-               <?php if ($price) { ?>
-               <div id="wishlist-msg">
+                  <?php
+                  } ?>
+                  <?php
+                  } ?>
 
-               </div>
-               <div style="padding:0px;" id="content" class="row">
-                  <div style=" min-width:160px;" id="addb" class="col-sm-7">
-                     <a id="button-cart" style="width: 100%;" class="btn btn-hero">ADD TO CART</a>
-                  </div>
-                  <div class="col-sm-5">
-                     <a class="btn btn-find-store" style=""
-                        href="https://zaynjewels.com/index.php?route=common/locations">Find A Store</a>
+                  <?php if ($price) { ?>
+                  <div id="wishlist-msg">
 
                   </div>
-               </div>
+                  <div style="padding:0px;" id="content" class="row">
+                     <div style=" min-width:160px;" id="addb" class="col-sm-7">
+                        <a id="button-cart" style="width: 100%;"
+                           class="btn btn-hero">ADD TO CART</a>
+                     </div>
+                     <div class="col-sm-5">
+                        <a class="btn btn-find-store" style
+                           href="https://zaynjewels.com/index.php?route=common/locations">Find
+                           A Store</a>
 
-               <?php
+                     </div>
+                  </div>
+
+                  <?php
                   } else { ?>
-               <div style="padding:0px;" class="row">
-                  <div style=" min-width:160px;" id="addb" class="col-sm-10">
-                     <a style="width: 100%;" id="login-redirect" class="btn btn-hero">
-                        Retailer Login</a>
+                  <div style="padding:0px;" class="row">
+                     <div style=" min-width:160px;" id="addb" class="col-sm-10">
+                        <a style="width: 100%;" id="login-redirect"
+                           class="btn btn-hero">
+                           Retailer Login</a>
+                     </div>
+
                   </div>
-
-               </div>
-               <?php
+                  <?php
                   } ?>
-               <div class="row d-sm-none">
-                  <div class="col-sm-12">
-                     <ul class="nav nav-tabs"
-                        style="overflow: auto; white-space: nowrap; display:block; padding-top:20px;">
-                        <li style="display:inline-block" class="active"><a href="#tab-description-mob"
-                              data-toggle="tab">
-                              <?php echo strip_tags($tab_description); ?>
-                           </a></li>
-                        <?php if ($attribute_groups) { ?>
-                        <li style="display:inline-block"><a href="#tab-specification-mob" data-toggle="tab">
-                              <?php echo $tab_attribute; ?>
-                           </a></li>
-                        <?php
+                  <div class="row d-sm-none">
+                     <div class="col-sm-12">
+                        <ul class="nav nav-tabs"
+                           style="overflow: auto; white-space: nowrap; display:block; padding-top:20px;">
+                           <li style="display:inline-block" class="active"><a
+                                 href="#tab-description-mob"
+                                 data-toggle="tab">
+                                 <?php echo strip_tags($tab_description); ?>
+                              </a></li>
+                           <?php if ($attribute_groups) { ?>
+                           <li style="display:inline-block"><a
+                                 href="#tab-specification-mob"
+                                 data-toggle="tab">
+                                 <?php echo $tab_attribute; ?>
+                              </a></li>
+                           <?php
                            } ?>
-                        <?php if ($review_status) { ?>
-                        <li style="display:inline-block"><a href="#tab-review-mob" data-toggle="tab">
-                              <?php echo $tab_review; ?>
-                           </a></li>
-                        <?php
+                           <?php if ($review_status) { ?>
+                           <li style="display:inline-block"><a
+                                 href="#tab-review-mob" data-toggle="tab">
+                                 <?php echo $tab_review; ?>
+                              </a></li>
+                           <?php
                            } ?>
-                     </ul>
-                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab-description-mob">
-                           <br />
-                           <?php echo strip_tags($description); ?>
-                        </div>
-                        <?php if ($attribute_groups) { ?>
-                        <div class="tab-pane" id="tab-specification-mob">
-                           <table class="table table-bordered">
-                              <?php foreach ($attribute_groups as $attribute_group) { ?>
-                              <thead>
-                                 <tr>
-                                    <td colspan="2"><strong>
-                                          <?php echo $attribute_group['name']; ?>
-                                       </strong></td>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <?php foreach ($attribute_group['attribute'] as $attribute) { ?>
-                                 <tr>
-                                    <td>
-                                       <?php echo $attribute['name']; ?>
-                                    </td>
-                                    <td>
-                                       <?php echo $attribute['text']; ?>
-                                    </td>
-                                 </tr>
+                        </ul>
+                        <div class="tab-content">
+                           <div class="tab-pane active"
+                              id="tab-description-mob">
+                              <br />
+                              <?php echo strip_tags($description); ?>
+                           </div>
+                           <?php if ($attribute_groups) { ?>
+                           <div class="tab-pane" id="tab-specification-mob">
+                              <table class="table table-bordered">
+                                 <?php foreach ($attribute_groups as
+                                 $attribute_group) { ?>
+                                 <thead>
+                                    <tr>
+                                       <td colspan="2"><strong>
+                                             <?php echo
+                                             $attribute_group['name']; ?>
+                                          </strong></td>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <?php foreach ($attribute_group['attribute']
+                                    as $attribute) { ?>
+                                    <tr>
+                                       <td>
+                                          <?php echo $attribute['name']; ?>
+                                       </td>
+                                       <td>
+                                          <?php echo $attribute['text']; ?>
+                                       </td>
+                                    </tr>
+                                    <?php
+                                    } ?>
+                                 </tbody>
                                  <?php
-                                          } ?>
-                              </tbody>
-                              <?php
-                                    } ?>
-                           </table>
-                        </div>
-                        <?php
+                                 } ?>
+                              </table>
+                           </div>
+                           <?php
                            } ?>
-                        <?php if ($review_status) { ?>
-                        <div class="tab-pane" id="tab-review-mob">
-                           <div id="mob-review-msg"></div>
-                           <form class="form-horizontal" id="form-review-mob">
-                              <div id="review"></div>
+                           <?php if ($review_status) { ?>
+                           <div class="tab-pane" id="tab-review-mob">
+                              <div id="mob-review-msg"></div>
+                              <form class="form-horizontal"
+                                 id="form-review-mob">
+                                 <div id="review"></div>
 
-                              <?php if ($review_guest) { ?>
-                              <div class="form-group required">
-                                 <div class="col-sm-12">
-                                    <label class="control-label" for="input-name">
-                                       <?php echo $entry_name; ?>
-                                    </label>
-                                    <input type="text" name="name" value="<?php echo $customer_name; ?>" id="input-name"
-                                       class="form-control" />
-                                 </div>
-                              </div>
-                              <div class="form-group required">
-                                 <div class="col-sm-12">
-                                    <label class="control-label" for="input-review">
-                                       <?php echo $entry_review; ?>
-                                    </label>
-                                    <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
-                                 </div>
-                              </div>
-                              <div class="form-group required">
-                                 <div class="col-sm-12">
-                                    <span class="star-cb-group star-rating star-5">
-                                       <label class="control-label">
-                                          <?php echo $entry_rating; ?>
+                                 <?php if ($review_guest) { ?>
+                                 <div class="form-group required">
+                                    <div class="col-sm-12">
+                                       <label class="control-label"
+                                          for="input-name">
+                                          <?php echo $entry_name; ?>
                                        </label>
-                                       <input type="radio" name="rating" value="1" /><i></i>
-                                       &nbsp;
-                                       <input type="radio" name="rating" value="2" /><i></i>
-                                       &nbsp;
-                                       <input type="radio" name="rating" value="3" /><i></i>
-                                       &nbsp;
-                                       <input type="radio" name="rating" value="4" /><i></i>
-                                       &nbsp;
-                                       <input type="radio" name="rating" value="5" /><i></i>
-                                    </span>
+                                       <input type="text" name="name"
+                                          value="<?php echo $customer_name; ?>"
+                                          id="input-name"
+                                          class="form-control" />
+                                    </div>
                                  </div>
-                              </div>
-                              <?php echo $captcha; ?>
-                              <div class="buttons clearfix">
-                                 <div class="text-center">
-                                    <button type="button" id="button-review-mob"
-                                       data-loading-text="<?php echo $text_loading; ?>"
-                                       class="btn btn-hero">Submit</button>
+                                 <div class="form-group required">
+                                    <div class="col-sm-12">
+                                       <label class="control-label"
+                                          for="input-review">
+                                          <?php echo $entry_review; ?>
+                                       </label>
+                                       <textarea name="text" rows="5"
+                                          id="input-review"
+                                          class="form-control"></textarea>
+                                    </div>
                                  </div>
-                              </div>
-                              <script>
-                                 $('#button-review-mob').on('click', function () {
-                                    $.ajax({
-                                       url: 'index.php?route=product/product/write&product_id=<?php echo $product_id; ?>',
-                                       type: 'post',
-                                       dataType: 'json',
-                                       data: $("#form-review-mob").serialize(),
-                                       beforeSend: function () {
-                                          $('#button-review-mob').button('loading');
-                                       },
-                                       complete: function () {
-                                          $('#button-review-mob').button('reset');
-                                       },
-                                       success: function (json) {
-                                          $('.alert-success, .alert-danger').remove();
-
-                                          if (json['error']) {
-                                             $('#mob-review-msg').after(
-                                                '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' +
-                                                json['error'] + '</div>');
+                                 <div class="form-group required">
+                                    <div class="col-sm-12">
+                                       <span
+                                          class="star-cb-group star-rating star-5">
+                                          <label class="control-label">
+                                             <?php echo $entry_rating; ?>
+                                          </label>
+                                          <input type="radio" name="rating"
+                                             value="1" /><i></i>
+                                          &nbsp;
+                                          <input type="radio" name="rating"
+                                             value="2" /><i></i>
+                                          &nbsp;
+                                          <input type="radio" name="rating"
+                                             value="3" /><i></i>
+                                          &nbsp;
+                                          <input type="radio" name="rating"
+                                             value="4" /><i></i>
+                                          &nbsp;
+                                          <input type="radio" name="rating"
+                                             value="5" /><i></i>
+                                       </span>
+                                    </div>
+                                 </div>
+                                 <?php echo $captcha; ?>
+                                 <div class="buttons clearfix">
+                                    <div class="text-center">
+                                       <button type="button"
+                                          id="button-review-mob"
+                                          data-loading-text="<?php echo $text_loading; ?>"
+                                          class="btn btn-hero">Submit</button>
+                                    </div>
+                                 </div>
+                                 <script>
+                                    $('#button-review-mob').on('click', function () {
+                                       $.ajax({
+                                          url: 'index.php?route=product/product/write&product_id=<?php echo $product_id; ?>',
+                                          type: 'post',
+                                          dataType: 'json',
+                                          data: $("#form-review-mob").serialize(),
+                                          beforeSend: function () {
+                                             $('#button-review-mob').button('loading');
+                                          },
+                                          complete: function () {
+                                             $('#button-review-mob').button('reset');
+                                          },
+                                          success: function (json) {
+                                             $('.alert-success, .alert-danger').remove();
+   
+                                             if (json['error']) {
+                                                $('#mob-review-msg').after(
+                                                   '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' +
+                                                   json['error'] + '</div>');
+                                             }
+   
+                                             if (json['success']) {
+                                                $('#mob-review-msg').after(
+                                                   '<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' +
+                                                   json['success'] + '</div>');
+   
+                                                $('input[name=\'name\']').val('');
+                                                $('textarea[name=\'text\']').val('');
+                                                $('input[name=\'rating\']:checked').prop('checked', false);
+                                             }
                                           }
-
-                                          if (json['success']) {
-                                             $('#mob-review-msg').after(
-                                                '<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' +
-                                                json['success'] + '</div>');
-
-                                             $('input[name=\'name\']').val('');
-                                             $('textarea[name=\'text\']').val('');
-                                             $('input[name=\'rating\']:checked').prop('checked', false);
-                                          }
-                                       }
+                                       });
                                     });
-                                 });
-                              </script>
-                              <?php
-                                    } else { ?>
-                              <?php echo $text_login; ?>
-                              <?php
-                                    } ?>
-                           </form>
-                        </div>
-                        <?php
+                                 </script>
+                                 <?php
+                                 } else { ?>
+                                 <?php echo $text_login; ?>
+                                 <?php
+                                 } ?>
+                              </form>
+                           </div>
+                           <?php
                            } ?>
+                        </div>
                      </div>
                   </div>
                </div>
@@ -751,6 +1127,7 @@ console.log(temp);
          </div>
       </div>
    </div>
+
 </div>
 
 <section style="background: #F8F8F8;">
@@ -766,7 +1143,6 @@ console.log(temp);
 
       <div class="slicker">
 
-
          <?php $i = 0; ?>
          <?php foreach ($products as $product) { ?>
 
@@ -777,21 +1153,21 @@ console.log(temp);
                <div class="product-item">
                   <figure class="product-thumb">
                      <a href="<?php print_r($product['href']); ?>">
-                        <img style="z-index:99999999" src="<?php print_r($product['thumb']); ?>" class="img-responsive">
+                        <img style="z-index:99999999"
+                           src="<?php print_r($product['thumb']); ?>"
+                           class="img-responsive">
                      </a>
 
                   </figure>
                   <p class="description" style="display: none;">
                      <?php print_r($product['description']); ?>
-                     <input type="hidden" class="pid" value="<?php echo $product['product_id']; ?>">
+                     <input type="hidden" class="pid"
+                        value="<?php echo $product['product_id']; ?>">
                   </p>
                   <div class="product-caption text-center">
                      <h6 class="product-name new_font">
                         <?php print_r($product['name']); ?>
                      </h6>
-
-
-
 
                   </div>
 
@@ -802,40 +1178,42 @@ console.log(temp);
          </div>
 
          <?php
-               } ?>
+         } ?>
       </div>
       <br /><br />
 
       <?php
-         } ?>
+      } ?>
    </div>
 
 </section>
 
 <?php } ?>
 
-
 <?php if ($cad) { ?>
 <div style="max-width:1250px" class="container">
    <div class="row">
       <div class="col-sm-12">
-         <div style="margin-bottom: 50px; display:flex; align-items:center" class="row">
+         <div style="margin-bottom: 50px; display:flex; align-items:center"
+            class="row">
 
             <div class="col-sm-5 desktop_slider">
                <?php if ($thumb || $images) { ?>
                <div id="s_wrap">
                   <?php if ($thumb) { ?>
-                  <img class="img-responsive" src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>"
+                  <img class="img-responsive" src="<?php echo $thumb; ?>"
+                     title="<?php echo $heading_title; ?>"
                      alt="<?php echo $heading_title; ?>" />
                   <?php
-                        } ?>
+                  } ?>
                </div>
                <?php
-                  } ?>
+               } ?>
 
             </div>
             <div class="col-sm-6">
-               <h3 style="text-transform: capitalize; color:#423c9e; font-size:28px; margin-top:25px">
+               <h3
+                  style="text-transform: capitalize; color:#423c9e; font-size:28px; margin-top:25px">
                   <?php echo $heading_title; ?>
                </h3>
                <br />
@@ -845,36 +1223,41 @@ console.log(temp);
                <br />
                <h3 style="color:#a38129; font-size:22px;">
                   <?php if ($price) {
-                        echo 'Price: ' . preg_replace('~\.0+$~', '', $price);
-                     } else {
-                        echo '<div style="padding:0px;" class="row pb-5">
-                     <div style=" min-width:160px;" id="addb" class="col-sm-6 offset-sm-3">
-                        <a style="width: 100%;" id="login-redirect" class="btn btn-hero">LOGIN</a>
+                  echo 'Price: ' . preg_replace('~\.0+$~', '', $price);
+                  } else {
+                  echo '<div style="padding:0px;" class="row pb-5">
+                     <div style=" min-width:160px;" id="addb"
+                        class="col-sm-6 offset-sm-3">
+                        <a style="width: 100%;" id="login-redirect"
+                           class="btn btn-hero">LOGIN</a>
                      </div>
 
                   </div>';
-                     } ?>
+                  } ?>
                </h3>
             </div>
-
 
             <div class="col-12 slider-mob-box">
                <div>
                   <ul class="slider-mob" style="z-index:99999">
                      <?php if ($thumb) { ?>
-                     <li style="margin-left:-30px"><img class="img-responsive" src="<?php echo $thumb; ?>"
-                           title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></li>
-                     <?php
-                        } ?>
-                     <?php if ($images) { ?>
-                     <?php foreach ($images as $image) { ?>
-                     <li style="margin-left:-30px"><img class="img-responsive" style="margin: auto; margin-right:-5px;"
-                           src="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>"
+                     <li style="margin-left:-30px"><img class="img-responsive"
+                           src="<?php echo $thumb; ?>"
+                           title="<?php echo $heading_title; ?>"
                            alt="<?php echo $heading_title; ?>" /></li>
                      <?php
-                           } ?>
+                     } ?>
+                     <?php if ($images) { ?>
+                     <?php foreach ($images as $image) { ?>
+                     <li style="margin-left:-30px"><img class="img-responsive"
+                           style="margin: auto; margin-right:-5px;"
+                           src="<?php echo $image['popup']; ?>"
+                           title="<?php echo $heading_title; ?>"
+                           alt="<?php echo $heading_title; ?>" /></li>
                      <?php
-                        } ?>
+                     } ?>
+                     <?php
+                     } ?>
                   </ul>
                </div>
             </div>
@@ -889,76 +1272,93 @@ console.log(temp);
       <br />
       <?php if ($price) { ?>
       <form class="row new-product-form" id="new-product-form">
-         <div id="content" style="min-height: 350px;" class="col-sm-10 offset-sm-1">
+         <div id="content" style="min-height: 350px;"
+            class="col-sm-10 offset-sm-1">
             <div style=" text-align:left" id="product" class="col-sm-12 mb-3">
 
                <div style="margin-top:20px; display:none" class="row">
                   <div style="text-align: left; padding-left: 0px; width:120px">
-                     <p style="color:#000; font-size:16px">Quantity &nbsp;&nbsp;&nbsp;&nbsp;</p>
-                     <div style="text-align: left; padding-left: 0px; " class="col-sm-4 col-xs-4">
+                     <p style="color:#000; font-size:16px">Quantity
+                        &nbsp;&nbsp;&nbsp;&nbsp;</p>
+                     <div style="text-align: left; padding-left: 0px; "
+                        class="col-sm-4 col-xs-4">
                         <span class="minus-btn" id="less_quantity"
                            style="height: 40px; text-align: center; padding:7px 10px; border:thin solid #333; cursor: pointer">
-                           <input style="margin: 0px; padding: 2.5px;" type="hidden" name="product_id"
+                           <input style="margin: 0px; padding: 2.5px;"
+                              type="hidden" name="product_id"
                               value="<?php echo $product_id; ?>" />
-                           <li style="color: #333; font-size: 12px" class="fa fa-minus"></li>
+                           <li style="color: #333; font-size: 12px"
+                              class="fa fa-minus"></li>
                         </span>
                      </div>
-                     <div style="text-align: center; padding: 0px" class="col-sm-4 col-xs-2">
+                     <div style="text-align: center; padding: 0px"
+                        class="col-sm-4 col-xs-2">
                         <input
                            style="text-align: center; border-radius:0px; color:#000; width: auto; height: auto; box-shadow:none; border: none; background-color: transparent; padding: 0px"
-                           type="text" readonly name="quantity" value="1" size="2" id="input-quantity"
+                           type="text" readonly name="quantity" value="1"
+                           size="2" id="input-quantity"
                            class="form-control" />
                      </div>
-                     <div style="text-align: left; padding-left: 0px; " class="col-sm-4 col-xs-6">
+                     <div style="text-align: left; padding-left: 0px; "
+                        class="col-sm-4 col-xs-6">
                         <span class="pluse-btn" id="add_quantity"
                            style="height: 40px; text-align: center; padding: 7px 10px; border:thin solid #000; cursor: pointer">
-                           <li style="font-size: 12px; color:#000" class="fa fa-plus"></li>
+                           <li style="font-size: 12px; color:#000"
+                              class="fa fa-plus"></li>
                         </span>
                      </div>
                   </div>
                </div>
                <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
-                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                     <a class="nav-link active" id="home-tab" data-toggle="tab"
+                        href="#home" role="tab"
                         aria-controls="home" aria-selected="true">
                         <h6>Your Details</h6>
                      </a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                     <a class="nav-link" id="profile-tab" data-toggle="tab"
+                        href="#profile" role="tab"
                         aria-controls="profile" aria-selected="false">
                         <h6>CAD Details</h6>
                      </a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                     <a class="nav-link" id="contact-tab" data-toggle="tab"
+                        href="#contact" role="tab"
                         aria-controls="contact" aria-selected="false">
                         <h6>Upload Files</h6>
                      </a>
                   </li>
                </ul>
                <div class="tab-content" id="myTabContent">
-                  <div class="tab-pane fade show active text-center" id="home" role="tabpanel"
+                  <div class="tab-pane fade show active text-center" id="home"
+                     role="tabpanel"
                      aria-labelledby="home-tab">
                      <div class="row" style="margin-top:20px">
                         <?php if ($options) {
-                $c = 1;
-            ?>
+                        $c = 1;
+                        ?>
 
                         <?php foreach ($options as $option) {
-                if ($c == 5) {
-                    break;
-                }
-            ?>
+                        if ($c == 5) {
+                        break;
+                        }
+                        ?>
                         <div class="col-sm-6">
 
                            <?php if ($option['type'] == 'text') { ?>
-                           <div class="form-group<?= $option['required'] ? ' required' : '' ?>">
+                           <div
+                              class="form-group<?= $option['required'] ? ' required' : '' ?>">
                               <!-- <label class="control-label" for="input-option<?= $option['product_option_id'] ?>">
                         <?= $option['name'] ?></label> -->
-                              <input type="text" name="option[<?= $option['product_option_id'] ?>]"
-                                 value="<?= ($draft && isset($draft[" option[" . $option['product_option_id'] . "]" ]))
-                                 ? $draft["option[" . $option['product_option_id'] . "]" ] : '' ?>"
+                              <input type="text"
+                                 name="option[<?= $option['product_option_id'] ?>]"
+                                 value="<?= ($draft && isset($draft[" option[" .
+                                 $option['product_option_id'] . "]" ]))
+                                 ? $draft["option[" .
+                                 $option['product_option_id'] . "]" ] : '' ?>"
                               placeholder="
                               <?= $option['name'] ?>" id="input-option
                               <?= $option['product_option_id'] ?>"
@@ -969,32 +1369,36 @@ console.log(temp);
                         </div>
 
                         <?php $c++;
-            } ?>
+                        } ?>
                         <?php } ?>
 
                      </div>
                      <button id="n1" class="btn btn-hero">Next</button>
                   </div>
 
-                  <div class="tab-pane fade text-center" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                  <div class="tab-pane fade text-center" id="profile"
+                     role="tabpanel" aria-labelledby="profile-tab">
                      <br />
                      <div class="row" style="margin-top:20px">
                         <?php if ($options) { ?>
 
                         <?php for ($i = 4; $i < sizeof($options); $i++) { ?>
 
-
                         <?php if ($options[$i]['type'] == 'select') { ?>
                         <div class="col-sm-6"
                            style="min-height:50px; margin-bottom:20px; border-bottom:1px solid #ccc; padding-bottom:20px">
                            <p style="display: none;">Metal Colors</p>
-                           <?php foreach ($options[$i]['product_option_value'] as $option_value) { ?>
-                           <div class="text-center" style="display: inline-block;">
-                              <span style="background:url(<?= $option_value['image'] ?>)"
+                           <?php foreach ($options[$i]['product_option_value']
+                           as $option_value) { ?>
+                           <div class="text-center"
+                              style="display: inline-block;">
+                              <span
+                                 style="background:url(<?= $option_value['image'] ?>)"
                                  data-sign="<?= $option_value['price_prefix'] ?>"
                                  data-money="<?= $option_value['price'] ?>"
                                  data-image="<?= $option_value['option_image'] ?>"
-                                 data-val="<?= $option_value['product_option_value_id'] ?>" class="tab_options">
+                                 data-val="<?= $option_value['product_option_value_id'] ?>"
+                                 class="tab_options">
 
                               </span>
                               <p style="margin-top: 0px; font-size:12px">
@@ -1003,19 +1407,25 @@ console.log(temp);
                            </div>
 
                            <?php
-                        } ?>
+                           } ?>
                            <div style="display: none;" style="width:200px;"
                               class="form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
-                              <label class="control-label" for="input-option<?= $options[$i]['product_option_id'] ?>">
+                              <label class="control-label"
+                                 for="input-option<?= $options[$i]['product_option_id'] ?>">
                                  <?= $options[$i]['name'] ?>
                               </label>
-                              <select name="option[<?= $options[$i]['product_option_id'] ?>]"
-                                 id="input-option<?= $options[$i]['product_option_id'] ?>" class="form-control">
-                                 <option value="">
+                              <select
+                                 name="option[<?= $options[$i]['product_option_id'] ?>]"
+                                 id="input-option<?= $options[$i]['product_option_id'] ?>"
+                                 class="form-control">
+                                 <option value>
                                     <?= $text_select ?>
                                  </option>
-                                 <?php foreach ($options[$i]['product_option_value'] as $option_value) { ?>
-                                 <option data-sign="<?= $option_value['price_prefix'] ?>"
+                                 <?php foreach
+                                 ($options[$i]['product_option_value'] as
+                                 $option_value) { ?>
+                                 <option
+                                    data-sign="<?= $option_value['price_prefix'] ?>"
                                     data-link="<?= $option_value['link'] ?>"
                                     value="<?= $option_value['product_option_value_id'] ?>">
                                     <?= $option_value['name'] ?>
@@ -1024,134 +1434,162 @@ console.log(temp);
                                     <?= $option_value['price_prefix'] ?>
                                     <?= $option_value['price'] ?>)
                                     <?php
-                                } ?>
+                                    } ?>
                                  </option>
                                  <?php
-                                } ?>
+                                 } ?>
                               </select>
                            </div>
                         </div>
                         <hr style="margin-top: 30px;" />
                         <?php
-                    } ?>
+                        } ?>
                         <?php if ($options[$i]['type'] == 'radio') { ?>
                         <div class="col-sm-6"
                            style="min-height:50px; margin-bottom:20px; border-bottom:1px solid #ccc; padding-bottom:20px">
-                           <div class="text-left form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
+                           <div
+                              class="text-left form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
                               <label class="control-label">
                                  <?= $options[$i]['name'] ?>
                               </label>
-                              <div id="input-option<?= $options[$i]['product_option_id'] ?>">
-                                 <?php foreach ($options[$i]['product_option_value'] as $option_value) { ?>
+                              <div
+                                 id="input-option<?= $options[$i]['product_option_id'] ?>">
+                                 <?php foreach
+                                 ($options[$i]['product_option_value'] as
+                                 $option_value) { ?>
                                  <div class="radio">
                                     <label>
-                                       <input class="sizes" data-sign="<?= $option_value['price_prefix'] ?>"
-                                          data-price="<?= $option_value['price'] ?>" type="radio"
+                                       <input class="sizes"
+                                          data-sign="<?= $option_value['price_prefix'] ?>"
+                                          data-price="<?= $option_value['price'] ?>"
+                                          type="radio"
                                           name="option[<?= $options[$i]['product_option_id'] ?>]"
-                                          value="<?= $option_value['product_option_value_id'] ?>" <?php if ($draft &&
-                                          isset($draft["option[" . $options[$i]['product_option_id'] . "]" ]) &&
-                                          $draft["option[" . $options[$i]['product_option_id'] . "]"
-                                          ]==$option_value['product_option_value_id']) { echo "checked" ; } ?> />
+                                          value="<?= $option_value['product_option_value_id'] ?>"
+                                          <?php if ($draft &&
+                                          isset($draft["option[" .
+                                          $options[$i]['product_option_id'] .
+                                          "]" ]) &&
+                                          $draft["option[" .
+                                          $options[$i]['product_option_id'] .
+                                          "]"
+                                          ]==$option_value['product_option_value_id'])
+                                          { echo "checked" ; } ?> />
                                        <?php if ($option_value['image']) { ?>
-                                       <img style="display: none;" src="<?= $option_value['image'] ?>"
+                                       <img style="display: none;"
+                                          src="<?= $option_value['image'] ?>"
                                           alt="<?= $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"
                                           class="img-thumbnail" />
                                        <?php
-                                        } ?>
+                                       } ?>
                                        <?= $option_value['name'] ?>
 
                                     </label>
                                  </div>
                                  <?php
-                                } ?>
+                                 } ?>
                               </div>
                            </div>
                         </div>
                         <br />
 
                         <?php
-                    } ?>
+                        } ?>
                         <?php if ($options[$i]['type'] == 'textarea') { ?>
                         <div class="col-sm-12"
                            style="min-height:50px; margin-bottom:20px; border-bottom:1px solid #ccc; padding-bottom:20px">
-                           <div class="text-left form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
+                           <div
+                              class="text-left form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
                               <!-- <label class="control-label"
                         for="input-option<?= $options[$i]['product_option_id'] ?>">
                         <?= $options[$i]['name'] ?></label> -->
-                              <textarea name="option[<?= $options[$i]['product_option_id'] ?>]" rows="5"
+                              <textarea
+                                 name="option[<?= $options[$i]['product_option_id'] ?>]"
+                                 rows="5"
                                  placeholder="<?= $options[$i]['name'] ?>"
                                  id="input-option<?= $options[$i]['product_option_id'] ?>"
                                  class="form-control"><?= ($draft && isset($draft["option[" . $options[$i]['product_option_id'] . "]"])) ? $draft["option[" . $options[$i]['product_option_id'] . "]"] : '' ?></textarea>
                            </div>
                         </div>
                         <?php
-                    } ?>
+                        } ?>
 
                         <?php if ($options[$i]['type'] == 'text') { ?>
                         <div class="col-sm-6"
                            style="min-height:50px; margin-bottom:20px; border-bottom:1px solid #ccc; padding-bottom:20px">
-                           <div class="text-left form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
-                              <label class="control-label" for="input-option<?= $options[$i]['product_option_id'] ?>">
+                           <div
+                              class="text-left form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
+                              <label class="control-label"
+                                 for="input-option<?= $options[$i]['product_option_id'] ?>">
                                  <?= $options[$i]['name'] ?>
                               </label>
-                              <input type="text" name="option[<?= $options[$i]['product_option_id'] ?>]"
-                                 value="<?= ($draft && isset($draft[" option[" . $options[$i]['product_option_id'] . "]"
-                                 ])) ? $draft["option[" . $options[$i]['product_option_id'] . "]" ] : '' ?>"
+                              <input type="text"
+                                 name="option[<?= $options[$i]['product_option_id'] ?>]"
+                                 value="<?= ($draft && isset($draft[" option[" .
+                                 $options[$i]['product_option_id'] . "]"
+                                 ])) ? $draft["option[" .
+                                 $options[$i]['product_option_id'] . "]" ] : ''
+                                 ?>"
                               id="input-option
-                              <?= $options[$i]['product_option_id'] ?>" class="form-control" />
+                              <?= $options[$i]['product_option_id'] ?>"
+                              class="form-control" />
                            </div>
                         </div>
                         <?php } ?>
 
-
-
                         <?php
-                } ?>
+                        } ?>
                         <?php
-                } ?>
+                        } ?>
                      </div>
 
                      <button id="n2" class="btn btn-hero">Next</button>
                      <br /> <br />
                   </div>
 
-
-                  <div class="tab-pane fade text-center" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                  <div class="tab-pane fade text-center" id="contact"
+                     role="tabpanel" aria-labelledby="contact-tab">
                      <br />
 
                      <div class="row" style="margin-top:20px">
                         <?php if ($options) { ?>
 
-                        <?php for ($i = 0; $i < sizeof($options); $i++) {  ?>
+                        <?php for ($i = 0; $i < sizeof($options); $i++) { ?>
 
                         <?php if ($options[$i]['type'] == 'file') { ?>
-                        <div class="col-sm-6" style="min-height:50px; margin-bottom:20px;">
-                           <div class="text-left form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
+                        <div class="col-sm-6"
+                           style="min-height:50px; margin-bottom:20px;">
+                           <div
+                              class="text-left form-group<?= $options[$i]['required'] ? ' required' : '' ?>">
                               <label class="control-label">
                                  <?= $options[$i]['name'] ?>
                               </label>
-                              <button style="width:100px" type="button" class="btn- btn-primary btn-block"
+                              <button style="width:100px" type="button"
+                                 class="btn- btn-primary btn-block"
                                  id="button-upload<?= $options[$i]['product_option_id'] ?>"
-                                 data-loading-text="<?= $text_loading ?>" class="btn btn-default btn-block"><i
+                                 data-loading-text="<?= $text_loading ?>"
+                                 class="btn btn-default btn-block"><i
                                     class="fa fa-upload"></i>
                                  <?= $button_upload ?>
                               </button>
-                              <input type="hidden" name="option[<?= $options[$i]['product_option_id'] ?>]" value=""
+                              <input type="hidden"
+                                 name="option[<?= $options[$i]['product_option_id'] ?>]"
+                                 value
                                  id="input-option<?= $options[$i]['product_option_id'] ?>" />
-                              <span style="font-style:italic">(Maximum file size 5 MB Allowed)</span>
+                              <span style="font-style:italic">(Maximum file size
+                                 5 MB Allowed)</span>
                               <div style="width:300px;" class="image-preview">
-                                 <img alt="" style="width:100%;">
+                                 <img alt style="width:100%;">
                               </div>
                            </div>
                         </div>
 
                         <?php
-                } ?>
+                        } ?>
 
                         <?php
-                } ?>
+                        } ?>
                         <?php
-                } ?>
+                        } ?>
 
                      </div>
 
@@ -1164,7 +1602,8 @@ console.log(temp);
 
                         </div>
                         <div style="padding:0px;" id="content" class="row">
-                           <div style=" min-width:160px; " id="addb" class="col-sm-6 offset-sm-3">
+                           <div style=" min-width:160px; " id="addb"
+                              class="col-sm-6 offset-sm-3">
                               <a id="button-draft"
                                  style="width: 100%; text-transform:uppercase; display:inline-block; width:auto;"
                                  class="btn btn-hero">Save in Drafts</a>
@@ -1181,7 +1620,6 @@ console.log(temp);
                      <?php } ?>
                   </div>
                </div>
-
 
             </div>
          </div>
@@ -1252,7 +1690,6 @@ console.log(temp);
          showValues();
       </script>
 
-
       <div class="row d-none">
          <div class="col-sm-12">
             <h3 style="margin-bottom:30px;">Get Started</h3>
@@ -1260,25 +1697,33 @@ console.log(temp);
          <div style=" text-align:left" id="product1" class="col-sm-12 mb-3">
             <div style="margin-top:20px; display:none" class="row">
                <div style="text-align: left; padding-left: 0px; width:120px">
-                  <p style="color:#000; font-size:16px">Quantity &nbsp;&nbsp;&nbsp;&nbsp;</p>
-                  <div style="text-align: left; padding-left: 0px; " class="col-sm-4 col-xs-4">
+                  <p style="color:#000; font-size:16px">Quantity
+                     &nbsp;&nbsp;&nbsp;&nbsp;</p>
+                  <div style="text-align: left; padding-left: 0px; "
+                     class="col-sm-4 col-xs-4">
                      <span class="minus-btn" id="less_quantity"
                         style="height: 40px; text-align: center; padding:7px 10px; border:thin solid #333; cursor: pointer">
-                        <input style="margin: 0px; padding: 2.5px;" type="hidden" name="product_id"
+                        <input style="margin: 0px; padding: 2.5px;"
+                           type="hidden" name="product_id"
                            value="<?php echo $product_id; ?>" />
-                        <li style="color: #333; font-size: 12px" class="fa fa-minus"></li>
+                        <li style="color: #333; font-size: 12px"
+                           class="fa fa-minus"></li>
                      </span>
                   </div>
-                  <div style="text-align: center; padding: 0px" class="col-sm-4 col-xs-2">
+                  <div style="text-align: center; padding: 0px"
+                     class="col-sm-4 col-xs-2">
                      <input
                         style="text-align: center; border-radius:0px; color:#000; width: auto; height: auto; box-shadow:none; border: none; background-color: transparent; padding: 0px"
-                        type="text" readonly name="quantity" value="1" size="2" id="input-quantity"
+                        type="text" readonly name="quantity" value="1" size="2"
+                        id="input-quantity"
                         class="form-control" />
                   </div>
-                  <div style="text-align: left; padding-left: 0px; " class="col-sm-4 col-xs-6">
+                  <div style="text-align: left; padding-left: 0px; "
+                     class="col-sm-4 col-xs-6">
                      <span class="pluse-btn" id="add_quantity"
                         style="height: 40px; text-align: center; padding: 7px 10px; border:thin solid #000; cursor: pointer">
-                        <li style="font-size: 12px; color:#000" class="fa fa-plus"></li>
+                        <li style="font-size: 12px; color:#000"
+                           class="fa fa-plus"></li>
                      </span>
                   </div>
                </div>
@@ -1288,30 +1733,39 @@ console.log(temp);
 
             <?php foreach ($options as $option) { ?>
             <?php if ($option['type'] == 'file') { ?>
-            <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+            <div
+               class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
                <label class="control-label">
-                  <?php echo $option['name']; ?> (Maximum file size 5 MB Allowed))
+                  <?php echo $option['name']; ?> (Maximum file size 5 MB
+                  Allowed))
                </label>
-               <button style="width:100px" type="button" id="button-upload<?php echo $option['product_option_id']; ?>"
-                  data-loading-text="<?php echo $text_loading; ?>" class="btn btn-default btn-block"><i
+               <button style="width:100px" type="button"
+                  id="button-upload<?php echo $option['product_option_id']; ?>"
+                  data-loading-text="<?php echo $text_loading; ?>"
+                  class="btn btn-default btn-block"><i
                      class="fa fa-upload"></i>
                   <?php echo $button_upload; ?>
                </button>
-               <input type="hidden" name="option[<?php echo $option['product_option_id']; ?>]" value=""
+               <input type="hidden"
+                  name="option[<?php echo $option['product_option_id']; ?>]"
+                  value
                   id="input-option<?php echo $option['product_option_id']; ?>" />
             </div>
             <hr />
             <?php
-                        } ?>
+            } ?>
             <?php if ($option['type'] == 'select') { ?>
             <p style="display: none;">Metal Colors</p>
-            <?php foreach ($option['product_option_value'] as $option_value) { ?>
+            <?php foreach ($option['product_option_value'] as $option_value) {
+            ?>
             <div class="text-center" style="display: inline-block;">
-               <span style="background:url(<?php echo $option_value['image']; ?>)"
+               <span
+                  style="background:url(<?php echo $option_value['image']; ?>)"
                   data-sign="<?php echo $option_value['price_prefix']; ?>"
                   data-money="<?php echo $option_value['price']; ?>"
                   data-image="<?php echo $option_value['option_image']; ?>"
-                  data-val="<?php echo $option_value['product_option_value_id']; ?>" class="tab_options">
+                  data-val="<?php echo $option_value['product_option_value_id']; ?>"
+                  class="tab_options">
 
                </span>
                <p style="margin-top: 0px; font-size:12px">
@@ -1320,19 +1774,24 @@ console.log(temp);
             </div>
 
             <?php
-                           } ?>
+            } ?>
             <div style="display: none;" style="width:200px;"
                class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
-               <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>">
+               <label class="control-label"
+                  for="input-option<?php echo $option['product_option_id']; ?>">
                   <?php echo $option['name']; ?>
                </label>
-               <select name="option[<?php echo $option['product_option_id']; ?>]"
-                  id="input-option<?php echo $option['product_option_id']; ?>" class="form-control">
-                  <option value="">
+               <select
+                  name="option[<?php echo $option['product_option_id']; ?>]"
+                  id="input-option<?php echo $option['product_option_id']; ?>"
+                  class="form-control">
+                  <option value>
                      <?php echo $text_select; ?>
                   </option>
-                  <?php foreach ($option['product_option_value'] as $option_value) { ?>
-                  <option data-sign="<?php echo $option_value['price_prefix']; ?>"
+                  <?php foreach ($option['product_option_value'] as
+                  $option_value) { ?>
+                  <option
+                     data-sign="<?php echo $option_value['price_prefix']; ?>"
                      data-link="<?php echo $option_value['link']; ?>"
                      value="<?php echo $option_value['product_option_value_id']; ?>">
                      <?php echo $option_value['name']; ?>
@@ -1341,88 +1800,104 @@ console.log(temp);
                      <?php echo $option_value['price_prefix']; ?>
                      <?php echo $option_value['price']; ?>)
                      <?php
-                                       } ?>
+                     } ?>
                   </option>
                   <?php
-                                 } ?>
+                  } ?>
                </select>
             </div>
             <hr style="margin-top: 30px;" />
             <?php
-                        } ?>
+            } ?>
             <?php if ($option['type'] == 'radio') { ?>
-            <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+            <div
+               class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
                <label class="control-label">
                   <?php echo $option['name']; ?>
                </label>
-               <div id="input-option<?php echo $option['product_option_id']; ?>">
-                  <?php foreach ($option['product_option_value'] as $option_value) { ?>
+               <div
+                  id="input-option<?php echo $option['product_option_id']; ?>">
+                  <?php foreach ($option['product_option_value'] as
+                  $option_value) { ?>
                   <div class="radio">
                      <label>
-                        <input class="sizes" data-sign="<?php echo $option_value['price_prefix']; ?>"
-                           data-price="<?php echo $option_value['price']; ?>" type="radio"
+                        <input class="sizes"
+                           data-sign="<?php echo $option_value['price_prefix']; ?>"
+                           data-price="<?php echo $option_value['price']; ?>"
+                           type="radio"
                            name="option[<?php echo $option['product_option_id']; ?>]"
                            value="<?php echo $option_value['product_option_value_id']; ?>" />
                         <?php if ($option_value['image']) { ?>
-                        <img style="display: none;" src="<?php echo $option_value['image']; ?>"
+                        <img style="display: none;"
+                           src="<?php echo $option_value['image']; ?>"
                            alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"
                            class="img-thumbnail" />
                         <?php
-                                          } ?>
+                        } ?>
                         <?php echo $option_value['name']; ?>
                         <?php if ($option_value['price']) { ?>
                         (
                         <?php echo $option_value['price_prefix']; ?>
                         <?php echo $option_value['price']; ?>)
                         <?php
-                                          } ?>
+                        } ?>
                      </label>
                   </div>
                   <?php
-                                 } ?>
+                  } ?>
                </div>
             </div>
             <br />
             <hr />
             <?php
-                        } ?>
+            } ?>
             <?php if ($option['type'] == 'textarea') { ?>
-            <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
-               <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>">
+            <div
+               class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+               <label class="control-label"
+                  for="input-option<?php echo $option['product_option_id']; ?>">
                   <?php echo $option['name']; ?>
                </label>
-               <textarea name="option[<?php echo $option['product_option_id']; ?>]" rows="5"
+               <textarea
+                  name="option[<?php echo $option['product_option_id']; ?>]"
+                  rows="5"
                   placeholder="<?php echo $option['name']; ?>"
                   id="input-option<?php echo $option['product_option_id']; ?>"
                   class="form-control"><?php echo $option['value']; ?></textarea>
             </div>
             <?php
-                        } ?>
+            } ?>
 
             <?php if ($option['type'] == 'text') { ?>
-            <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
-               <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>">
+            <div
+               class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+               <label class="control-label"
+                  for="input-option<?php echo $option['product_option_id']; ?>">
                   <?php echo $option['name']; ?>
                </label>
-               <input type="text" name="option[<?php echo $option['product_option_id']; ?>]"
-                  value="<?php echo $option['value']; ?>" placeholder="<?php echo $option['name']; ?>"
-                  id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
+               <input type="text"
+                  name="option[<?php echo $option['product_option_id']; ?>]"
+                  value="<?php echo $option['value']; ?>"
+                  placeholder="<?php echo $option['name']; ?>"
+                  id="input-option<?php echo $option['product_option_id']; ?>"
+                  class="form-control" />
             </div>
             <?php } ?>
 
-
             <?php
-                     } ?>
+            } ?>
             <?php
-                  } ?>
-
+            } ?>
 
             <div id="wishlist-msg">
 
             </div>
             <div style="padding:0px;" id="content" class="row">
-               <div style=" min-width:160px; " id="addb" class="col-sm-6 offset-sm-3">
-                  <a id="button-cart" style="width: 100%; text-transform:uppercase" class="btn btn-hero">Proceed to
+               <div style=" min-width:160px; " id="addb"
+                  class="col-sm-6 offset-sm-3">
+                  <a id="button-cart"
+                     style="width: 100%; text-transform:uppercase"
+                     class="btn btn-hero">Proceed to
                      pay</a>
                   <!--<button type="button" data-toggle="tooltip"
                                     title="<?php echo $button_wishlist; ?>"
@@ -1437,16 +1912,9 @@ console.log(temp);
             } ?>
          </div>
 
-
-
-
-
-
-
       </div>
    </div>
 </section>
-
 
 <?php } ?>
 
@@ -1461,6 +1929,5 @@ console.log(temp);
 
 <script src="catalog/view/javascript/product.js"></script>
 <script src="catalog/view/javascript/cadcam.js"></script>
-
 
 <?php echo $footer; ?>

@@ -290,6 +290,7 @@ $data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($
 					'model'       => $result['model'],
 					'option'		=> $options,
 					'price'       => $price,
+					
  					'wet' => $wet,
 					'wish_price'       => $wish_price,
 					'wish_special'     => $wish_special,

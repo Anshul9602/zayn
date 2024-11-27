@@ -330,17 +330,23 @@ class ControllerProductProduct extends Controller
 				$data['price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				$data['customer_id'] = $this->customer->getId();
 			} else {
-
 				$data['wish_price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				$data['price'] = false;
 				$data['customer_id'] = 0;
 			}
-
+			
 			if ((float)$product_info['special']) {
 				$data['special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+			
+				// Calculate discount percentage
+				$price_raw = (float)$product_info['price'];
+				$special_raw = (float)$product_info['special'];
+				$data['discount_percentage'] = round((($price_raw - $special_raw) / $price_raw) * 100);
+				// $data['discount_percentage'] = 10;
 			} else {
 				$data['wish_special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				$data['special'] = false;
+				$data['discount_percentage'] = null; // No discount
 			}
 
 			if ($this->config->get('config_tax')) {
@@ -363,13 +369,13 @@ class ControllerProductProduct extends Controller
 			$data['options'] = array();
 
 			foreach ($this->model_catalog_product->getProductOptions($this->request->get['product_id']) as $option) {
-if ($option['name'] == 'RING SIZE') {
+				if ($option['name'] == 'RING SIZE') {
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
-				}else if($option['name'] == 'Bangle Size'){
+				} else if ($option['name'] == 'Bangle Size') {
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
-				}else if($option['name'] == 'Bracelet Size'){
+				} else if ($option['name'] == 'Bracelet Size') {
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
-				}else if($option['name'] == 'Necklace Size'){
+				} else if ($option['name'] == 'Necklace Size') {
 					$data['product_size1'] = $option['product_option_value'][0]['name'];
 				}
 
@@ -380,6 +386,7 @@ if ($option['name'] == 'RING SIZE') {
 					if (!$option_value['subtract'] || ($option_value['quantity'] > 0)) {
 						if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option_value['price']) {
 							$price = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
+							
 						} else {
 							$price = false;
 						}
@@ -440,14 +447,86 @@ if ($option['name'] == 'RING SIZE') {
 			$data['share'] = $this->url->link('product/product', 'product_id=' . (int)$this->request->get['product_id']);
 
 			$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($this->request->get['product_id']);
-foreach ($data['attribute_groups'] as $attr) {
+			
+			
+			$data['watch_attr'] = [];
+			
+			foreach ($data['attribute_groups'] as $attr) {
 				if ($attr['name'] == 'Stone details') {
 					foreach ($attr['attribute'] as $attribute) {
 						$data['wet'] = $attribute['text'];
 					}
+				}elseif($attr['name'] == 'watch'){
+
+					foreach ($attr['attribute'] as $attribute) {
+						$data['watch_attr'][] = [
+							'name' => $attribute['name'], // Attribute name
+							'text' => $attribute['text'], // Attribute value
+						];
+						switch ($attribute['name']) {
+							case 'Brand':
+								$data['Brand_value'] = $attribute['text'];
+								break;
+							case 'Collection':
+								$data['Collection_value'] = $attribute['text'];
+								break;
+							case 'Series':
+								$data['Series_value'] = $attribute['text'];
+								break;
+							case 'Case Size':
+								$data['Case_Size_value'] = $attribute['text'];
+								break;
+							case 'Features':
+								$data['Features_value'] = $attribute['text'];
+								break;
+							case 'Dial Colour':
+								$data['Dial_Colour_value'] = $attribute['text'];
+								break;
+							case 'Movement':
+								$data['Movement_value'] = $attribute['text'];
+								break;
+							case 'Case Shape':
+								$data['Case_Shape_value'] = $attribute['text'];
+								break;
+							case 'Strap Colour':
+								$data['Strap_Colour_value'] = $attribute['text'];
+								break;
+							case 'Calibre':
+								$data['Calibre_value'] = $attribute['text'];
+								break;
+							case 'Case Material':
+								$data['Case_Material_value'] = $attribute['text'];
+								break;
+							case 'Clasp Type':
+								$data['Clasp_Type_value'] = $attribute['text'];
+								break;
+							case 'Glass Material':
+								$data['Glass_Material_value'] = $attribute['text'];
+								break;
+							case 'Precious Stone':
+								$data['Precious_Stone_value'] = $attribute['text'];
+								break;
+							case 'Gender':
+								$data['Gender_value'] = $attribute['text'];
+								break;
+							case 'Water Resistance (M)':
+								$data['Water_Resistance_value'] = $attribute['text'];
+								break;
+							case 'Warranty Period':
+								$data['Water_Resistance_value'] = $attribute['text'];
+								break;
+							default:
+								// Handle additional attributes if needed
+								break;
+						}
+					}
 				}
 			}
- 		
+
+			// echo "<pre>"; print_r($data['watch_attr']);
+			// echo "</pre>";
+
+
 			$data['products'] = array();
 
 			$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);
@@ -461,14 +540,21 @@ foreach ($data['attribute_groups'] as $attr) {
 
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					$price_raw = (float)$result['price']; 
+				
 				} else {
 					$price = false;
+					$price_raw = 0;
 				}
 
 				if ((float)$result['special']) {
 					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					$special_raw = (float)$result['special'];
+					$discount_percentage = round((($price_raw - $special_raw) / $price_raw) * 100);
 				} else {
 					$special = false;
+					$special_raw = 0;
+					$discount_percentage = null;
 				}
 
 				if ($this->config->get('config_tax')) {
@@ -490,6 +576,7 @@ foreach ($data['attribute_groups'] as $attr) {
 					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
 					'price'       => $price,
 					'special'     => $special,
+					'discount_percentage'     => $discount_percentage,
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $rating,
