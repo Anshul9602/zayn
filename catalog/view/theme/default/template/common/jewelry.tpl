@@ -244,11 +244,20 @@
                         <?php if ($product['special']) { ?>
                         <div class="price-box">
                             <span class="price-regular">
-                                <?php echo $product['special']; ?>
+                                
+                                <?php echo str_replace('.0000', '', $product['special']); ?>
                             </span>
-                            <span class="price-old"><del>
-                                    <?php echo $product['price']; ?>
-                                </del></span>
+                            <span class="price-old">
+                                <del>
+                                    <?php echo str_replace('.0000', '', $product['price']); ?>
+                                </del>
+                            </span>
+                            <?php if ($product['discount_percentage']) { ?>
+                            <span style="color: red; font-size: 12px; margin-left: 5px;">
+                                (
+                                <?php echo $product['discount_percentage']; ?>% Off)
+                            </span>
+                            <?php } ?>
                         </div>
                         <?php } else { ?>
                         <div class="price-box">

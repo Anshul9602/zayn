@@ -281,7 +281,7 @@
                                  <?php if ($product['price']) { ?>
                                     <?php if ($product['special']) { ?>
                                        <div class="price-box">
-                                          <span class="price-regular"> <?php echo rtrim(rtrim($product['special'], '0'), '.'); ?></span>
+                                          <span class="price-regular"> <?php echo str_replace('.0000', '', $product['special']); ?></span>
                                           <span class="price-old"><del> <?php echo rtrim(rtrim($product['price'], '0'), '.'); ?></del></span>
                                           <?php if ($product['discount_percentage']) { ?>
                           <span style="color: red; font-size: 12px; margin-left: 5px;">

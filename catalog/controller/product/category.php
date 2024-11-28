@@ -343,26 +343,58 @@ class ControllerProductCategory extends Controller
 				}
 
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-				} else {
-					$wish_price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-					$price = false;
-				}
-				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-					if ((float)$result['special']) {
-						$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					if (isset($result['price']) && is_numeric($result['price'])) {
 						$price_raw = (float)$result['price'];
+						$price_raw = round($price_raw); // Ensures it's rounded to the nearest whole number
+						$price = $this->currency->format(
+							$this->tax->calculate($price_raw, $result['tax_class_id'], $this->config->get('config_tax')),
+							$this->session->data['currency']
+						);
+						$wish_price = $this->currency->format(
+							$this->tax->calculate($price_raw, $result['tax_class_id'], $this->config->get('config_tax')),
+							$this->session->data['currency']
+						);
+					} else {
+						$price_raw = 0;
+						$price = false;
+						$wish_price = false;
+					}
+				
+					if (isset($result['special']) && is_numeric($result['special']) && (float)$result['special']) {
 						$special_raw = (float)$result['special'];
+						$special_raw = round($special_raw); // Ensures it's rounded to the nearest whole number
+						$special = $this->currency->format(
+							$this->tax->calculate($special_raw, $result['tax_class_id'], $this->config->get('config_tax')),
+							$this->session->data['currency']
+						);
+						$wish_sprice = $this->currency->format(
+							$this->tax->calculate($special_raw, $result['tax_class_id'], $this->config->get('config_tax')),
+							$this->session->data['currency']
+						);
+				
 						$discount_percentage = round((($price_raw - $special_raw) / $price_raw) * 100);
 					} else {
-						$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 						$special = false;
-						$discount_percentage= false;
+						$wish_price = false;
+						$discount_percentage = false;
 					}
 				} else {
-					$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					$price_raw = (float)$result['price'];
+						$price_raw = round($price_raw);
+					$special_raw = (float)$result['special'];
+						$special_raw = round($special_raw);
+					$price = false;
+					$wish_price = $this->currency->format(
+						$this->tax->calculate($price_raw, $result['tax_class_id'], $this->config->get('config_tax')),
+						$this->session->data['currency']
+					);
+					$wish_sprice = $this->currency->format(
+						$this->tax->calculate($special_raw, $result['tax_class_id'], $this->config->get('config_tax')),
+						$this->session->data['currency']
+					);
 					$special = false;
-					$discount_percentage= false;
+					
+					$discount_percentage = false;
 				}
 
 				if ($this->config->get('config_tax')) {
