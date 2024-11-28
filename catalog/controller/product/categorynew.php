@@ -204,13 +204,23 @@ class ControllerProductCategorynew extends Controller
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					if ((float)$result['special']) {
 						$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+						$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+						$price_raw = (float)$result['price'];
+						$special_raw = (float)$result['special'];
+						$discount_percentage = round((($price_raw - $special_raw) / $price_raw) * 100);
+// echo "price".$price;
+// echo "special".$special;
+// echo "special".$data['discount_percentage'];
+
 					} else {
 						$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 						$special = false;
+						$discount_percentage = false;
 					}
 				} else {
 					$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 					$special = false;
+					$discount_percentage = false;
 				}
 
 				if ($this->config->get('config_tax')) {
@@ -298,7 +308,8 @@ $data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($
 					
  					'wet' => $wet,
 					'wish_price'       => $wish_price,
-					'wish_special'     => $wish_special,
+					'discount_percentage'       => $discount_percentage,
+					'wish_special'     => $wish_sprice,
 					'in_wishlist'    => $product_in_wishlist,
 					'special'     => $special,
 					'style_no'     => $style_no,

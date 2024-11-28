@@ -133,6 +133,12 @@ ${item.in_wishlist
       </span>`
               : ""
             }
+      ${item.discount_percentage
+              ? `<span class="" style="color: red; font-size: 12px; margin-left: 5px;">
+        (${item.discount_percentage}% Off)
+      </span>`
+              : ""
+            }
       
      
     </div>

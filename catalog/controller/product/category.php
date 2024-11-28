@@ -351,13 +351,18 @@ class ControllerProductCategory extends Controller
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					if ((float)$result['special']) {
 						$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+						$price_raw = (float)$result['price'];
+						$special_raw = (float)$result['special'];
+						$discount_percentage = round((($price_raw - $special_raw) / $price_raw) * 100);
 					} else {
 						$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 						$special = false;
+						$discount_percentage= false;
 					}
 				} else {
 					$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 					$special = false;
+					$discount_percentage= false;
 				}
 
 				if ($this->config->get('config_tax')) {
@@ -458,6 +463,7 @@ class ControllerProductCategory extends Controller
 					'wish_price'       => $wish_price,
 					'wish_sprice'       => $wish_sprice,
 					'special'     => $special,
+					'discount_percentage'     => $discount_percentage,
 					'style_no' => $result['model'],
 					'metal_purity' => $result['upc'],
 					'tax'         => $tax,
