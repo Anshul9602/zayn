@@ -117,8 +117,8 @@ ${
       <br>
       
       ${
-  item.special
-    ? `
+        item.special
+          ? `
       <span class="price-regular">
         Price: $${parseFloat(item.special.replace(/[,\$]/g, ""))
           .toFixed(0)
@@ -137,14 +137,14 @@ ${
           : ""
       }
     `
-    : `
+          : `
       <span class="price-regular">
         Price: $${parseFloat(item.price.replace(/[,\$]/g, ""))
           .toFixed(0)
           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       </span>
     `
-}
+      }
      
     </div>
   </div>

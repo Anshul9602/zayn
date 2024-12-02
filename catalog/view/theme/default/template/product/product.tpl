@@ -423,7 +423,7 @@ console.log(temp);
                       <?php } ?>
                   <?php } else { ?>
                       <!-- Regular Price Only -->
-                      <span>
+                      <span id="p_pr">
                           <?php echo rtrim(rtrim($price, '0'), '.') ; ?>
                       </span>
                   <?php } ?>
