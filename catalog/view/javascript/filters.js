@@ -84,9 +84,6 @@ function generatePage(filteredData) {
             ringSizeValue = "-";
           }
 
-
-
-
           return `<div class="col-md-4 col-sm-6 col-6 p_box">
   <div class="product-item">
     <figure class="product-thumb" style="    position: relative;">
@@ -94,18 +91,19 @@ function generatePage(filteredData) {
         <img class="pri-img" src="${item.thumb}" alt="product">
         <img class="sec-img" src="${item.thumb}" alt="product">
       </a>
-${item.in_wishlist
-              ? `
+${
+  item.in_wishlist
+    ? `
                                     <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store"><i class="fa fa-heart"></i> </a>
                                     `
-              : `
+    : `
                                   <a style="position: absolute;right: 5px; padding: 12px; top: 5px;" class="btn btn-find-store wishlist_link1"
                                         btnid="${item.product_id}" btnname="${item.name}" btnimg="${item.thumb}" btnhref="${item.href}" 
                                         btnprice="${item.wish_price}"  btnsiz="${ringSizeValue}"  btnsize="${item.metal_purity}" btndesign="${item.design_no}" btnstyle="${item.style_no}" btnsprice="${item.wish_special}" btnwet="${item.wet}">
                                         <i class="fa fa-heart-o"></i>
                                     </a>
                                     `
-            }
+}
     </figure>
     <div class="product-caption 1">
       <h6 class="product-name">
@@ -117,29 +115,36 @@ ${item.in_wishlist
         Available In : ${colorOptions}
       </span>
       <br>
-      ${item.special
-              ? `<span class="price-regular">
-       Price: $${parseFloat(item.special.replace(/[,\$]/g, ""))
-                .toFixed(0)
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-      </span>`
-              : ""
-            }
-      ${item.price
-              ? `<span class="price-old" style="    text-decoration: line-through;">
-        $${parseFloat(item.price.replace(/[,\$]/g, ""))
-                .toFixed(0)
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-      </span>`
-              : ""
-            }
-      ${item.discount_percentage
-              ? `<span class="" style="color: red; font-size: 12px; margin-left: 5px;">
-        (${item.discount_percentage}% Off)
-      </span>`
-              : ""
-            }
       
+      ${
+  item.special
+    ? `
+      <span class="price-regular">
+        Price: $${parseFloat(item.special.replace(/[,\$]/g, ""))
+          .toFixed(0)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </span>
+      <span class="price-old" style="text-decoration: line-through;">
+        $${parseFloat(item.price.replace(/[,\$]/g, ""))
+          .toFixed(0)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </span>
+      ${
+        item.discount_percentage
+          ? `<span class="" style="color: red; font-size: 12px; margin-left: 5px;">
+            (${item.discount_percentage}% Off)
+          </span>`
+          : ""
+      }
+    `
+    : `
+      <span class="price-regular">
+        Price: $${parseFloat(item.price.replace(/[,\$]/g, ""))
+          .toFixed(0)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </span>
+    `
+}
      
     </div>
   </div>
