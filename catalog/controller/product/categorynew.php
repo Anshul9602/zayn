@@ -11,8 +11,8 @@ class ControllerProductCategorynew extends Controller
 
 		$this->load->model('tool/image');
 
-		
-	
+
+
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -22,8 +22,8 @@ class ControllerProductCategorynew extends Controller
 
 		if (isset($this->request->get['path'])) {
 			$p = (string)$this->request->get['path'];
-		  if(strpos($p,'_')){
-			$url = '';
+			if (strpos($p, '_')) {
+				$url = '';
 
 				$data['logged'] = $this->customer->isLogged();
 
@@ -40,13 +40,11 @@ class ControllerProductCategorynew extends Controller
 					} else {
 						$path .= '_' . (int)$path_id;
 					}
-				
 				}
-		  }else{
-			$category_id = (int)$this->request->get['path'];
-		  }	
-			
-		} 
+			} else {
+				$category_id = (int)$this->request->get['path'];
+			}
+		}
 
 
 		$category_info = $this->model_catalog_category->getCategory($category_id);
@@ -119,57 +117,57 @@ class ControllerProductCategorynew extends Controller
 			}
 
 			$data['products'] = array();
-						
-			
-				$key2 = "XXXX";
-				switch ($category_id) {
-					case '80':
-						$key = "RG";
-						break;
 
-					case '83':
-						$key = "BG";
-						break;
 
-					case '85':
-						$key = "PD";
-						break;
+			$key2 = "XXXX";
+			switch ($category_id) {
+				case '80':
+					$key = "RG";
+					break;
 
-					case '86':
-						$key = "NL";
-						break;
+				case '83':
+					$key = "BG";
+					break;
 
-					case '82':
-						$key = "ER";
-						break;
+				case '85':
+					$key = "PD";
+					break;
 
-					case '84':
-						$key = "BL";
-						break;
-					case '89':
-						$key = "ER";
-						break;
-					
-					case '107':
-						$key = "ER";
-						break;
+				case '86':
+					$key = "NL";
+					break;
 
-					case '106':
-						$key = "PD";
-						break;	
+				case '82':
+					$key = "ER";
+					break;
 
-					case '95':
-						$key = "TC1";
-						$key2 = "TC2";
-						break;	
-				}
-			
-				$results = $this->model_catalog_product->getProductsKey($key, $key2, $filter_data);
-				if (isset($this->session->data['wishlist_items'])) {
-					$wishlist_items1 = $this->session->data['wishlist_items'];
-				} else {
-					$wishlist_items1 = null;
-				}
+				case '84':
+					$key = "BL";
+					break;
+				case '89':
+					$key = "ER";
+					break;
+
+				case '107':
+					$key = "ER";
+					break;
+
+				case '106':
+					$key = "PD";
+					break;
+
+				case '95':
+					$key = "TC1";
+					$key2 = "TC2";
+					break;
+			}
+
+			$results = $this->model_catalog_product->getProductsKey($key, $key2, $filter_data);
+			if (isset($this->session->data['wishlist_items'])) {
+				$wishlist_items1 = $this->session->data['wishlist_items'];
+			} else {
+				$wishlist_items1 = null;
+			}
 
 			foreach ($results as $result) {
 				if ($result['image']) {
@@ -208,9 +206,9 @@ class ControllerProductCategorynew extends Controller
 						$price_raw = (float)$result['price'];
 						$special_raw = (float)$result['special'];
 						$discount_percentage = round((($price_raw - $special_raw) / $price_raw) * 100);
-// echo "price".$price;
-// echo "special".$special;
-// echo "special".$data['discount_percentage'];
+						// echo "price".$price;
+						// echo "special".$special;
+						// echo "special".$data['discount_percentage'];
 
 					} else {
 						$wish_sprice = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
@@ -236,7 +234,7 @@ class ControllerProductCategorynew extends Controller
 				} else {
 					$rating = false;
 				}
-$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($result['product_id']);
+				$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($result['product_id']);
 				foreach ($data['attribute_groups'] as $attr) {
 					if ($attr['name'] == 'Stone details') {
 						foreach ($attr['attribute'] as $attribute) {
@@ -279,23 +277,23 @@ $data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($
 
 				$filter_ids = array();
 				foreach ($this->model_catalog_product->getProductFilters($result['product_id']) as $filters) {
-					$filter_ids[]=$filters[0];
+					$filter_ids[] = $filters[0];
 				}
-				if($wishlist_items1 == null){
+				if ($wishlist_items1 == null) {
 					$product_in_wishlist = false;
-				 }else{
+				} else {
 					$wishlist_items1_array = json_decode($wishlist_items1, true);
-									  
+
 					$product_in_wishlist = false;
 					foreach ($wishlist_items1_array as $item) {
-				  
+
 						if ($item['productid'] == $result['product_id']) {
 							$product_in_wishlist = true;
 							break;
 						}
 					}
-				 }
-				
+				}
+
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
@@ -305,8 +303,8 @@ $data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($
 					'model'       => $result['model'],
 					'option'		=> $options,
 					'price'       => $price,
-					
- 					'wet' => $wet,
+
+					'wet' => $wet,
 					'wish_price'       => $wish_price,
 					'discount_percentage'       => $discount_percentage,
 					'wish_special'     => $wish_sprice,
@@ -321,7 +319,7 @@ $data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($
 					'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url)
 				);
 			}
-			
+
 
 			$data['continue'] = $this->url->link('common/home');
 
@@ -331,13 +329,15 @@ $data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-		
 
+// echo "<pre>";
+// print_r($data);
+// echo "</pre>";
 			$this->response->setOutput($this->load->view('product/categorynew', $data));
 		} else {
 			$url = '';
 
-		
+
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('text_error'),
 				'href' => $this->url->link('product/category', $url)
@@ -366,4 +366,3 @@ $data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($
 		}
 	}
 }
-
