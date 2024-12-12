@@ -285,7 +285,7 @@ class ControllerProductCategory extends Controller
 						break;
 				}
 
-				if ($category_id == 109 || $category_id == 108 || $category_id == 110 || $category_id == 107) {
+				if ($category_id == 109 || $category_id == 108 || $category_id == 110 || $category_id == 107 || $category_id == 111) {
 					$results = $this->model_catalog_product->getProducts($filter_data);
 					$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 				} else {

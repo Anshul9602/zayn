@@ -255,6 +255,8 @@
                                                 </li>
                                                 <li><a href="index.php?route=product/category&path=108">Eternity Rings</a>
                                                 </li>
+                                                <li><a href="index.php?route=product/category&path=111">Stud Earrings</a>
+                                                </li>
                                                
                                             </ul>
                                         </li>
@@ -432,7 +434,7 @@
                                     <a href="index.php?route=common/jewelry">Jewelry</a>
                                 </li>
                                 <li>
-                                    <a href="index.php?route=product/categorynew&path=110">Watches</a>
+                                    <a href="index.php?route=product/category&path=110">Watches</a>
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="index.php?route=common/collection">Collections</a>
@@ -447,6 +449,8 @@
                                                  <li><a href="index.php?route=product/category&path=109">Stackable Rings</a>
                                                 </li>
                                                 <li><a href="index.php?route=product/category&path=108">Eternity Rings</a>
+                                                </li>
+                                                <li><a href="index.php?route=product/category&path=111">Stud Earrings</a>
                                                 </li>
                                                 </ul>
                                 </li>
