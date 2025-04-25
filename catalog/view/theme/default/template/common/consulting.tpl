@@ -118,6 +118,7 @@ echo "</script>";
             <h4 class="col-md-8 text-center pb-3" style="font-weight: 600;">What day is best for you?</h4>
             <div class="col-md-8  mt-3">
                 <div class="splide splidecol" aria-label="Splide Basic HTML Example">
+                <button id="prevSlide">◀</button> <button id="nextSlide">▶</button>
                     <div class="splide__track">
                         <ul class="splide__list broder" id="dateSlider">
 
@@ -193,6 +194,7 @@ echo "</script>";
 
                         </ul>
                     </div>
+                    
                 </div>
             </div>
             <div class="col-md-8 text-center mt-3">
@@ -963,6 +965,7 @@ echo "</script>";
         pagination: false,
         perPage: 8,
         perMove: 3,
+        arrows: true,
         breakpoints: {
             640: {
                 perPage: 4,
@@ -979,7 +982,16 @@ echo "</script>";
         },
     });
 
+
     splide.mount();
+    // Custom arrow navigation
+document.getElementById('prevSlide').addEventListener('click', function () {
+    splide.go('<'); // Move left
+});
+
+document.getElementById('nextSlide').addEventListener('click', function () {
+    splide.go('>'); // Move right
+});
 
 </script>
 

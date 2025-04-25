@@ -53,6 +53,12 @@
     .c1.form-group:nth-child(even) {
       float: right;
     }
+    
+    .g-recaptcha {
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+    }
   </style>
   <br />
 
@@ -667,16 +673,16 @@
                     <input type="checkbox" name="agree" value="1" />
                   <?php } ?>
                   &nbsp;
+                  <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
                   <input type="submit" value="<?php echo $button_continue; ?>" class="btn btn-primary" />
                 </div>
               </div>
             <?php } else { ?>
               <div class="buttons">
-
+                <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
                 <button class="btn btn-hero">
                   <?php echo $button_continue; ?>
                 </button>
-
               </div>
             <?php } ?>
           </div>
@@ -905,5 +911,19 @@
     e.preventDefault();
     $("#contact-tab").click();
   })
+</script>
+<script type="text/javascript">
+  // Add reCAPTCHA script
+  var script = document.createElement('script');
+  script.src = 'https://www.google.com/recaptcha/api.js';
+  document.head.appendChild(script);
+
+  // Form submission validation
+  $('form').on('submit', function(e) {
+    if (grecaptcha.getResponse() === '') {
+      e.preventDefault();
+      alert('Please complete the reCAPTCHA verification');
+    }
+  });
 </script>
 <?php echo $footer; ?>
