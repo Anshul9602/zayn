@@ -140,6 +140,7 @@
             <!-- sidebar area start -->
             <div class="col-lg-3 order-2 order-lg-1">
                <aside class="sidebar-wrapper">
+                  <button id="clear-filters" class="btn btn-primary d-none" style="margin: 10px 0; width: 100%;">Clear All Filters</button>
                   <?php echo $column_right; ?>
                </aside>
             </div>
@@ -206,64 +207,63 @@
    //fetch products and show array
    var temp = <?php print_r(json_encode($products));?>;
    var items = shuffleArray([...temp]);
+   window.originalData = items; // Store original data globally
    var filteredData = items;
 
-    
    $(document).ready(function(){
       generatePage(items);
-     
+      
       $('input[type="checkbox"]').change(function() {
-       
          debouncedGetFilters(function(filters) {
-          
-            //filter by gemstone
-            if(filters.FilterByGemstone.length>0){
-                //replace filter codes with model code
-               let replacements = {'33': '01ZZZ', '4': '05ZZZ', '3': '09ZZZ', '5':'06ZZZ', '13':'07ZZZ','14':'08ZZZ','15':'10ZZZ'};
-               let newArray = filters.FilterByGemstone.map(item => replacements[item] || item);
-               filteredData = filterDataByModel(filteredData, newArray);         
-            }
-            
-            //filter by colors
-            if(filters.FilterByMetalColor.length>0){
-              //replace filter codes with model code
-              let replacements = {'1': '200', '2': '100', '12': '300'};
-              let newArray = filters.FilterByMetalColor.map(item => replacements[item] || item);
-              //get filtered models
-              filteredData = filterDataByModel(filteredData, newArray);
-            }
+            // Reset filteredData to original items when all filters are empty
+            if(filters.FilterByGemstone.length === 0 && 
+               filters.FilterByMetalColor.length === 0 && 
+               filters.FilterByType.length === 0) {
+               filteredData = items;
+            } else {
+               // Start with original items for each filter application
+               filteredData = [...items];
+               
+               //filter by gemstone
+               if(filters.FilterByGemstone.length > 0){
+                  let replacements = {'33': '01ZZZ', '4': '05ZZZ', '3': '09ZZZ', '5':'06ZZZ', '13':'07ZZZ','14':'08ZZZ','15':'10ZZZ'};
+                  let newArray = filters.FilterByGemstone.map(item => replacements[item] || item);
+                  filteredData = filterDataByModel(filteredData, newArray);         
+               }
+               
+               //filter by colors
+               if(filters.FilterByMetalColor.length > 0){
+                  let replacements = {'1': '200', '2': '100', '12': '300'};
+                  let newArray = filters.FilterByMetalColor.map(item => replacements[item] || item);
+                  filteredData = filterDataByModel(filteredData, newArray);
+               }
 
-            if(filters.FilterByType.length>0){
-               filteredData = FilterByType(filteredData,filters.FilterByType);
-           
+               //filter by type
+               if(filters.FilterByType.length > 0){
+                  filteredData = FilterByType(filteredData, filters.FilterByType);
+               }
             }
             
             generatePage(filteredData);
+         });
+      });
 
-        });
-      })
-
+      // Sort handler
       $("#input-sort").change(function(){
-               if($("#input-sort").val()=="name_ASC"){
-                  filteredData = sortByNameA(filteredData);
-                  console.log(filteredData);
-               }
-               if($("#input-sort").val()=="name_DESC"){
-                  filteredData = sortByNameD(filteredData);
-               }
-               if($("#input-sort").val()=="p_ASC"){
-                  filteredData = sortByPriceA(filteredData);
-               }
-               if($("#input-sort").val()=="p_DESC"){
-                  filteredData = sortByPriceD(filteredData);
-               }
-               generatePage(filteredData);
-
-            })
-      
-      
-   })
-
-  
+         if($("#input-sort").val()=="name_ASC"){
+            filteredData = sortByNameA([...filteredData]);
+         }
+         if($("#input-sort").val()=="name_DESC"){
+            filteredData = sortByNameD([...filteredData]);
+         }
+         if($("#input-sort").val()=="p_ASC"){
+            filteredData = sortByPriceA([...filteredData]);
+         }
+         if($("#input-sort").val()=="p_DESC"){
+            filteredData = sortByPriceD([...filteredData]);
+         }
+         generatePage(filteredData);
+      });
+   });
 </script>   
 <?php echo $footer; ?>

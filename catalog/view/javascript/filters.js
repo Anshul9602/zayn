@@ -318,3 +318,15 @@ $(document).on("click", ".wishlist_link1", function (e) {
     }
   }
 });
+
+var fullProductData = window.fullProductData || []; // Make sure this is set somewhere globally
+
+$("#clear-filters").click(function () {
+  // Uncheck all filter checkboxes
+  $(".custom-control-input").prop("checked", false);
+
+  // Optionally, reset any other filter UI elements here
+
+  // Show all products
+  generatePage(fullProductData);
+});
